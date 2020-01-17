@@ -6,12 +6,27 @@ import { SideBarPage } from './side-bar.page';
 const routes: Routes = [
   {
     path: '',
-    component: SideBarPage
-  }
+    component: SideBarPage,
+    children: [
+      {
+        path: 'main-menus',
+        loadChildren: () => import('../main-menus/main-menus.module').then(m => m.MainMenusPageModule)
+      },
+      {
+        path: 'locations',
+        loadChildren: () => import('../locations/locations.module').then(m => m.LocationsPageModule)
+      },
+      {
+        path: '',
+        redirectTo: 'main-menus'
+      }
+    ]
+  },
+
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SideBarPageRoutingModule {}
+export class SideBarPageRoutingModule { }

@@ -1,0 +1,13 @@
+.menu-list {
+  background-color: #f95f62;
+  height: 100%;
+  ion-card-content {
+    text-align: center;
+    .descriptions {
+      font-size: 12px;
+      font-weight: bolder;
+      font-style: italic;
+      color: #5f6368;
+    }
+  }
+}

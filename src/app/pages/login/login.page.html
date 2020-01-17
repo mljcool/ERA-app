@@ -1,9 +1,62 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <div class="ion-padding user-login">
+    <ion-grid class="container">
+      <ion-row>
+        <ion-col class="align-centered banner-logo" size-md="6" offset-md="3">
+          <img
+            [src]="'./assets/images/logo-new.png'"
+            width="250"
+            height="250"
+          />
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-card color="light">
+      <ion-card-header>
+        <ion-card-subtitle
+          >Respond To Most Common Car Problems</ion-card-subtitle
+        >
+      </ion-card-header>
+      <ion-item class="activated">
+        <ion-avatar slot="start">
+          <img [src]="'./assets/images/commons/flatTire.png'" />
+        </ion-avatar>
+        <ion-label>Flat Tires</ion-label>
+      </ion-item>
 
+      <ion-item>
+        <ion-avatar slot="start">
+          <img [src]="'./assets/images/commons/deadbattery.png'" />
+        </ion-avatar>
+        <ion-label>Dead Battery</ion-label>
+      </ion-item>
+
+      <ion-item class="activated">
+        <ion-avatar slot="start">
+          <img [src]="'./assets/images/commons/overheat.png'" />
+        </ion-avatar>
+        <ion-label>Overheating</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-avatar slot="start">
+          <img [src]="'./assets/images/commons/motor.png'" />
+        </ion-avatar>
+        <ion-label>Broken Starter Motor</ion-label>
+      </ion-item>
+
+      <ion-card-content class="align-centered">
+        <ion-chip (click)="openActionSheetSignUp()" outline color="danger">
+          <ion-icon name="person"></ion-icon>
+          <ion-label>Register</ion-label>
+          <ion-icon name="radio-button-on"></ion-icon>
+        </ion-chip>
+        <ion-chip (click)="presentLoading()" outline color="danger">
+          <ion-icon name="log-in"></ion-icon>
+          <ion-label>Login</ion-label>
+          <ion-icon name="radio-button-on"></ion-icon>
+        </ion-chip>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

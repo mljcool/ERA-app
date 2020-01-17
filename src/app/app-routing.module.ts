@@ -11,14 +11,6 @@ const routes: Routes = [
     path: 'side-bar',
     loadChildren: () => import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule)
   },
-  {
-    path: 'main-menus',
-    loadChildren: () => import('./pages/main-menus/main-menus.module').then(m => m.MainMenusPageModule)
-  },
-  {
-    path: 'locations',
-    loadChildren: () => import('./pages/locations/locations.module').then(m => m.LocationsPageModule)
-  },
 ];
 
 @NgModule({

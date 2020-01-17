@@ -1,9 +1,35 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>mainMenus</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Services</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content color="#">
+  <ion-grid class="menu-list">
+    <ion-row>
+      <ion-col>
+        <ion-card color="light">
+          <img [src]="'./assets/images/main-menus/madison.jpg'" />
+          <ion-card-header>
+            <ion-card-subtitle>Destination</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-label class="descriptions">
+              Founded in 1829 on an isthmus between Lake Monona and Lake
+              Mendota.
+            </ion-label>
+            <div>
+              <ion-chip (click)="onProceed()" outline color="danger">
+                <ion-label>Proceed</ion-label>
+                <ion-icon name="radio-button-on"></ion-icon>
+              </ion-chip>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

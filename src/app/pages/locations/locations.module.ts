@@ -8,13 +8,22 @@ import { LocationsPageRoutingModule } from './locations-routing.module';
 
 import { LocationsPage } from './locations.page';
 
+import { AgmCoreModule } from '@agm/core';
+import { AgmOverlays } from 'agm-overlays';
+import { AgmDirectionModule } from 'agm-direction';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LocationsPageRoutingModule
+    LocationsPageRoutingModule,
+    AgmOverlays,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCM9feJhmKCUUsDv9zg6dQcYeAHEAHwM08'
+    }),
+    AgmDirectionModule
   ],
   declarations: [LocationsPage]
 })
-export class LocationsPageModule {}
+export class LocationsPageModule { }

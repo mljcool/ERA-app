@@ -11,5 +11,8 @@ export class MainMenusPage implements OnInit {
 
   ngOnInit() {
   }
+  onProceed(): void {
+
+  }
 
 }
