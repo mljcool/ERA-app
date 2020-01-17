@@ -7,14 +7,38 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="#">
+<ion-content>
   <ion-grid class="menu-list">
     <ion-row>
       <ion-col>
         <ion-card color="light">
-          <img [src]="'./assets/images/main-menus/madison.jpg'" />
+          <img [src]="'./assets/images/main-menus/era-responds.png'" />
           <ion-card-header>
-            <ion-card-subtitle>Destination</ion-card-subtitle>
+            <ion-card-subtitle
+              >Emergency car repaire assistance</ion-card-subtitle
+            >
+          </ion-card-header>
+          <ion-card-content>
+            <ion-label class="descriptions">
+              We've got you covered. Get an emergency cold weather start, Any
+              time.
+            </ion-label>
+            <div>
+              <ion-chip (click)="onProceed()" outline color="danger">
+                <ion-label>Proceed</ion-label>
+                <ion-icon name="radio-button-on"></ion-icon>
+              </ion-chip>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card color="light">
+          <img [src]="'./assets/images/main-menus/era-shoppin-parts.png'" />
+          <ion-card-header>
+            <ion-card-subtitle>Shop a parts</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
             <ion-label class="descriptions">
