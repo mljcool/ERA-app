@@ -10,11 +10,11 @@ export class SideBarPage implements OnInit {
   pages: PagesLinks[] = [
     {
       title: 'First Page',
-      url: 'side-bar/main-menus'
+      url: '/side-bar/main-menus'
     },
     {
       title: 'Second Page',
-      url: 'side-bar/locations'
+      url: '/side-bar/locations'
     }
   ];
 
