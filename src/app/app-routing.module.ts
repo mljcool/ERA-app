@@ -16,12 +16,11 @@ const routes: Routes = [
     canLoad: [AuthGuard]
   },
   {
-    path: 'auto-shops',
-    loadChildren: () => import('./pages/list/auto-shops/auto-shops.module').then( m => m.AutoShopsPageModule)
-  },
-  {
     path: 'my-bookings',
-    loadChildren: () => import('./pages/list/my-bookings/my-bookings.module').then( m => m.MyBookingsPageModule)
+    loadChildren: () =>
+      import('./pages/list/my-bookings/my-bookings.module').then(
+        m => m.MyBookingsPageModule
+      )
   }
 ];
 

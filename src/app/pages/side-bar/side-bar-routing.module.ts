@@ -28,6 +28,13 @@ const routes: Routes = [
           )
       },
       {
+        path: 'auto-shops',
+        loadChildren: () =>
+          import('../list/auto-shops/auto-shops.module').then(
+            m => m.AutoShopsPageModule
+          )
+      },
+      {
         path: 'locations',
         loadChildren: () =>
           import('../locations/locations.module').then(

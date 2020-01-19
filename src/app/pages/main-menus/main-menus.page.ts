@@ -23,7 +23,6 @@ export class MainMenusPage implements OnInit {
     });
   }
   onProceed(pageTogo: ServiceMenus): void {
-    console.log(!!pageTogo.link);
     if (!pageTogo.link) {
       return;
     }

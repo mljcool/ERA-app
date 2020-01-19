@@ -27,7 +27,7 @@ export const sideBarpages: PagesLinks[] = [
     id: 4,
     title: 'Discover Shops',
     icon: 'star',
-    url: '/side-bar/locations'
+    url: '/side-bar/auto-shops'
   },
   {
     id: 5,

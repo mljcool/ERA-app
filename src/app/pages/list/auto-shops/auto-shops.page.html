@@ -1,14 +1,18 @@
 <ion-header>
   <ion-toolbar>
-    <ion-searchbar
-      [(ngModel)]="searchTerm"
-      (ionChange)="setFilteredItems()"
-    ></ion-searchbar>
-    <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Discover auto shops nearby</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-searchbar
+    [(ngModel)]="searchTerm"
+    (ionChange)="setFilteredItems()"
+  ></ion-searchbar>
+  <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
   <ion-list>
     <ion-item *ngFor="let shop of shopLists" button>
       <ion-icon name="car" slot="start"></ion-icon>
