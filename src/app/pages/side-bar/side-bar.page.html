@@ -1,5 +1,5 @@
 <ion-split-pane contentId="content">
-  <ion-menu contentId="content">
+  <ion-menu side="start" contentId="content">
     <ion-header>
       <ion-toolbar>
         <ion-title>
@@ -9,18 +9,30 @@
     </ion-header>
 
     <ion-content>
-      <ion-list>
+      <ion-list lines="none">
         <ion-menu-toggle auto-hide="false" *ngFor="let p of pages">
           <ion-item
-            [routerLink]="p.url"
-            routerDirection="root"
+            (click)="onNavigatePages(p)"
+            routerDirection="forward"
             [class.active-item]="selectedPath === p.url"
+            button
           >
-            {{ p.title}}
+            <ion-icon name="{{p.icon}}" slot="start"></ion-icon>
+            <ion-label>{{ p.title}}</ion-label>
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
     </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-title>
+          <ion-chip>
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <ion-label>About</ion-label>
+          </ion-chip>
+        </ion-title>
+      </ion-toolbar>
+    </ion-footer>
   </ion-menu>
   <ion-router-outlet id="content" main></ion-router-outlet>
 </ion-split-pane>
