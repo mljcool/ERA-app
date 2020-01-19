@@ -12,23 +12,43 @@
     <ion-row>
       <ion-col>
         <ion-card color="light">
-          <img [src]="'./assets/images/main-menus/era-responds.png'" />
-          <ion-card-header>
-            <ion-card-subtitle
-              >Emergency car repaire assistance</ion-card-subtitle
-            >
-          </ion-card-header>
+          <ion-item lines="none">
+            <ion-icon name="create" slot="start"></ion-icon>
+            <ion-label>Profile Information</ion-label>
+            <ion-badge color="success">Active</ion-badge>
+          </ion-item>
+
           <ion-card-content>
-            <ion-label class="descriptions">
-              We've got you covered. Get an emergency cold weather start, Any
-              time.
-            </ion-label>
-            <div>
-              <ion-chip (click)="onProceed()" outline color="danger">
-                <ion-label>Proceed</ion-label>
-                <ion-icon name="radio-button-on"></ion-icon>
-              </ion-chip>
-            </div>
+            <ion-item lines="none">
+              <ion-icon name="person" slot="start"></ion-icon>
+              <ion-label>Mark Gocela</ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-icon name="call" slot="start"></ion-icon>
+              <ion-label>09102975755</ion-label>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-card color="light">
+          <ion-item lines="none">
+            <ion-icon name="calendar" slot="start"></ion-icon>
+            <ion-label>Total Bookings/Amount</ion-label>
+          </ion-item>
+
+          <ion-card-content>
+            <ion-item lines="none">
+              <ion-icon name="calculator" slot="start"></ion-icon>
+              <ion-label>100</ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-icon name="cash" slot="start"></ion-icon>
+              <ion-label>100.25</ion-label>
+            </ion-item>
           </ion-card-content>
         </ion-card>
       </ion-col>

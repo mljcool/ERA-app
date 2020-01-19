@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { servicesMenus } from './../../constants/servicesMenus';
 import { Component, OnInit } from '@angular/core';
 import { MenusServiceService } from 'src/app/services/menus/menus-service.service';
@@ -10,7 +11,10 @@ import { MenusServiceService } from 'src/app/services/menus/menus-service.servic
 export class MainMenusPage implements OnInit {
   listOfServices: Array<ServiceMenus>;
 
-  constructor(public menuServices: MenusServiceService) {}
+  constructor(
+    public menuServices: MenusServiceService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.menuServices.getServicesMenus().then(response => {
@@ -18,5 +22,12 @@ export class MainMenusPage implements OnInit {
       console.log(response);
     });
   }
-  onProceed(): void {}
+  onProceed(pageTogo: ServiceMenus): void {
+    console.log(!!pageTogo.link);
+    if (!pageTogo.link) {
+      return;
+    }
+
+    this.router.navigate([pageTogo.link]);
+  }
 }

@@ -4,7 +4,7 @@ export const servicesMenus: ServiceMenus[] = [
     title: 'Emergency car repaire assistance',
     descriptions: ` We've got you covered. Get an emergency cold weather start, Any
   time`,
-    link: '',
+    link: '/side-bar/locations',
     imgSrc: '../assets/images/main-menus/era-responds.png'
   },
   {
