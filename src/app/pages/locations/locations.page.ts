@@ -2,15 +2,15 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { MouseEvent } from '@agm/core';
 import { LoadingController } from '@ionic/angular';
+import { MapsAPILoader } from '@agm/core';
 
 const { Geolocation } = Plugins;
 @Component({
   selector: 'app-locations',
   templateUrl: './locations.page.html',
-  styleUrls: ['./locations.page.scss'],
+  styleUrls: ['./locations.page.scss']
 })
 export class LocationsPage implements OnInit, AfterViewInit {
-
   // google maps zoom level
   zoom = 18;
 
@@ -33,7 +33,7 @@ export class LocationsPage implements OnInit, AfterViewInit {
           height: 50,
           width: 40
         }
-      },
+      }
     },
     {
       lat: 51.373858,
@@ -47,7 +47,7 @@ export class LocationsPage implements OnInit, AfterViewInit {
           height: 50,
           width: 40
         }
-      },
+      }
     },
     {
       lat: 51.723858,
@@ -61,7 +61,7 @@ export class LocationsPage implements OnInit, AfterViewInit {
           height: 50,
           width: 40
         }
-      },
+      }
     },
     {
       lat: 51.723858,
@@ -75,37 +75,40 @@ export class LocationsPage implements OnInit, AfterViewInit {
           height: 50,
           width: 40
         }
-      },
+      }
     }
   ];
-
 
   public origin: any;
   public destination: any;
 
   public renderOptions = {
-    suppressMarkers: true,
+    suppressMarkers: true
   };
   public markerOptions = {
     origin: {
-      icon: 'https://www.shareicon.net/data/32x32/2016/04/28/756617_face_512x512.png',
-      opacity: 0,
+      icon:
+        'https://www.shareicon.net/data/32x32/2016/04/28/756617_face_512x512.png',
+      opacity: 0
     },
     destination: {
-      icon: 'https://www.shareicon.net/data/32x32/2016/04/28/756626_face_512x512.png',
-      opacity: 0,
-    },
+      icon:
+        'https://www.shareicon.net/data/32x32/2016/04/28/756626_face_512x512.png',
+      opacity: 0
+    }
   };
 
+  constructor(
+    public loadingController: LoadingController,
+    private mapsAPILoader: MapsAPILoader
+  ) {}
 
-  constructor(public loadingController: LoadingController) { }
-
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngAfterViewInit(): void {
-    this.getCurrentPosition();
+    this.mapsAPILoader.load().then(() => {
+      this.getCurrentPosition();
+    });
   }
 
   async getCurrentPosition() {
@@ -114,11 +117,11 @@ export class LocationsPage implements OnInit, AfterViewInit {
     console.log('Current', coordinates);
     const { coords } = coordinates;
     if (coords) {
-
       const maxChangeLongitude = 5 / coords.longitude;
-      this.markers = this.markers.map((data) => {
+      this.markers = this.markers.map(data => {
         data.lat = coords.latitude;
-        data.lng = coords.longitude + (.2 * Math.random() - .1) * maxChangeLongitude;
+        data.lng =
+          coords.longitude + (0.2 * Math.random() - 0.1) * maxChangeLongitude;
         return data;
       });
 
@@ -133,20 +136,19 @@ export class LocationsPage implements OnInit, AfterViewInit {
               height: 80,
               width: 110
             }
-          },
+          }
         };
         this.loadingController.dismiss();
         const { latitude, longitude } = this.myLocations;
-        const nearestRoute: Marker = findClosestMarker(latitude, longitude, this.markers);
+        const nearestRoute: Marker = findClosestMarker(
+          latitude,
+          longitude,
+          this.markers
+        );
         this.origin = { lat: latitude, lng: longitude };
         this.destination = { lat: nearestRoute.lat, lng: nearestRoute.lng };
-
-
       }, 1000);
-
     }
-
-
   }
 
   clickedMarker(label: string, index: number) {
@@ -164,7 +166,7 @@ export class LocationsPage implements OnInit, AfterViewInit {
           height: 50,
           width: 50
         }
-      },
+      }
     });
   }
 
@@ -174,11 +176,10 @@ export class LocationsPage implements OnInit, AfterViewInit {
 
   async presentLoading() {
     const loading = await this.loadingController.create({
-      message: 'Fetching location....',
+      message: 'Fetching location....'
     });
     return await loading.present();
   }
-
 }
 
 interface Marker {
@@ -193,8 +194,8 @@ interface Marker {
 interface CustomMarkersAndSize {
   url: string;
   scaledSize: {
-    width: number,
-    height: number
+    width: number;
+    height: number;
   };
 }
 
@@ -224,8 +225,12 @@ function findClosestMarker(lat1: any, lon1: any, markers = []) {
     const rLat1 = lat1 * (pi / 180);
     const rLat2 = lat2 * (pi / 180);
 
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(rLat1) * Math.cos(rLat2);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLon / 2) *
+        Math.sin(dLon / 2) *
+        Math.cos(rLat1) *
+        Math.cos(rLat2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
 
@@ -238,4 +243,3 @@ function findClosestMarker(lat1: any, lon1: any, markers = []) {
   console.log(markers[closest]);
   return markers[closest];
 }
-
