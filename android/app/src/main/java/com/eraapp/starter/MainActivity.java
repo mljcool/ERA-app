@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.eraapp.starter;
 
 import android.os.Bundle;
 

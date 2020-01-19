@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "547833775708",
+    "firebase_url": "https://era-capstone.firebaseio.com",
+    "project_id": "era-capstone",
+    "storage_bucket": "era-capstone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547833775708:android:5ac97fbb46fce280aa0899",
+        "android_client_info": {
+          "package_name": "com.eraapp.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547833775708-69gdvpdfkj71e7uqhhjh0i2v2upt8k04.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ1TOxXJtP5gJuri3lEVLY0QIakDLZ-3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547833775708-69gdvpdfkj71e7uqhhjh0i2v2upt8k04.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
