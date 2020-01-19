@@ -4,3 +4,11 @@ declare type PagesLinks = {
   url: string;
   icon: string;
 };
+
+declare type ServiceMenus = {
+  id: number;
+  title: string;
+  descriptions: string;
+  link: string;
+  imgSrc: string;
+};

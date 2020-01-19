@@ -1,4 +1,4 @@
-export const sideBarpages = [
+export const sideBarpages: PagesLinks[] = [
   {
     id: 1,
     title: 'Services Menu',

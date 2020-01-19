@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { sideBarpages } from 'src/app/constants/sideBar';
 import { AuthServiceService } from '../auth/auth-service.service';
+import { MenusServiceService } from 'src/app/services/menus/menus-service.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -10,20 +11,25 @@ import { AuthServiceService } from '../auth/auth-service.service';
   styleUrls: ['./side-bar.page.scss']
 })
 export class SideBarPage implements OnInit {
-  pages: PagesLinks[] = sideBarpages;
+  pages: Array<PagesLinks>;
   selectedPath = '';
 
   constructor(
     private router: Router,
     public alertController: AlertController,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
+    public menuServices: MenusServiceService
   ) {
     this.router.events.subscribe((event: RouterEvent) => {
       this.selectedPath = event.url;
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.menuServices.getSideBardMenus().then(response => {
+      this.pages = response;
+    });
+  }
 
   onNavigatePages(pages: PagesLinks) {
     const { id } = this.pages.find(pg => pg.title === 'Logout');

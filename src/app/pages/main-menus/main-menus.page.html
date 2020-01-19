@@ -9,87 +9,16 @@
 
 <ion-content>
   <ion-grid class="menu-list">
-    <ion-row>
+    <ion-row *ngFor="let pageService of listOfServices">
       <ion-col>
         <ion-card color="light">
-          <img [src]="'./assets/images/main-menus/era-responds.png'" />
+          <img [src]="pageService.imgSrc" />
           <ion-card-header>
-            <ion-card-subtitle
-              >Emergency car repaire assistance</ion-card-subtitle
-            >
+            <ion-card-subtitle>{{ pageService.title}}</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
             <ion-label class="descriptions">
-              We've got you covered. Get an emergency cold weather start, Any
-              time.
-            </ion-label>
-            <div>
-              <ion-chip (click)="onProceed()" outline color="danger">
-                <ion-label>Proceed</ion-label>
-                <ion-icon name="radio-button-on"></ion-icon>
-              </ion-chip>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-card color="light">
-          <img [src]="'./assets/images/main-menus/era-shoppin-parts.png'" />
-          <ion-card-header>
-            <ion-card-subtitle>Shop a parts</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-label class="descriptions">
-              Founded in 1829 on an isthmus between Lake Monona and Lake
-              Mendota.
-            </ion-label>
-            <div>
-              <ion-chip (click)="onProceed()" outline color="danger">
-                <ion-label>Proceed</ion-label>
-                <ion-icon name="radio-button-on"></ion-icon>
-              </ion-chip>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-card color="light">
-          <img
-            [src]="'./assets/images/main-menus/era-schedule-maintenance.png'"
-          />
-          <ion-card-header>
-            <ion-card-subtitle>Schedule a maintenance</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-label class="descriptions">
-              Founded in 1829 on an isthmus between Lake Monona and Lake
-              Mendota.
-            </ion-label>
-            <div>
-              <ion-chip (click)="onProceed()" outline color="danger">
-                <ion-label>Proceed</ion-label>
-                <ion-icon name="radio-button-on"></ion-icon>
-              </ion-chip>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-card color="light">
-          <img [src]="'./assets/images/main-menus/era-hire-mechanics.png'" />
-          <ion-card-header>
-            <ion-card-subtitle>Hire a car mechanic</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-label class="descriptions">
-              Founded in 1829 on an isthmus between Lake Monona and Lake
-              Mendota.
+              {{pageService.descriptions}}
             </ion-label>
             <div>
               <ion-chip (click)="onProceed()" outline color="danger">
