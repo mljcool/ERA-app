@@ -1,6 +1,8 @@
 import { Router, RouterEvent } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { sideBarpages } from 'src/app/constants/sideBar';
+import { AuthServiceService } from '../auth/auth-service.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -8,48 +10,14 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./side-bar.page.scss']
 })
 export class SideBarPage implements OnInit {
-  pages: PagesLinks[] = [
-    {
-      id: 1,
-      title: 'Account',
-      icon: 'person',
-      url: '/side-bar/main-menus'
-    },
-    {
-      id: 2,
-      title: 'My Vehicle',
-      icon: 'car',
-      url: '/side-bar/locations'
-    },
-    {
-      id: 3,
-      title: 'Bookings',
-      icon: 'calendar',
-      url: '/side-bar/locations'
-    },
-    {
-      id: 4,
-      title: 'Discover Shops',
-      icon: 'star',
-      url: '/side-bar/locations'
-    },
-    {
-      id: 5,
-      title: 'Settings',
-      icon: 'settings',
-      url: '/side-bar/locations'
-    },
-    {
-      id: 6,
-      title: 'Logout',
-      icon: 'exit',
-      url: '/side-bar/locations'
-    }
-  ];
-
+  pages: PagesLinks[] = sideBarpages;
   selectedPath = '';
 
-  constructor(private router: Router, public alertController: AlertController) {
+  constructor(
+    private router: Router,
+    public alertController: AlertController,
+    private authService: AuthServiceService
+  ) {
     this.router.events.subscribe((event: RouterEvent) => {
       this.selectedPath = event.url;
     });
@@ -63,6 +31,8 @@ export class SideBarPage implements OnInit {
       this.presentAlertConfirm();
       return;
     }
+
+    this.router.navigate([pages.url]);
   }
 
   async presentAlertConfirm() {
@@ -71,18 +41,21 @@ export class SideBarPage implements OnInit {
       message: 'Are you sure you want to logout?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'No',
           role: 'cancel',
           cssClass: 'secondary',
           handler: blah => {
-            console.log('Confirm Cancel: blah');
+            console.log('None');
           }
         },
         {
-          text: 'Okay',
+          text: 'Yes',
           handler: () => {
-            this.router.navigateByUrl('');
-            this.alertController.dismiss();
+            this.authService.logout().then(response => {
+              if (!response) {
+                this.router.navigateByUrl('');
+              }
+            });
           }
         }
       ]
@@ -90,11 +63,4 @@ export class SideBarPage implements OnInit {
 
     await alert.present();
   }
-}
-
-interface PagesLinks {
-  id: number;
-  title: string;
-  url: string;
-  icon: string;
 }

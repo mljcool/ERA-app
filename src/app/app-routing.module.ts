@@ -1,24 +1,20 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './pages/auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   {
     path: 'auth',
-    loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthPageModule)
+    loadChildren: () =>
+      import('./pages/auth/auth.module').then(m => m.AuthPageModule)
   },
   {
     path: 'side-bar',
-    loadChildren: () => import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule)
-  },
-  {
-    path: 'user',
-    loadChildren: () => import('./pages/accounts/user/user.module').then( m => m.UserPageModule)
-  },
-  {
-    path: 'vehicles',
-    loadChildren: () => import('./pages/accounts/vehicles/vehicles.module').then( m => m.VehiclesPageModule)
-  },
+    loadChildren: () =>
+      import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule),
+    canLoad: [AuthGuard]
+  }
 ];
 
 @NgModule({
@@ -27,4 +23,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
