@@ -3,6 +3,13 @@ import { Plugins } from '@capacitor/core';
 import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthServiceService } from './auth-service.service';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { auth } from 'firebase/app';
+import {
+  FirebaseUISignInSuccessWithAuthResult,
+  FirebaseUISignInFailure
+} from 'firebaseui-angular';
+import '@codetrix-studio/capacitor-google-auth';
 
 const { Modals } = Plugins;
 
@@ -12,11 +19,14 @@ const { Modals } = Plugins;
   styleUrls: ['./auth.page.scss']
 })
 export class AuthPage implements OnInit {
+  fullName: string;
+
   constructor(
     public actionSheetController: ActionSheetController,
     public loadingController: LoadingController,
     public router: Router,
-    private authService: AuthServiceService
+    private authService: AuthServiceService,
+    public afAuth: AngularFireAuth
   ) {}
 
   ngOnInit() {}
@@ -57,8 +67,10 @@ export class AuthPage implements OnInit {
           role: 'destructive',
           icon: 'logo-googleplus',
           handler: () => {
-            this.showAlert();
-            console.log('Delete clicked');
+            // this.showAlert();
+            // this.afAuth.auth.signInWithRedirect(new auth.GoogleAuthProvider());
+            // console.log('Delete clicked');
+            this.signIn();
           }
         },
         {
@@ -80,5 +92,26 @@ export class AuthPage implements OnInit {
       ]
     });
     await actionSheet.present();
+  }
+
+  async signIn(): Promise<void> {
+    const googleUser = await Plugins.GoogleAuth.signIn();
+    console.log(googleUser);
+    if (googleUser) {
+      this.fullName = googleUser.name;
+    }
+    // if (result) {
+    //   history.push({
+    //     pathname: '/home',
+    //     state: { name: result.name || result.displayName, image: result.imageUrl, email: result.email }
+    //   });
+  }
+
+  successCallback(signInSuccessData: FirebaseUISignInSuccessWithAuthResult) {
+    console.log(signInSuccessData);
+  }
+
+  errorCallback(errorData: FirebaseUISignInFailure) {
+    console.log(errorData);
   }
 }

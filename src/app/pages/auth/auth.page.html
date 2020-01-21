@@ -14,7 +14,8 @@
     <ion-card color="light">
       <ion-card-header>
         <ion-card-subtitle
-          >Respond To Most Common Car Problems</ion-card-subtitle
+          >R-Respond To Most Common Car Problems {{ fullName
+          }}</ion-card-subtitle
         >
       </ion-card-header>
       <ion-item>
@@ -59,4 +60,9 @@
       </ion-card-content>
     </ion-card>
   </div>
+
+  <!-- <firebase-ui
+    (signInSuccessWithAuthResult)="successCallback($event)"
+    (signInFailure)="errorCallback($event)"
+  ></firebase-ui> -->
 </ion-content>

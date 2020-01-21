@@ -4,4 +4,5 @@
     <string name="title_activity_main">ERA-mobile</string>
     <string name="package_name">com.eraapp.starter</string>
     <string name="custom_url_scheme">com.eraapp.starter</string>
+    <string name="server_client_id">547833775708-69gdvpdfkj71e7uqhhjh0i2v2upt8k04.apps.googleusercontent.com</string>
 </resources>
