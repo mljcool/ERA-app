@@ -4,12 +4,13 @@ import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthServiceService } from './auth-service.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
 import {
   FirebaseUISignInSuccessWithAuthResult,
   FirebaseUISignInFailure
 } from 'firebaseui-angular';
 import '@codetrix-studio/capacitor-google-auth';
+
+import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 
 const { Modals } = Plugins;
 
@@ -26,25 +27,39 @@ export class AuthPage implements OnInit {
     public loadingController: LoadingController,
     public router: Router,
     private authService: AuthServiceService,
-    public afAuth: AngularFireAuth
+    public afAuth: AngularFireAuth,
+    private googleStorageUser: StoragUserDataService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.googleStorageUser.getObjectGoogleUsers().then(response => {
+      if (!!response) {
+        console.log(response.isLogin);
+        this.navigateMainPage();
+      }
+    });
+  }
 
-  async presentLoading() {
+  async userGoogleLogin() {
+    this.loadingIndicators();
+    this.authService.login().then(response => {
+      if (response) {
+        this.loadingController.dismiss().then(() => {
+          this.navigateMainPage();
+        });
+      }
+    });
+  }
+
+  navigateMainPage(): void {
+    this.router.navigateByUrl('/side-bar');
+  }
+
+  async loadingIndicators() {
     const loading = await this.loadingController.create({
-      message: 'logging in..',
-      duration: 2000
+      message: 'logging in..'
     });
     await loading.present();
-
-    loading.onDidDismiss().then(resp => {
-      this.authService.login().then(response => {
-        if (response) {
-          this.router.navigateByUrl('/side-bar');
-        }
-      });
-    });
   }
 
   async showAlert() {
@@ -67,10 +82,7 @@ export class AuthPage implements OnInit {
           role: 'destructive',
           icon: 'logo-googleplus',
           handler: () => {
-            // this.showAlert();
-            // this.afAuth.auth.signInWithRedirect(new auth.GoogleAuthProvider());
-            // console.log('Delete clicked');
-            this.signIn();
+            this.userGoogleLogin();
           }
         },
         {
@@ -92,26 +104,5 @@ export class AuthPage implements OnInit {
       ]
     });
     await actionSheet.present();
-  }
-
-  async signIn(): Promise<void> {
-    const googleUser = await Plugins.GoogleAuth.signIn();
-    console.log(googleUser);
-    if (googleUser) {
-      this.fullName = googleUser.name;
-    }
-    // if (result) {
-    //   history.push({
-    //     pathname: '/home',
-    //     state: { name: result.name || result.displayName, image: result.imageUrl, email: result.email }
-    //   });
-  }
-
-  successCallback(signInSuccessData: FirebaseUISignInSuccessWithAuthResult) {
-    console.log(signInSuccessData);
-  }
-
-  errorCallback(errorData: FirebaseUISignInFailure) {
-    console.log(errorData);
   }
 }

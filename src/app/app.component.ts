@@ -28,8 +28,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Initializing HomePage');
-
-    this.notificationService.notificationFeatures(false);
+    // this.notificationService.notificationFeatures(false);
   }
 }

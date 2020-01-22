@@ -1,12 +1,15 @@
-<ion-split-pane contentId="content">
+<ion-split-pane contentId="content" *ngIf="userData">
   <ion-menu side="start" contentId="content" id="menu-avatar">
     <ion-header>
       <ion-toolbar>
         <ion-item lines="none" id="menuProfile">
           <ion-avatar slot="start">
-            <ion-img [src]="'./assets/images/logo.png'"></ion-img>
+            <ion-img
+              [src]="userData.imageUrl"
+              onerror="this.src='./assets/images/logo.png'"
+            ></ion-img>
           </ion-avatar>
-          <ion-label>Welecome</ion-label>
+          <ion-label>{{ userData.name}}</ion-label>
         </ion-item>
       </ion-toolbar>
     </ion-header>

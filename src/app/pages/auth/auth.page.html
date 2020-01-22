@@ -52,7 +52,7 @@
           <ion-label>Register</ion-label>
           <ion-icon name="radio-button-on"></ion-icon>
         </ion-chip>
-        <ion-chip (click)="presentLoading()" outline color="danger">
+        <ion-chip (click)="openActionSheetSignUp()" outline color="danger">
           <ion-icon name="log-in"></ion-icon>
           <ion-label>Login</ion-label>
           <ion-icon name="radio-button-on"></ion-icon>
@@ -60,9 +60,4 @@
       </ion-card-content>
     </ion-card>
   </div>
-
-  <!-- <firebase-ui
-    (signInSuccessWithAuthResult)="successCallback($event)"
-    (signInFailure)="errorCallback($event)"
-  ></firebase-ui> -->
 </ion-content>
