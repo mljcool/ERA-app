@@ -8,12 +8,14 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-grid class="menu-list">
+  <ion-grid class="menu-list" *ngIf="userData">
     <ion-row>
       <ion-col>
         <ion-card color="light">
           <ion-item lines="none">
-            <ion-icon name="create" slot="start"></ion-icon>
+            <ion-avatar slot="start">
+                <ion-img [src]="userData.imageUrl" ></ion-img>
+            </ion-avatar>
             <ion-label>Profile Information</ion-label>
             <ion-badge color="success">Active</ion-badge>
           </ion-item>
@@ -21,11 +23,11 @@
           <ion-card-content>
             <ion-item lines="none">
               <ion-icon name="person" slot="start"></ion-icon>
-              <ion-label>Mark Gocela</ion-label>
+              <ion-label>{{ userData.name }}</ion-label>
             </ion-item>
             <ion-item lines="none">
               <ion-icon name="call" slot="start"></ion-icon>
-              <ion-label>09102975755</ion-label>
+              <ion-label>{{ userData.email}}</ion-label>
             </ion-item>
           </ion-card-content>
         </ion-card>

@@ -21,7 +21,7 @@ export const sideBarpages: PagesLinks[] = [
     id: 3,
     title: 'Bookings',
     icon: 'calendar',
-    url: '/side-bar/locations'
+    url: '/side-bar/my-bookings'
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ export const sideBarpages: PagesLinks[] = [
     id: 5,
     title: 'Settings',
     icon: 'settings',
-    url: '/side-bar/locations'
+    url: '/side-bar/settings'
   },
   {
     id: 6,

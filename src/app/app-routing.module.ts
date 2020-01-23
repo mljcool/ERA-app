@@ -15,13 +15,7 @@ const routes: Routes = [
       import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule),
     canLoad: [AuthGuard]
   },
-  {
-    path: 'my-bookings',
-    loadChildren: () =>
-      import('./pages/list/my-bookings/my-bookings.module').then(
-        m => m.MyBookingsPageModule
-      )
-  }
+
 ];
 
 @NgModule({

@@ -42,6 +42,17 @@ const routes: Routes = [
           )
       },
       {
+        path: 'my-bookings',
+        loadChildren: () =>
+          import('../list/my-bookings/my-bookings.module').then(
+            m => m.MyBookingsPageModule
+          )
+      },
+      {
+        path: 'settings',
+        loadChildren: () => import('../settings/settings.module').then( m => m.SettingsPageModule)
+      },
+      {
         path: '',
         redirectTo: 'main-menus'
       }
