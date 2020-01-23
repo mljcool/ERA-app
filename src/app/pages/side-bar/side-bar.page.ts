@@ -1,11 +1,12 @@
 import { Router, RouterEvent } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { sideBarpages } from 'src/app/constants/sideBar';
 import { AuthServiceService } from '../auth/auth-service.service';
 import { MenusServiceService } from 'src/app/services/menus/menus-service.service';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { GoogleUser } from 'src/app/models/googleUser.model';
+import { WipComponent } from 'src/app/modals/wip/wip.component';
 
 @Component({
   selector: 'app-side-bar',
@@ -22,7 +23,8 @@ export class SideBarPage implements OnInit {
     public alertController: AlertController,
     private authService: AuthServiceService,
     public menuServices: MenusServiceService,
-    private googleStorageUser: StoragUserDataService
+    private googleStorageUser: StoragUserDataService,
+    public modalController: ModalController
   ) {
     this.router.events.subscribe((event: RouterEvent) => {
       this.selectedPath = event.url;
@@ -77,5 +79,12 @@ export class SideBarPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: WipComponent
+    });
+    return await modal.present();
   }
 }

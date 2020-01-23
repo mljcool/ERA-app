@@ -1,7 +1,9 @@
+import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { servicesMenus } from './../../constants/servicesMenus';
 import { Component, OnInit } from '@angular/core';
 import { MenusServiceService } from 'src/app/services/menus/menus-service.service';
+import { WipComponent } from 'src/app/modals/wip/wip.component';
 
 @Component({
   selector: 'app-main-menus',
@@ -13,7 +15,8 @@ export class MainMenusPage implements OnInit {
 
   constructor(
     public menuServices: MenusServiceService,
-    private router: Router
+    private router: Router,
+    private modalController: ModalController
   ) {}
 
   ngOnInit(): void {
@@ -24,9 +27,18 @@ export class MainMenusPage implements OnInit {
   }
   onProceed(pageTogo: ServiceMenus): void {
     if (!pageTogo.link) {
+      this.presentModal();
       return;
     }
 
     this.router.navigate([pageTogo.link]);
+  }
+
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: WipComponent
+    });
+    return await modal.present();
   }
 }

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MainMenusPageRoutingModule } from './main-menus-routing.module';
 
 import { MainMenusPage } from './main-menus.page';
+import { WipComponent } from 'src/app/modals/wip/wip.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { MainMenusPage } from './main-menus.page';
     IonicModule,
     MainMenusPageRoutingModule
   ],
-  declarations: [MainMenusPage]
+  declarations: [MainMenusPage, WipComponent],
+  entryComponents:[WipComponent]
 })
 export class MainMenusPageModule {}
