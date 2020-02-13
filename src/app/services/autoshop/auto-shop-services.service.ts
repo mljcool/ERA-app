@@ -27,7 +27,7 @@ import { IAutoShop } from 'src/app/models/autoShop.model';
   providedIn: 'root'
 })
 export class AutoShopServicesService {
-  private dbPath = '/shop';
+  private dbPath = '/autoShop';
 
   shopsRef: AngularFirestoreCollection<IAutoShop> = null;
 

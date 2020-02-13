@@ -11,11 +11,13 @@ import { IAutoShop } from 'src/app/models/autoShop.model';
 export class AutoShopsPage implements OnInit {
   public searchTerm = '';
   shopLists: IAutoShop[];
+  shops: any[];
+  copyShops: any[];
   isLoading = true;
 
-  constructor(private autoShopSrvc: AutoShopServicesService) {}
+  constructor(private autoShopSrvc: AutoShopServicesService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.autoShopSrvc
@@ -28,6 +30,7 @@ export class AutoShopsPage implements OnInit {
       )
       .subscribe(shopLists => {
         this.shopLists = shopLists;
+        this.shops = this.copyShops = shopLists;
         if (this.shopLists.length >= 1) {
           this.isLoading = false;
         }
@@ -35,5 +38,19 @@ export class AutoShopsPage implements OnInit {
       });
   }
 
-  setFilteredItems(): void {}
+  setFilteredItems(search: string): void {
+    const searchTerm = search.toLowerCase();
+    console.log(search);
+    if (searchTerm !== '') {
+      const copyShops = this.shops.filter(
+        service => {
+          return service.mainName.toLowerCase().includes(searchTerm);
+        }
+      );
+      this.shopLists = [...copyShops];
+    } else {
+      console.log('here');
+      this.shopLists = this.copyShops;
+    }
+  }
 }

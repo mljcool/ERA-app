@@ -4,6 +4,7 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { NotificationService } from './services/push-notifications/notifcations-services';
+import { UserService } from './services/users/user-services';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private userService: UserService,
   ) {
     this.initializeApp();
   }
@@ -28,6 +30,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userService.checkifStillLogin();
     // this.notificationService.notificationFeatures(false);
   }
 }

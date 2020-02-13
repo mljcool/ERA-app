@@ -1,7 +1,8 @@
 export interface IUsers {
   key: string;
-  userId: string;
-  name: string;
-  status: boolean;
-  keyId: string;
+  uid: string;
+  email: string;
+  photoURL?: string;
+  displayName?: string;
+  isShopRegistered?: boolean;
 }

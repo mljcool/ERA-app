@@ -7,6 +7,7 @@ import { MenusServiceService } from 'src/app/services/menus/menus-service.servic
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { GoogleUser } from 'src/app/models/googleUser.model';
 import { WipComponent } from 'src/app/modals/wip/wip.component';
+import { UserService } from 'src/app/services/users/user-services';
 
 @Component({
   selector: 'app-side-bar',
@@ -24,7 +25,8 @@ export class SideBarPage implements OnInit {
     private authService: AuthServiceService,
     public menuServices: MenusServiceService,
     private googleStorageUser: StoragUserDataService,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private userService: UserService,
   ) {
     this.router.events.subscribe((event: RouterEvent) => {
       this.selectedPath = event.url;
@@ -47,7 +49,41 @@ export class SideBarPage implements OnInit {
       return;
     }
 
-    this.router.navigate([pages.url]);
+    this.userService.checkVehicleRegistration(this.userData.id).then(response => {
+      if (response) {
+        this.router.navigate([pages.url]);
+        return;
+      }
+      if (pages.url !== '/side-bar/accounts-vehicles') {
+
+        this.isNotRegistered();
+      }
+    });
+  }
+
+  async isNotRegistered() {
+    const alert = await this.alertController.create({
+      header: 'Notice!',
+      message: `You're not able to use other features make sure to register your vehicle info.`,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: blah => {
+            console.log('None');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.router.navigate(['/side-bar/accounts-vehicles']);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   async presentAlertConfirm() {
@@ -81,10 +117,5 @@ export class SideBarPage implements OnInit {
     await alert.present();
   }
 
-  async presentModal() {
-    const modal = await this.modalController.create({
-      component: WipComponent
-    });
-    return await modal.present();
-  }
+
 }

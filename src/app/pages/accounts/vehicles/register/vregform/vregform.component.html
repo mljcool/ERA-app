@@ -1,0 +1,52 @@
+<ion-grid>
+  <form [formGroup]="vehicleForm">
+    <ion-row>
+      <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+      <ion-col>
+        <ion-list-header>
+          <ion-label>Fill in all fields</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-label position="floating">PLate number</ion-label>
+          <ion-input type="text" formControlName="plateNumber"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Model</ion-label>
+          <ion-input type="text" formControlName="model"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Model Year</ion-label>
+          <ion-input type="text" formControlName="modelYear"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Color</ion-label>
+          <ion-input type="text" formControlName="color"></ion-input>
+        </ion-item>
+        <ion-item>
+          <br />
+          <ion-label position="floating">Fuel type</ion-label>
+          <ion-select placeholder="Select One" formControlName="fuelType">
+            <ion-select-option value="G">Gasoline</ion-select-option>
+            <ion-select-option value="D">Diesel</ion-select-option>
+            <ion-select-option value="E">Ethanol</ion-select-option>
+            <ion-select-option value="LP"
+              >liquified Petroleum</ion-select-option
+            >
+            <ion-select-option value="BD">Bio-diesel</ion-select-option>
+            <ion-select-option value="CNG"
+              >Compressed Natural Gas</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-button type="submit" [disabled]="!vehicleForm.valid" (click)="saveData()">
+          <ion-icon slot="start" name="save"></ion-icon>
+          save
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-grid>

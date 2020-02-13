@@ -17,6 +17,6 @@ import { WipComponent } from 'src/app/modals/wip/wip.component';
     MainMenusPageRoutingModule
   ],
   declarations: [MainMenusPage, WipComponent],
-  entryComponents:[WipComponent]
+  entryComponents: [WipComponent]
 })
 export class MainMenusPageModule {}

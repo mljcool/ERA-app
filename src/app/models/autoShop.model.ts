@@ -1,13 +1,19 @@
-export interface Ilocations {
+export interface IShopLocation {
   latitude: number;
   longitude: number;
 }
 
 export interface IAutoShop {
-  key: string;
-  shopId: string;
-  name: string;
-  ownerId: string;
+  uid: string;
+  isRegisteredShop: boolean;
   status: boolean;
-  locations?: Ilocations;
+  email: string;
+  mainName: string;
+  secondaryName: string;
+  mainContact: string;
+  emailAddress: string;
+  secondaryContact: string;
+  writtenAddress: string;
+  location: any;
+  functionalLocation: IShopLocation;
 }

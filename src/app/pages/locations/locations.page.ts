@@ -3,6 +3,9 @@ import { Plugins } from '@capacitor/core';
 import { MouseEvent } from '@agm/core';
 import { LoadingController } from '@ionic/angular';
 import { MapsAPILoader } from '@agm/core';
+import { AutoShopServicesService } from 'src/app/services/autoshop/auto-shop-services.service';
+import { map } from 'rxjs/operators';
+import { IAutoShop } from 'src/app/models/autoShop.model';
 
 const { Geolocation } = Plugins;
 @Component({
@@ -18,66 +21,11 @@ export class LocationsPage implements OnInit, AfterViewInit {
   lat = 51.673858;
   lng = 7.815982;
 
+  shopLists: IAutoShop[];
+
   myLocations: CurrentLocations;
 
-  markers: Marker[] = [
-    {
-      lat: 51.673858,
-      lng: 7.815982,
-      label: 'A',
-      shopName: 'Shop - 1',
-      draggable: true,
-      iconUrl: {
-        url: 'assets/images/markers/marker-shop.png',
-        scaledSize: {
-          height: 50,
-          width: 40
-        }
-      }
-    },
-    {
-      lat: 51.373858,
-      lng: 7.215982,
-      label: 'B',
-      shopName: 'Shop - 2',
-      draggable: false,
-      iconUrl: {
-        url: 'assets/images/markers/marker-shop.png',
-        scaledSize: {
-          height: 50,
-          width: 40
-        }
-      }
-    },
-    {
-      lat: 51.723858,
-      lng: 7.895982,
-      label: 'C',
-      shopName: 'Shop - 3',
-      draggable: true,
-      iconUrl: {
-        url: 'assets/images/markers/marker-shop.png',
-        scaledSize: {
-          height: 50,
-          width: 40
-        }
-      }
-    },
-    {
-      lat: 51.723858,
-      lng: 7.895982,
-      label: 'D',
-      shopName: 'Shop - 4',
-      draggable: true,
-      iconUrl: {
-        url: 'assets/images/markers/marker-shop.png',
-        scaledSize: {
-          height: 50,
-          width: 40
-        }
-      }
-    }
-  ];
+  markers: Marker[] = [];
 
   public origin: any;
   public destination: any;
@@ -100,10 +48,43 @@ export class LocationsPage implements OnInit, AfterViewInit {
 
   constructor(
     public loadingController: LoadingController,
-    private mapsAPILoader: MapsAPILoader
+    private mapsAPILoader: MapsAPILoader,
+    private autoShopSrvc: AutoShopServicesService
   ) {}
 
   ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.autoShopSrvc
+      .getAuthoShopList()
+      .snapshotChanges()
+      .pipe(
+        map(changes =>
+          changes.map(c => ({ key: c.payload.doc.id, ...c.payload.doc.data() }))
+        )
+      )
+      .subscribe(shopLists => {
+        this.shopLists = shopLists;
+        if (this.shopLists.length >= 1) {
+            this.shopLists.forEach(data => {
+              this.markers.push({
+                lat: data.functionalLocation.latitude,
+                lng: data.functionalLocation.longitude,
+                label: '',
+                shopName: data.mainName,
+                draggable: true,
+                iconUrl: {
+                  url: 'assets/images/markers/marker-shop.png',
+                  scaledSize: {
+                    height: 50,
+                    width: 40
+                  }
+                }
+              });
+        });
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     this.mapsAPILoader.load().then(() => {
@@ -117,13 +98,6 @@ export class LocationsPage implements OnInit, AfterViewInit {
     console.log('Current', coordinates);
     const { coords } = coordinates;
     if (coords) {
-      const maxChangeLongitude = 5 / coords.longitude;
-      this.markers = this.markers.map(data => {
-        data.lat = coords.latitude;
-        data.lng =
-          coords.longitude + (0.2 * Math.random() - 0.1) * maxChangeLongitude;
-        return data;
-      });
 
       setTimeout(() => {
         this.myLocations = {
@@ -242,4 +216,14 @@ function findClosestMarker(lat1: any, lon1: any, markers = []) {
 
   console.log(markers[closest]);
   return markers[closest];
+}
+
+
+function getInitials(name: string) {
+  const names = name.split(' ');
+  let initials = names[0].substring(0, 1).toUpperCase();
+  if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase();
+  }
+  return initials;
 }
