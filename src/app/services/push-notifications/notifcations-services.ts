@@ -6,6 +6,9 @@ import {
   PushNotificationToken,
   PushNotificationActionPerformed
 } from '@capacitor/core';
+import { UserNotificationService } from '../users/reg-notification-user.service';
+import { StoragUserDataService } from '../storages/storage-user-services';
+import { IUsersNotifConfig } from 'src/app/models/notification.model';
 
 const { PushNotifications, Modals } = Plugins;
 
@@ -13,9 +16,13 @@ const { PushNotifications, Modals } = Plugins;
   providedIn: 'root'
 })
 export class NotificationService {
+
+  constructor(private userNotificationService: UserNotificationService, private googleStorageUser: StoragUserDataService) {
+  }
+
   notificationFeatures(featureSwitch: boolean) {
     if (!featureSwitch) {
-      alert('Push registration is intentionally turned off. ');
+      // alert('Push registration is intentionally turned off. ');
       return;
     }
     // Register with Apple / Google to receive push via APNS/FCM
@@ -25,14 +32,22 @@ export class NotificationService {
     PushNotifications.addListener(
       'registration',
       (token: PushNotificationToken) => {
-        alert('Push registration success, token: ' + token.value);
-        console.log('Push registration success, token: ' + token.value);
+        this.googleStorageUser.getObjectGoogleUsers().then(data => {
+            const params: IUsersNotifConfig = {
+                status: true,
+                token: token.value,
+                userId: data.id,
+            }
+            this.userNotificationService.createCustomerToken(params).then(() => {
+              console.log('Push registration success, token: ' + token.value);
+            });
+        });
       }
     );
 
     // Some issue with our setup and push will not work
     PushNotifications.addListener('registrationError', (error: any) => {
-      alert('Error on registration: ' + JSON.stringify(error));
+      // alert('Error on registration: ' + JSON.stringify(error));
     });
 
     // Show us the notification payload if the app is open on our device

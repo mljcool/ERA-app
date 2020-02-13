@@ -1,11 +1,12 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { MouseEvent } from '@agm/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { MapsAPILoader } from '@agm/core';
 import { AutoShopServicesService } from 'src/app/services/autoshop/auto-shop-services.service';
 import { map } from 'rxjs/operators';
 import { IAutoShop } from 'src/app/models/autoShop.model';
+import { AssistanceComponent } from 'src/app/modals/assistance/assistance.component';
 
 const { Geolocation } = Plugins;
 @Component({
@@ -49,7 +50,8 @@ export class LocationsPage implements OnInit, AfterViewInit {
   constructor(
     public loadingController: LoadingController,
     private mapsAPILoader: MapsAPILoader,
-    private autoShopSrvc: AutoShopServicesService
+    private autoShopSrvc: AutoShopServicesService,
+    private modalController: ModalController
   ) {}
 
   ngOnInit() {}
@@ -72,7 +74,7 @@ export class LocationsPage implements OnInit, AfterViewInit {
                 lng: data.functionalLocation.longitude,
                 label: '',
                 shopName: data.mainName,
-                draggable: true,
+                draggable: false,
                 iconUrl: {
                   url: 'assets/images/markers/marker-shop.png',
                   scaledSize: {
@@ -153,6 +155,13 @@ export class LocationsPage implements OnInit, AfterViewInit {
       message: 'Fetching location....'
     });
     return await loading.present();
+  }
+
+  async presentModal(m: Marker) {
+    const modal = await this.modalController.create({
+      component: AssistanceComponent
+    });
+    return await modal.present();
   }
 }
 

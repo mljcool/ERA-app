@@ -1,3 +1,4 @@
+import { AssistanceComponent } from './../../modals/assistance/assistance.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +25,9 @@ import { AgmDirectionModule } from 'agm-direction';
     }),
     AgmDirectionModule
   ],
-  declarations: [LocationsPage]
+  declarations: [LocationsPage, AssistanceComponent],
+  entryComponents: [
+    AssistanceComponent
+  ]
 })
 export class LocationsPageModule { }
