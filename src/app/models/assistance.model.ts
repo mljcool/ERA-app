@@ -9,9 +9,9 @@ export interface IAssistance {
   key?: string;
   myId: string;
   shopId: string;
-  assistanceType: string;
+  assistanceType: object;
   mylocation: IShopLocation;
-  status: boolean;
+  status: string;
   escalatedTime: string;
   note: string;
 }

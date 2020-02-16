@@ -5,7 +5,7 @@
         How can we help?
       </h2>
     </ion-list-header>
-    <ion-item (click)="onProceed('item')" *ngFor="let item of services;" button>
+    <ion-item (click)="onProceed(item)" *ngFor="let item of services;" button>
       <ion-thumbnail slot="start">
         <img [src]="item.imgSrc" />
       </ion-thumbnail>

@@ -22,19 +22,19 @@ export class AssistanceComponent implements OnInit {
   services: AssistanceTypes[] = assistTanceList;
 
   constructor(private modalCtrl: ModalController,
-              navParams: NavParams,
+              private navParams: NavParams,
               private modalController: ModalController,
               private router: Router,
               private assistanceService: AssistanceService) {
 
-    this.shopData = navParams.get('shopData');
-    this.userLocation = navParams.get('userLocation');
+    this.shopData = this.navParams.get('shopData');
+    this.userLocation = this.navParams.get('userLocation');
     console.log(navParams.get('shopData'));
   }
 
   ngOnInit() { }
 
-  onProceed(type: string): void {
+  onProceed(type: any): void {
     const params: any = {
       assistanceType: type,
       shopData: this.shopData,
@@ -42,6 +42,9 @@ export class AssistanceComponent implements OnInit {
     };
     this.modalController.create({
       component: NotesComponent,
+      componentProps: {
+        assistanceData: params
+      }
     }).then(modal => {
       modal.present();
       modal.onDidDismiss().then(({ data }) => {
