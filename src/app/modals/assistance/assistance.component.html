@@ -5,61 +5,13 @@
         How can we help?
       </h2>
     </ion-list-header>
-    <ion-item (click)="onProceed('wheelsAndTires')" button>
+    <ion-item (click)="onProceed('item')" *ngFor="let item of services;" button>
       <ion-thumbnail slot="start">
-        <img [src]="'./assets/images/commons/flatTire.png'" />
+        <img [src]="item.imgSrc" />
       </ion-thumbnail>
-      <ion-label> Wheels and Tires </ion-label>
+      <ion-label> {{ item.label }}</ion-label>
     </ion-item>
 
-    <ion-item (click)="onProceed('batteryInspection')" button>
-      <ion-thumbnail slot="start">
-        <img [src]="'./assets/images/commons/deadbattery.png'" />
-      </ion-thumbnail>
-      <ion-label>Battery Inspection (Jump Start)</ion-label>
-    </ion-item>
-
-    <ion-item (click)="onProceed('overheating')" button>
-      <ion-thumbnail slot="start">
-        <img [src]="'./assets/images/commons/overheat.png'" />
-      </ion-thumbnail>
-      <ion-label>Overheating</ion-label>
-    </ion-item>
-
-    <ion-item (click)="onProceed('engineInspection')" button>
-      <ion-thumbnail slot="start">
-        <img [src]="'./assets/images/commons/motor.png'" />
-      </ion-thumbnail>
-      <ion-label> Engine Inspection </ion-label>
-    </ion-item>
-
-    <ion-item (click)="onProceed('vehicleTow')" button>
-      <ion-thumbnail slot="start">
-        <ion-img [src]="'./assets/images/commons/tow.png'"> </ion-img>
-      </ion-thumbnail>
-      <ion-label>Vehicle Tow</ion-label>
-    </ion-item>
-
-    <ion-item (click)="onProceed('vehicleLockout')" button>
-      <ion-thumbnail slot="start">
-        <ion-img [src]="'./assets/images/commons/lockout.png'"> </ion-img>
-      </ion-thumbnail>
-      <ion-label>Vehicle Lockout</ion-label>
-    </ion-item>
-
-    <ion-item (click)="onProceed('fuelDelivery')" button>
-      <ion-thumbnail slot="start">
-        <ion-img [src]="'./assets/images/commons/fuel.png'"> </ion-img>
-      </ion-thumbnail>
-      <ion-label>Fuel Delivery</ion-label>
-    </ion-item>
-
-    <ion-item (click)="onProceed('generalInspection')" button>
-      <ion-thumbnail slot="start">
-        <img [src]="'./assets/images/commons/generalInspection.png'" />
-      </ion-thumbnail>
-      <ion-label> General Inspection </ion-label>
-    </ion-item>
   </ion-list>
 
   <ion-grid>

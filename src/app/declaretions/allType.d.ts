@@ -12,3 +12,9 @@ declare type ServiceMenus = {
   link: string;
   imgSrc: string;
 };
+
+declare type AssistanceTypes = {
+  id: number;
+  label: string;
+  imgSrc: string;
+};
