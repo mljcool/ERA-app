@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController, NavParams } from '@ionic/angular';
+import {
+    ModalController,
+    ToastController,
+    NavParams,
+    LoadingController
+} from '@ionic/angular';
 import { AssistanceService } from '../assistance/assistance.service';
 import { IAssistance } from 'src/app/models/assistance.model';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
@@ -18,12 +23,20 @@ export class NotesComponent implements OnInit {
         private assistanceService: AssistanceService,
         private googleStorageUser: StoragUserDataService,
         private navParams: NavParams,
+        public loadingController: LoadingController
     ) {
-      this.assistanceData = this.navParams.get('assistanceData');
-      console.log('this.assistanceData', this.assistanceData);
+        this.assistanceData = this.navParams.get('assistanceData');
+        console.log('this.assistanceData', this.assistanceData);
     }
 
     ngOnInit() {}
+
+    async presentLoading() {
+        const loading = await this.loadingController.create({
+            message: 'Saving...'
+        });
+        await loading.present();
+    }
 
     dismiss() {
         if (!this.notes) {
@@ -38,28 +51,28 @@ export class NotesComponent implements OnInit {
     }
 
     savingAssistance(): void {
-      const assistanceType = this.assistanceData.assistanceType;
-      const shopData = this.assistanceData.shopData;
-      const userLocation = this.assistanceData.userLocation;
-      this.googleStorageUser.getObjectGoogleUsers().then(data => {
-        const postParams: IAssistance = {
-          myId: data.id,
-          shopId: shopData.uid,
-          assistanceType,
-          status: 'PENDING',
-          mylocation: {
-            latitude: userLocation.latitude,
-            longitude: userLocation.longitude
-          },
-          escalatedTime: '',
-          note: this.notes
-
-        };
-        this.assistanceService.saveRoadAssistance(postParams).then(() => {
-            this.dismiss();
+        this.presentLoading();
+        const assistanceType = this.assistanceData.assistanceType;
+        const shopData = this.assistanceData.shopData;
+        const userLocation = this.assistanceData.userLocation;
+        this.googleStorageUser.getObjectGoogleUsers().then(data => {
+            const postParams: IAssistance = {
+                myId: data.id,
+                shopId: shopData.uid,
+                assistanceType,
+                status: 'PENDING',
+                mylocation: {
+                    latitude: userLocation.latitude,
+                    longitude: userLocation.longitude
+                },
+                escalatedTime: '',
+                note: this.notes
+            };
+            this.assistanceService.saveRoadAssistance(postParams).then(() => {
+                this.loadingController.dismiss();
+                this.dismiss();
+            });
         });
-      });
-
     }
 
     async presentToast() {
