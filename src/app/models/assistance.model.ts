@@ -6,12 +6,14 @@ interface IShopLocation {
 }
 
 export interface IAssistance {
+  id: string;
   key?: string;
   myId: string;
   shopId: string;
-  assistanceType: object;
+  assistanceType: AssistanceTypes;
   mylocation: IShopLocation;
   status: string;
   escalatedTime: string;
+  flatRate: string;
   note: string;
 }

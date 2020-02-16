@@ -8,6 +8,7 @@ import {
 import { AssistanceService } from '../assistance/assistance.service';
 import { IAssistance } from 'src/app/models/assistance.model';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
+import { generateGUID } from 'src/app/utils/uidGenerator';
 
 @Component({
     selector: 'app-notes',
@@ -38,7 +39,7 @@ export class NotesComponent implements OnInit {
         await loading.present();
     }
 
-    dismiss() {
+    dismiss(idParams: string) {
         if (!this.notes) {
             this.presentToast();
             return;
@@ -46,7 +47,8 @@ export class NotesComponent implements OnInit {
 
         this.modalCtrl.dismiss({
             dismissed: true,
-            notes: this.notes
+            notes: this.notes,
+            id: idParams,
         });
     }
 
@@ -57,6 +59,7 @@ export class NotesComponent implements OnInit {
         const userLocation = this.assistanceData.userLocation;
         this.googleStorageUser.getObjectGoogleUsers().then(data => {
             const postParams: IAssistance = {
+                id: generateGUID(),
                 myId: data.id,
                 shopId: shopData.uid,
                 assistanceType,
@@ -66,11 +69,12 @@ export class NotesComponent implements OnInit {
                     longitude: userLocation.longitude
                 },
                 escalatedTime: '',
+                flatRate: '',
                 note: this.notes
             };
             this.assistanceService.saveRoadAssistance(postParams).then(() => {
                 this.loadingController.dismiss();
-                this.dismiss();
+                this.dismiss(postParams.id);
             });
         });
     }

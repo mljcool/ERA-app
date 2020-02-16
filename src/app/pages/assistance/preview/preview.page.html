@@ -1,6 +1,9 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>Request Services</ion-title>
+        <ion-title class="request-title"
+            >Request Services: {{ assistanceData.assistanceType.label
+            }}</ion-title
+        >
         <ion-buttons slot="primary">
             <ion-buttons (click)="getCurrentPosition()">
                 <ion-icon name="locate" slot="icon-only"></ion-icon>
@@ -61,44 +64,62 @@
                     </ion-item>
                     <ion-item-group>
                         <ion-item-divider>
-                            <ion-label>Details</ion-label>
+                            <ion-label
+                                >Details
+                                <small
+                                    >(Please wait for the shop to
+                                    respond)</small
+                                ></ion-label
+                            >
                         </ion-item-divider>
+                        <ion-item>
+                            <ion-label
+                                ><span class="label">STATUS</span
+                                ><span class="label-value">
+                                    <ion-chip color="danger" *ngIf="assistanceData.status ==='PENDING'">
+                                        <ion-icon
+                                            name="close-circle"
+                                        ></ion-icon>
+                                        <ion-label>{{ assistanceData.status}}</ion-label>
+                                    </ion-chip>
+                                    <ion-chip color="success" *ngIf="assistanceData.status ==='ACCEPTED'">
+                                      <ion-icon
+                                          name="checkmark-circle"
+                                      ></ion-icon>
+                                      <ion-label>{{ assistanceData.status}}</ion-label>
+                                  </ion-chip>
+                                    </span>
+                            </ion-label>
+                        </ion-item>
 
                         <ion-item>
                             <ion-label
-                                ><span class="label">SERVICES:</span
-                                ><span class="label-value">Tow</span>
-                            </ion-label>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label
                                 ><span class="label">EST. ARRIVAL:</span
-                                ><span class="label-value">SERVICES</span>
+                                ><span class="label-value"
+                                    ><ion-spinner
+                                        name="dots"
+                                        *ngIf="!assistanceData.escalatedTime"
+                                    ></ion-spinner
+                                    >{{ assistanceData.escalatedTime}}</span
+                                >
                             </ion-label>
                         </ion-item>
                         <ion-item>
                             <ion-label
                                 ><span class="label">FLAT RATE:</span
-                                ><span class="label-value">SERVICES</span>
+                                ><span class="label-value">
+                                  <ion-spinner
+                                    name="dots"
+                                    *ngIf="!assistanceData.flatRate"
+                                ></ion-spinner
+                                >₱ {{ assistanceData.flatRate}}
+                            </span>
                             </ion-label>
                         </ion-item>
                         <ion-item>
                             <ion-label
                                 ><span class="label">SHOP-NAME:</span
                                 ><span class="label-value">SERVICES</span>
-                            </ion-label>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label
-                                ><span class="label">STATUS</span
-                                ><span class="label-value">
-                                    <ion-chip color="danger">
-                                        <ion-icon
-                                            name="close-circle"
-                                        ></ion-icon>
-                                        <ion-label>Pending</ion-label>
-                                    </ion-chip></span
-                                >
                             </ion-label>
                         </ion-item>
                     </ion-item-group>
@@ -111,9 +132,7 @@
                             </ion-text>
                             <ion-text color="secondary">
                                 <p>
-                                    This is content, without any paragraph or
-                                    header tags, within an ion-card-content
-                                    element.
+                                    {{ assistanceData.note}}
                                 </p>
                             </ion-text>
                         </ion-label>

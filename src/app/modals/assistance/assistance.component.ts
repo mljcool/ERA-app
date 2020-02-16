@@ -50,7 +50,10 @@ export class AssistanceComponent implements OnInit {
       modal.onDidDismiss().then(({ data }) => {
         params.notes = data.notes;
         if (params.notes) {
-          this.assistanceService.onRoadSideAssistanceData.next(params);
+          this.assistanceService.onRoadSideAssistanceData.next({
+            id: data.id,
+            params
+          });
           this.timeOut = setTimeout(() => {
             this.dismiss();
           }, 100);
