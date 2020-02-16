@@ -12,6 +12,7 @@ import { LocationsPage } from './locations.page';
 import { AgmCoreModule } from '@agm/core';
 import { AgmOverlays } from 'agm-overlays';
 import { AgmDirectionModule } from 'agm-direction';
+import { NotesComponent } from 'src/app/modals/notes/notes.component';
 
 @NgModule({
   imports: [
@@ -25,9 +26,10 @@ import { AgmDirectionModule } from 'agm-direction';
     }),
     AgmDirectionModule
   ],
-  declarations: [LocationsPage, AssistanceComponent],
+  declarations: [LocationsPage, AssistanceComponent, NotesComponent],
   entryComponents: [
-    AssistanceComponent
+    AssistanceComponent,
+    NotesComponent
   ]
 })
 export class LocationsPageModule { }

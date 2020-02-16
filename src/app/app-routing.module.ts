@@ -15,6 +15,10 @@ const routes: Routes = [
       import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule),
     canLoad: [AuthGuard]
   },
+  {
+    path: 'preview',
+    loadChildren: () => import('./pages/assistance/preview/preview.module').then( m => m.PreviewPageModule)
+  },
 
 ];
 

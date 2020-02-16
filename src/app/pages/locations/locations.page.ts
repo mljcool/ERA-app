@@ -52,9 +52,9 @@ export class LocationsPage implements OnInit, AfterViewInit {
     private mapsAPILoader: MapsAPILoader,
     private autoShopSrvc: AutoShopServicesService,
     private modalController: ModalController
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.autoShopSrvc
@@ -68,24 +68,25 @@ export class LocationsPage implements OnInit, AfterViewInit {
       .subscribe(shopLists => {
         this.shopLists = shopLists;
         if (this.shopLists.length >= 1) {
-            this.shopLists.forEach(data => {
-              this.markers.push({
-                lat: data.functionalLocation.latitude,
-                lng: data.functionalLocation.longitude,
-                label: '',
-                shopName: data.mainName,
-                draggable: false,
-                iconUrl: {
-                  url: 'assets/images/markers/marker-shop.png',
-                  scaledSize: {
-                    height: 50,
-                    width: 40
-                  }
+          this.shopLists.forEach(data => {
+            this.markers.push({
+              lat: data.functionalLocation.latitude,
+              lng: data.functionalLocation.longitude,
+              label: '',
+              shopName: data.mainName,
+              draggable: false,
+              shopData: data,
+              iconUrl: {
+                url: 'assets/images/markers/marker-shop.png',
+                scaledSize: {
+                  height: 50,
+                  width: 40
                 }
-              });
-        });
-      }
-    });
+              }
+            });
+          });
+        }
+      });
   }
 
   ngAfterViewInit(): void {
@@ -157,9 +158,13 @@ export class LocationsPage implements OnInit, AfterViewInit {
     return await loading.present();
   }
 
-  async presentModal(m: Marker) {
+  async presentModal(marker: Marker) {
     const modal = await this.modalController.create({
-      component: AssistanceComponent
+      component: AssistanceComponent,
+      componentProps: {
+        shopData: marker.shopData,
+        userLocation: this.myLocations
+      }
     });
     return await modal.present();
   }
@@ -172,6 +177,7 @@ interface Marker {
   shopName?: string;
   draggable: boolean;
   iconUrl: CustomMarkersAndSize;
+  shopData?: IAutoShop;
 }
 
 interface CustomMarkersAndSize {
@@ -211,9 +217,9 @@ function findClosestMarker(lat1: any, lon1: any, markers = []) {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.sin(dLon / 2) *
-        Math.sin(dLon / 2) *
-        Math.cos(rLat1) *
-        Math.cos(rLat2);
+      Math.sin(dLon / 2) *
+      Math.cos(rLat1) *
+      Math.cos(rLat2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
 
@@ -232,7 +238,7 @@ function getInitials(name: string) {
   const names = name.split(' ');
   let initials = names[0].substring(0, 1).toUpperCase();
   if (names.length > 1) {
-      initials += names[names.length - 1].substring(0, 1).toUpperCase();
+    initials += names[names.length - 1].substring(0, 1).toUpperCase();
   }
   return initials;
 }

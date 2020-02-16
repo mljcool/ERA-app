@@ -1,5 +1,8 @@
+import { IAutoShop } from 'src/app/models/autoShop.model';
+import { IAssistance } from './../../models/assistance.model';
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
+import { NotesComponent } from '../notes/notes.component';
 
 @Component({
   selector: 'app-assistance',
@@ -8,14 +11,36 @@ import { ModalController } from '@ionic/angular';
 })
 export class AssistanceComponent implements OnInit {
 
-  constructor(private modalCtrl: ModalController) { }
+  assistanceParams: any = {};
+  assistanceData: IAssistance;
+  shopData: IAutoShop;
+  userLocation: any;
 
-  ngOnInit() {}
+  constructor(private modalCtrl: ModalController, navParams: NavParams, private modalController: ModalController) {
 
-  onProceed(): void {
-
+    this.shopData = navParams.get('shopData');
+    this.userLocation = navParams.get('userLocation');
+    console.log(navParams.get('shopData'));
   }
-  dismiss(){
+
+  ngOnInit() { }
+
+  onProceed(type: string): void {
+    const params: any = {
+      assistanceType: type,
+
+    };
+    this.modalController.create({
+      component: NotesComponent,
+    }).then(modal => {
+      modal.present();
+      modal.onDidDismiss().then(({ data }) => {
+        params.notes = data.notes;
+      });
+    });
+  }
+
+  dismiss() {
     this.modalCtrl.dismiss({
       dismissed: true
     });

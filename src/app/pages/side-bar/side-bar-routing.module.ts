@@ -16,6 +16,13 @@ const routes: Routes = [
           )
       },
       {
+        path: 'assistance-preview',
+        loadChildren: () =>
+          import('../assistance/preview/preview.module').then(
+            m => m.PreviewPageModule
+          )
+      },
+      {
         path: 'accounts-user',
         loadChildren: () =>
           import('../accounts/user/user.module').then(m => m.UserPageModule)
@@ -50,7 +57,7 @@ const routes: Routes = [
       },
       {
         path: 'settings',
-        loadChildren: () => import('../settings/settings.module').then( m => m.SettingsPageModule)
+        loadChildren: () => import('../settings/settings.module').then(m => m.SettingsPageModule)
       },
       {
         path: '',
@@ -64,4 +71,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SideBarPageRoutingModule {}
+export class SideBarPageRoutingModule { }
