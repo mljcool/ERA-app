@@ -19,4 +19,6 @@ export interface IAssistance {
   googleStravelTimeEstimates: string;
   googleDistanceEstimates: string;
   googleWrittenAddress: string;
+  confirmationStatus: boolean;
+  myContactNumber?: Array<any>;
 }

@@ -19,6 +19,10 @@ export class NotesComponent implements OnInit {
     notes: any;
     assistanceData: any;
     getApproximate: any;
+    contacs: any[] = [];
+    contactOne: any;
+    contactTwo: any;
+
     constructor(
         private modalCtrl: ModalController,
         public toastController: ToastController,
@@ -42,11 +46,6 @@ export class NotesComponent implements OnInit {
     }
 
     dismiss(idParams: string) {
-        if (!this.notes) {
-            this.presentToast();
-            return;
-        }
-
         this.modalCtrl.dismiss({
             dismissed: true,
             notes: this.notes,
@@ -55,6 +54,10 @@ export class NotesComponent implements OnInit {
     }
 
     savingAssistance(): void {
+        if (!this.notes || !this.contactOne) {
+            this.presentToast();
+            return;
+        }
         this.presentLoading();
         const assistanceType = this.assistanceData.assistanceType;
         const shopData = this.assistanceData.shopData;
@@ -76,6 +79,8 @@ export class NotesComponent implements OnInit {
                 googleStravelTimeEstimates: this.getApproximate.esitamteTravelTime,
                 googleDistanceEstimates: this.getApproximate.distanceKM,
                 googleWrittenAddress: this.getApproximate.writtenAddress,
+                confirmationStatus: false,
+                myContactNumber: [this.contactOne, this.contactTwo || ''],
             };
             this.assistanceService.saveRoadAssistance(postParams).then(() => {
                 this.loadingController.dismiss();
@@ -86,7 +91,7 @@ export class NotesComponent implements OnInit {
 
     async presentToast() {
         const toast = await this.toastController.create({
-            message: 'Notes is requried',
+            message: 'Notes or contact are requried',
             duration: 600
         });
         toast.present();

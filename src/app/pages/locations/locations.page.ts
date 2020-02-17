@@ -58,46 +58,35 @@ export class LocationsPage implements OnInit, AfterViewInit {
     ngOnInit() {}
 
     ionViewWillEnter() {
-        this.autoShopSrvc
-            .getAuthoShopList()
-            .snapshotChanges()
-            .pipe(
-                map(changes =>
-                    changes.map(c => ({
-                        key: c.payload.doc.id,
-                        ...c.payload.doc.data()
-                    }))
-                )
-            )
-            .subscribe(shopLists => {
-                this.shopLists = shopLists;
-                if (this.shopLists.length >= 1) {
-                    this.shopLists.forEach(data => {
-                        this.markers.push({
-                            lat: data.functionalLocation.latitude,
-                            lng: data.functionalLocation.longitude,
-                            label: '',
-                            shopName: data.mainName,
-                            draggable: false,
-                            shopData: data,
-                            iconUrl: {
-                                url: 'assets/images/markers/marker-shop.png',
-                                scaledSize: {
-                                    height: 50,
-                                    width: 40
-                                }
+        this.autoShopSrvc.getAuthoShopList().subscribe(shopLists => {
+            this.shopLists = shopLists;
+            if (this.shopLists.length !== 0) {
+                this.mapsAPILoader.load().then(() => {
+                    this.getCurrentPosition();
+                });
+                console.log('here', shopLists);
+                this.shopLists.forEach(data => {
+                    this.markers.push({
+                        lat: data.functionalLocation.latitude,
+                        lng: data.functionalLocation.longitude,
+                        label: '',
+                        shopName: data.mainName,
+                        draggable: false,
+                        shopData: data,
+                        iconUrl: {
+                            url: 'assets/images/markers/marker-shop.png',
+                            scaledSize: {
+                                height: 50,
+                                width: 40
                             }
-                        });
+                        }
                     });
-                }
-            });
-    }
-
-    ngAfterViewInit(): void {
-        this.mapsAPILoader.load().then(() => {
-            this.getCurrentPosition();
+                });
+            }
         });
     }
+
+    ngAfterViewInit(): void {}
 
     async getCurrentPosition() {
         this.presentLoading();
@@ -130,10 +119,7 @@ export class LocationsPage implements OnInit, AfterViewInit {
                     lat: nearestRoute.lat,
                     lng: nearestRoute.lng
                 };
-                this.calculateDistance(
-                    this.origin,
-                    this.destination
-                );
+                this.calculateDistance(this.origin, this.destination);
             }, 1000);
         }
     }
@@ -142,28 +128,14 @@ export class LocationsPage implements OnInit, AfterViewInit {
         console.log(`clicked the marker: ${label || index}`);
     }
 
-    mapClicked($event: MouseEvent) {
-        this.markers.push({
-            lat: $event.coords.lat,
-            lng: $event.coords.lng,
-            draggable: true,
-            iconUrl: {
-                url: 'assets/images/markers/marker-shop.png',
-                scaledSize: {
-                    height: 50,
-                    width: 50
-                }
-            }
-        });
-    }
-
     markerDragEnd(m: Marker, $event: MouseEvent) {
         console.log('dragEnd', m, $event);
     }
 
     async presentLoading() {
         const loading = await this.loadingController.create({
-            message: 'Fetching location....'
+            message: 'Fetching location....',
+            backdropDismiss: true
         });
         return await loading.present();
     }
@@ -181,9 +153,8 @@ export class LocationsPage implements OnInit, AfterViewInit {
     }
 
     calculateDistance(origin: any, to: any): number {
-
-      console.log('origin', origin);
-      console.log('to', to);
+        console.log('origin', origin);
+        console.log('to', to);
         const dist = google.maps.geometry.spherical.computeDistanceBetween(
             new google.maps.LatLng(origin.lat, origin.lng),
             new google.maps.LatLng(to.lat, to.lng)
@@ -203,15 +174,6 @@ export class LocationsPage implements OnInit, AfterViewInit {
                     distanceKM: point.distance.text,
                     writtenAddress: point.start_address
                 };
-                console.log('point', point.start_address);
-                console.log('response', response);
-                console.log(
-                    'Estimated travel time: ' +
-                        point.duration.text +
-                        ' (' +
-                        point.distance.text +
-                        ')'
-                );
             }
         });
 

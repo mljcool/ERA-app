@@ -31,7 +31,9 @@ export class PreviewPage implements OnInit, OnDestroy {
         },
         googleDistanceEstimates: '',
         googleStravelTimeEstimates: '',
-        googleWrittenAddress: ''
+        googleWrittenAddress: '',
+        confirmationStatus: false,
+        myContactNumber: []
     };
     mapSetup = {
         latitude: 7.0540778,
