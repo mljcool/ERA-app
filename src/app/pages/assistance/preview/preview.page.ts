@@ -44,8 +44,9 @@ export class PreviewPage implements OnInit, OnDestroy {
         this.assistanceService.onRoadSideAssistanceData
             .pipe(takeUntil(this.unsubscribeAll))
             .subscribe(response => {
+                console.log(response);
                 this.assistanceService
-                    .getAllMyPendingAssistance('e0bf2736')
+                    .getAllMyPendingAssistance(response.id)
                     .subscribe(responseAssistance => {
                         this.assistanceData = responseAssistance[0];
                         console.log(this.assistanceData);
