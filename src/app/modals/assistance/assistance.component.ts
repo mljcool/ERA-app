@@ -18,6 +18,7 @@ export class AssistanceComponent implements OnInit {
   assistanceData: IAssistance;
   shopData: IAutoShop;
   userLocation: any;
+  getApproximate: any;
   timeOut: any;
   services: AssistanceTypes[] = assistTanceList;
 
@@ -29,6 +30,7 @@ export class AssistanceComponent implements OnInit {
 
     this.shopData = this.navParams.get('shopData');
     this.userLocation = this.navParams.get('userLocation');
+    this.getApproximate = this.navParams.get('getApproximate');
     console.log(navParams.get('shopData'));
   }
 
@@ -43,7 +45,8 @@ export class AssistanceComponent implements OnInit {
     this.modalController.create({
       component: NotesComponent,
       componentProps: {
-        assistanceData: params
+        assistanceData: params,
+        getApproximate: this.getApproximate
       }
     }).then(modal => {
       modal.present();

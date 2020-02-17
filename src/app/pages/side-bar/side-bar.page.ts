@@ -38,7 +38,6 @@ export class SideBarPage implements OnInit {
       this.pages = response;
     });
     this.googleStorageUser.getObjectGoogleUsers().then(response => {
-      console.log(response);
       this.userData = response;
     });
   }
@@ -49,7 +48,6 @@ export class SideBarPage implements OnInit {
       this.presentAlertConfirm();
       return;
     }
-    console.log(this.userData.id);
 
     this.userService.checkVehicleRegistration(this.userData.id).then(response => {
       if (response) {

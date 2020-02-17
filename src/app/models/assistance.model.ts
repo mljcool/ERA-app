@@ -16,4 +16,7 @@ export interface IAssistance {
   escalatedTime: string;
   flatRate: string;
   note: string;
+  googleStravelTimeEstimates: string;
+  googleDistanceEstimates: string;
+  googleWrittenAddress: string;
 }

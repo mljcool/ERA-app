@@ -124,7 +124,7 @@
                                         name="dots"
                                         *ngIf="!assistanceData.flatRate"
                                     ></ion-spinner
-                                    >₱ {{ assistanceData.flatRate}}
+                                    ><span   *ngIf="assistanceData.flatRate" >₱ {{ assistanceData.flatRate}}</span>
                                 </span>
                             </ion-label>
                         </ion-item>
@@ -132,6 +132,37 @@
                             <ion-label
                                 ><span class="label">SHOP-NAME:</span
                                 ><span class="label-value">SERVICES</span>
+                            </ion-label>
+                        </ion-item>
+                    </ion-item-group>
+                    <ion-item-group>
+                        <ion-item-divider>
+                            <ion-label
+                                >Google's travel time & distance estimates
+                            </ion-label>
+                        </ion-item-divider>
+                        <ion-item>
+                            <ion-label>
+                                <span class="label">Estimated travel time:</span>
+                                <span class="label-value">
+                                {{ assistanceData.googleStravelTimeEstimates}}
+                                </span>
+                            </ion-label>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>
+                                <span class="label">Distance:</span>
+                                <span class="label-value">
+                                {{ assistanceData.googleDistanceEstimates}}
+                                </span>
+                            </ion-label>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>
+                                <span class="label">Travel Mode:</span>
+                                <span class="label-value">
+                                    DRIVING
+                                </span>
                             </ion-label>
                         </ion-item>
                     </ion-item-group>
@@ -145,6 +176,18 @@
                             <ion-text color="secondary">
                                 <p>
                                     {{ assistanceData.note}}
+                                </p>
+                            </ion-text>
+                        </ion-label>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label class="ion-text-wrap">
+                            <ion-text color="primary">
+                                <h3>Address:</h3>
+                            </ion-text>
+                            <ion-text color="secondary">
+                                <p>
+                                    {{ assistanceData.googleWrittenAddress}}
                                 </p>
                             </ion-text>
                         </ion-label>

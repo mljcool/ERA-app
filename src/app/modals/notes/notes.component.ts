@@ -18,6 +18,7 @@ import { generateGUID } from 'src/app/utils/uidGenerator';
 export class NotesComponent implements OnInit {
     notes: any;
     assistanceData: any;
+    getApproximate: any;
     constructor(
         private modalCtrl: ModalController,
         public toastController: ToastController,
@@ -27,6 +28,7 @@ export class NotesComponent implements OnInit {
         public loadingController: LoadingController
     ) {
         this.assistanceData = this.navParams.get('assistanceData');
+        this.getApproximate = this.navParams.get('getApproximate');
         console.log('this.assistanceData', this.assistanceData);
     }
 
@@ -70,7 +72,10 @@ export class NotesComponent implements OnInit {
                 },
                 escalatedTime: '',
                 flatRate: '',
-                note: this.notes
+                note: this.notes,
+                googleStravelTimeEstimates: this.getApproximate.esitamteTravelTime,
+                googleDistanceEstimates: this.getApproximate.distanceKM,
+                googleWrittenAddress: this.getApproximate.writtenAddress,
             };
             this.assistanceService.saveRoadAssistance(postParams).then(() => {
                 this.loadingController.dismiss();

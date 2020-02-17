@@ -22,7 +22,8 @@ import { NotesComponent } from 'src/app/modals/notes/notes.component';
     LocationsPageRoutingModule,
     AgmOverlays,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCM9feJhmKCUUsDv9zg6dQcYeAHEAHwM08'
+      apiKey: 'AIzaSyCM9feJhmKCUUsDv9zg6dQcYeAHEAHwM08',
+      libraries: ['geometry', 'places']
     }),
     AgmDirectionModule
   ],
