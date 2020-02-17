@@ -11,6 +11,7 @@ import { IAssistance } from 'src/app/models/assistance.model';
 })
 export class PreviewPage implements OnInit, OnDestroy {
     private unsubscribeAll: Subject<any>;
+    paramAccessor: any;
     assistanceData: IAssistance = {
         status: 'PENDING',
         id: '',
@@ -47,6 +48,7 @@ export class PreviewPage implements OnInit, OnDestroy {
         this.assistanceService.onRoadSideAssistanceData
             .pipe(takeUntil(this.unsubscribeAll))
             .subscribe(response => {
+                this.paramAccessor = response;
                 console.log(response);
                 this.assistanceService
                     .getAllMyPendingAssistance(response.id)
