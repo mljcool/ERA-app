@@ -21,14 +21,7 @@ export class AutoShopsPage implements OnInit {
 
   ionViewWillEnter() {
     this.autoShopSrvc
-      .getAuthoShopList()
-      .snapshotChanges()
-      .pipe(
-        map(changes =>
-          changes.map(c => ({ key: c.payload.doc.id, ...c.payload.doc.data() }))
-        )
-      )
-      .subscribe(shopLists => {
+      .getAuthoShopList().subscribe(shopLists => {
         this.shopLists = shopLists;
         this.shops = this.copyShops = shopLists;
         if (this.shopLists.length >= 1) {

@@ -4,9 +4,10 @@ import { MouseEvent } from '@agm/core';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { MapsAPILoader } from '@agm/core';
 import { AutoShopServicesService } from 'src/app/services/autoshop/auto-shop-services.service';
-import { map } from 'rxjs/operators';
 import { IAutoShop } from 'src/app/models/autoShop.model';
 import { AssistanceComponent } from 'src/app/modals/assistance/assistance.component';
+import { Marker, CurrentLocations } from './models/markers.model';
+import { findClosestMarker, calculateDistance } from './utils/map.utils';
 
 const { Geolocation } = Plugins;
 @Component({
@@ -14,13 +15,9 @@ const { Geolocation } = Plugins;
     templateUrl: './locations.page.html',
     styleUrls: ['./locations.page.scss']
 })
-export class LocationsPage implements OnInit, AfterViewInit {
-    // google maps zoom level
+export class LocationsPage implements OnInit {
     zoom = 18;
 
-    // initial center position for the map
-    lat = 51.673858;
-    lng = 7.815982;
     getApproximate: any;
 
     shopLists: IAutoShop[];
@@ -35,15 +32,11 @@ export class LocationsPage implements OnInit, AfterViewInit {
     public renderOptions = {
         suppressMarkers: true
     };
-    public markerOptions = {
+     markerOptions = {
         origin: {
-            icon:
-                'https://www.shareicon.net/data/32x32/2016/04/28/756617_face_512x512.png',
             opacity: 0
         },
         destination: {
-            icon:
-                'https://www.shareicon.net/data/32x32/2016/04/28/756626_face_512x512.png',
             opacity: 0
         }
     };
@@ -55,12 +48,11 @@ export class LocationsPage implements OnInit, AfterViewInit {
         private modalController: ModalController
     ) {}
 
-    ngOnInit() {}
-
-    ionViewWillEnter() {
+    ngOnInit() {
         this.autoShopSrvc.getAuthoShopList().subscribe(shopLists => {
             this.shopLists = shopLists;
             if (this.shopLists.length !== 0) {
+                this.markers = [];
                 this.mapsAPILoader.load().then(() => {
                     this.getCurrentPosition();
                 });
@@ -86,15 +78,14 @@ export class LocationsPage implements OnInit, AfterViewInit {
         });
     }
 
-    ngAfterViewInit(): void {}
-
     async getCurrentPosition() {
         this.presentLoading();
         const coordinates = await Geolocation.getCurrentPosition();
-        console.log('Current', coordinates);
         const { coords } = coordinates;
         if (coords) {
             setTimeout(() => {
+                this.loadingController.dismiss();
+
                 this.myLocations = {
                     latitude: coords.latitude,
                     longitude: coords.longitude,
@@ -107,7 +98,6 @@ export class LocationsPage implements OnInit, AfterViewInit {
                         }
                     }
                 };
-                this.loadingController.dismiss();
                 const { latitude, longitude } = this.myLocations;
                 const nearestRoute: Marker = findClosestMarker(
                     latitude,
@@ -119,17 +109,26 @@ export class LocationsPage implements OnInit, AfterViewInit {
                     lat: nearestRoute.lat,
                     lng: nearestRoute.lng
                 };
-                this.calculateDistance(this.origin, this.destination);
-            }, 1000);
+                calculateDistance(this.origin, this.destination, ((request, services) => {
+                    services.route(request, (response, status) => {
+                    console.log('status', response)
+                    if (status === 'OK') {
+                        const point = response.routes[0].legs[0];
+                        this.getApproximate = {
+                            esitamteTravelTime: point.duration.text,
+                            distanceKM: point.distance.text,
+                            writtenAddress: point.start_address
+                        };
+                    }
+                    });
+                }));
+
+            }, 500);
         }
     }
 
     clickedMarker(label: string, index: number) {
         console.log(`clicked the marker: ${label || index}`);
-    }
-
-    markerDragEnd(m: Marker, $event: MouseEvent) {
-        console.log('dragEnd', m, $event);
     }
 
     async presentLoading() {
@@ -151,104 +150,7 @@ export class LocationsPage implements OnInit, AfterViewInit {
         });
         return await modal.present();
     }
-
-    calculateDistance(origin: any, to: any): number {
-        console.log('origin', origin);
-        console.log('to', to);
-        const dist = google.maps.geometry.spherical.computeDistanceBetween(
-            new google.maps.LatLng(origin.lat, origin.lng),
-            new google.maps.LatLng(to.lat, to.lng)
-        );
-        const directionsService = new google.maps.DirectionsService();
-        const request = {
-            origin: new google.maps.LatLng(origin.lat, origin.lng), // LatLng|string
-            destination: new google.maps.LatLng(to.lat, to.lng), // LatLng|string
-            travelMode: google.maps.TravelMode.DRIVING
-        };
-
-        directionsService.route(request, (response, status) => {
-            if (status === 'OK') {
-                const point = response.routes[0].legs[0];
-                this.getApproximate = {
-                    esitamteTravelTime: point.duration.text,
-                    distanceKM: point.distance.text,
-                    writtenAddress: point.start_address
-                };
-            }
-        });
-
-        return Math.ceil(dist / 1000);
-    }
 }
 
-interface Marker {
-    lat: number;
-    lng: number;
-    label?: string;
-    shopName?: string;
-    draggable: boolean;
-    iconUrl: CustomMarkersAndSize;
-    shopData?: IAutoShop;
-}
 
-interface CustomMarkersAndSize {
-    url: string;
-    scaledSize: {
-        width: number;
-        height: number;
-    };
-}
 
-interface CurrentLocations {
-    latitude: number;
-    longitude: number;
-    message?: string;
-    iconUrl: CustomMarkersAndSize;
-}
-
-function findClosestMarker(lat1: any, lon1: any, markers = []) {
-    const pi = Math.PI;
-    const R = 6371;
-    const distances = [];
-    let closest = -1;
-
-    for (let i = 0; i < markers.length; i++) {
-        const lat2 = markers[i].lat;
-        const lon2 = markers[i].lng;
-
-        const chLat = lat2 - lat1;
-        const chLon = lon2 - lon1;
-
-        const dLat = chLat * (pi / 180);
-        const dLon = chLon * (pi / 180);
-
-        const rLat1 = lat1 * (pi / 180);
-        const rLat2 = lat2 * (pi / 180);
-
-        const a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.sin(dLon / 2) *
-                Math.sin(dLon / 2) *
-                Math.cos(rLat1) *
-                Math.cos(rLat2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const d = R * c;
-
-        distances[i] = d;
-        if (closest === -1 || d < distances[closest]) {
-            closest = i;
-        }
-    }
-
-    console.log(markers[closest]);
-    return markers[closest];
-}
-
-function getInitials(name: string) {
-    const names = name.split(' ');
-    let initials = names[0].substring(0, 1).toUpperCase();
-    if (names.length > 1) {
-        initials += names[names.length - 1].substring(0, 1).toUpperCase();
-    }
-    return initials;
-}

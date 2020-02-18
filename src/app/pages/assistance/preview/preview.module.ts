@@ -10,6 +10,7 @@ import { PreviewPage } from './preview.page';
 import { AgmOverlays } from 'agm-overlays';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
+import { MechanicInfoComponent } from 'src/app/modals/mechanic-info/mechanic-info.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { AgmDirectionModule } from 'agm-direction';
     }),
     AgmDirectionModule
   ],
-  declarations: [PreviewPage]
+  declarations: [PreviewPage, MechanicInfoComponent],
+  entryComponents: [MechanicInfoComponent]
 })
-export class PreviewPageModule {}
+export class PreviewPageModule { }

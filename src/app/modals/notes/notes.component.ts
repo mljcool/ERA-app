@@ -81,6 +81,7 @@ export class NotesComponent implements OnInit {
                 googleWrittenAddress: this.getApproximate.writtenAddress,
                 confirmationStatus: false,
                 myContactNumber: [this.contactOne, this.contactTwo || ''],
+                assignedMechanic: ''
             };
             this.assistanceService.saveRoadAssistance(postParams).then(() => {
                 this.loadingController.dismiss();

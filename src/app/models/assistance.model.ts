@@ -21,4 +21,5 @@ export interface IAssistance {
   googleWrittenAddress: string;
   confirmationStatus: boolean;
   myContactNumber?: Array<any>;
+  assignedMechanic: string;
 }
