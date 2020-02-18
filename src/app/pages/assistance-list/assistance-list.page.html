@@ -1,0 +1,44 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Assistance List</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionChange)="setFilteredItems(searchTerm)"
+    ></ion-searchbar>
+    <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+    <ion-list>
+        <ion-item
+            *ngFor="let shop of assistanceLists"
+            button
+            (click)="gotPreview(shop)"
+        >
+            <ion-thumbnail slot="start">
+                <img [src]="shop.assistanceType.imgSrc" />
+            </ion-thumbnail>
+            <ion-label>
+                {{ shop.assistanceType.label }}
+            </ion-label>
+            <ion-text slot="end">
+                <ion-chip color="danger" *ngIf="shop.status ==='PENDING'">
+                    <ion-icon name="close-circle"></ion-icon>
+                    <ion-label>{{ shop.status}}</ion-label>
+                </ion-chip>
+                <ion-chip color="success" *ngIf="shop.status ==='ACCEPTED'">
+                    <ion-icon name="checkmark-circle"></ion-icon>
+                    <ion-label>{{ shop.status}}</ion-label>
+                </ion-chip>
+                <ion-chip color="default" *ngIf="shop.status ==='DONE'">
+                    <ion-icon name="build"></ion-icon>
+                    <ion-label>Done</ion-label>
+                </ion-chip>
+            </ion-text>
+        </ion-item>
+    </ion-list>
+</ion-content>

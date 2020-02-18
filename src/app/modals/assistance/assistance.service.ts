@@ -72,4 +72,22 @@ export class AssistanceService {
                 )
             );
     }
+
+    getAllAssistance(myId: string): Observable<IAssistance[]> {
+        return this.afs
+            .collection<IAssistance>('roadSideAssistance', ref => {
+                const query: firebase.firestore.Query = ref;
+
+                return query.where('myId', '==', myId);
+            })
+            .snapshotChanges()
+            .pipe(
+                map(changes =>
+                    changes.map(c => ({
+                        key: c.payload.doc.id,
+                        ...c.payload.doc.data()
+                    }))
+                )
+            );
+    }
 }

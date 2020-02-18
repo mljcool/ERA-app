@@ -23,6 +23,13 @@ const routes: Routes = [
           )
       },
       {
+        path: 'assistance-list',
+        loadChildren: () =>
+          import('../assistance-list/assistance-list.module').then(
+            m => m.AssistanceListPageModule
+          )
+      },
+      {
         path: 'accounts-user',
         loadChildren: () =>
           import('../accounts/user/user.module').then(m => m.UserPageModule)

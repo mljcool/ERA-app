@@ -141,7 +141,7 @@
                                         name="dots"
                                         *ngIf="!assistanceData.assignedMechanic"
                                     ></ion-spinner
-                                    >{{ mechanicInfo.name}}</span
+                                    >{{ (mechanicInfo || {}).name }}</span
                                 >
                             </ion-label>
                         </ion-item>

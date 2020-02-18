@@ -15,10 +15,6 @@ const routes: Routes = [
       import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule),
     canLoad: [AuthGuard]
   },
-  {
-    path: 'preview',
-    loadChildren: () => import('./pages/assistance/preview/preview.module').then( m => m.PreviewPageModule)
-  },
 
 ];
 
@@ -28,4 +24,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

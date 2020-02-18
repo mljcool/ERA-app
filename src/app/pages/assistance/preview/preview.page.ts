@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssistanceService } from 'src/app/modals/assistance/assistance.service';
 import { Subject } from 'rxjs';
-import { takeUntil, retry } from 'rxjs/operators';
+import { takeUntil, retry, filter } from 'rxjs/operators';
 import { IAssistance } from 'src/app/models/assistance.model';
 import {
     ActionSheetController,
@@ -9,7 +9,7 @@ import {
     ModalController,
     ToastController
 } from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { MechanicModels } from 'src/app/models/Mechanic.model';
 import { MechanicInfoComponent } from 'src/app/modals/mechanic-info/mechanic-info.component';
 
@@ -20,6 +20,7 @@ import { MechanicInfoComponent } from 'src/app/modals/mechanic-info/mechanic-inf
 })
 export class PreviewPage implements OnInit, OnDestroy {
     private unsubscribeAll: Subject<any>;
+    navigationId = '0';
     paramAccessor: any;
     shopInformation: any = {};
     mechanicInfo: MechanicModels | any = {};
@@ -74,6 +75,7 @@ export class PreviewPage implements OnInit, OnDestroy {
         this.route.queryParams
             .pipe(takeUntil(this.unsubscribeAll))
             .subscribe(params => {
+                this.navigationId = params.navigationId;
                 if (params && params.id) {
                     this.assistanceService
                         .getAllMyPendingAssistance(params.id)
@@ -97,7 +99,8 @@ export class PreviewPage implements OnInit, OnDestroy {
             });
     }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+    }
 
     clickedMarker(m: any): void { }
 
@@ -123,14 +126,6 @@ export class PreviewPage implements OnInit, OnDestroy {
             });
     }
 
-    getMenus(): void {
-        if (this.assistanceData.confirmationStatus) {
-            this.presentActionSheetExit();
-            return;
-        }
-        this.presentActionSheet();
-    }
-
     showMechanicInformation() {
         this.modalController
             .create({
@@ -145,6 +140,14 @@ export class PreviewPage implements OnInit, OnDestroy {
             });
     }
 
+    getMenus(): void {
+        if (this.assistanceData.confirmationStatus) {
+            this.presentActionSheetExit();
+            return;
+        }
+        this.presentActionSheet();
+    }
+
     async presentActionSheetExit() {
         const actionSheet = await this.actionSheetController.create({
             header: `Your road assistance already done.`,
@@ -156,6 +159,14 @@ export class PreviewPage implements OnInit, OnDestroy {
                     handler: () => {
                         this.router.navigate(['/side-bar/main-menus']);
                     }
+                },
+                {
+                    text: 'View all request',
+                    icon: 'close',
+                    role: 'cancel',
+                    handler: () => {
+                        this.router.navigate(['/side-bar/assistance-list']);
+                    }
                 }
             ]
         });
@@ -163,41 +174,62 @@ export class PreviewPage implements OnInit, OnDestroy {
     }
 
     async presentActionSheet() {
+        const buttons = [];
+        buttons.push(
+            {
+                text: 'All good and Done',
+                role: 'destructive',
+                icon: 'happy',
+                handler: () => {
+                    if (this.assistanceData.status !== 'ACCEPTED') {
+                        this.presentToast();
+                        return;
+                    }
+                    this.assistanceService
+                        .allGoodAndDone(this.assistanceData.key)
+                        .then(() => {
+                            this.presentAlert();
+                        });
+                }
+            },
+            {
+                text: 'Show Mechanic info',
+                icon: 'person',
+                handler: () => {
+                    if (!this.mechanicInfo) {
+                        this.presentToast();
+                        return;
+                    }
+                    this.showMechanicInformation();
+                }
+            },
+
+        );
+
+        if (this.navigationId === '2') {
+            buttons.push({
+                text: 'Back to list',
+                icon: 'arrow-back',
+                handler: () => {
+                    this.router.navigate(['/side-bar/assistance-list']);
+                }
+            });
+        } else {
+            buttons.push({
+                text: 'Close',
+                icon: 'close',
+                role: 'cancel',
+                handler: () => {
+
+                }
+            });
+
+        }
+
+
         const actionSheet = await this.actionSheetController.create({
             header: `Hey, how was my service?`,
-            buttons: [
-                {
-                    text: 'All good and Done',
-                    role: 'destructive',
-                    icon: 'happy',
-                    handler: () => {
-                        this.assistanceService
-                            .allGoodAndDone(this.assistanceData.key)
-                            .then(() => {
-                                this.presentAlert();
-                            });
-                    }
-                },
-                {
-                    text: 'Show Mechanic info',
-                    icon: 'person',
-                    handler: () => {
-                        if (!this.mechanicInfo) {
-                            this.presentToast();
-                            return;
-                        }
-                        this.showMechanicInformation();
-                    }
-                },
-                {
-                    text: 'Close',
-                    icon: 'close',
-                    role: 'cancel',
-                    handler: () => {
-                        console.log('Cancel clicked');
-                    }
-                }
-            ]
+            buttons,
         });
         await actionSheet.present();
     }

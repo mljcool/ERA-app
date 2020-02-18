@@ -25,9 +25,9 @@ export const sideBarpages: PagesLinks[] = [
   },
   {
     id: 4,
-    title: 'Discover Shops',
-    icon: 'star',
-    url: '/side-bar/auto-shops'
+    title: 'Assistance',
+    icon: 'build',
+    url: '/side-bar/assistance-list'
   },
   {
     id: 5,
