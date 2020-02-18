@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssistanceService } from 'src/app/modals/assistance/assistance.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, retry } from 'rxjs/operators';
 import { IAssistance } from 'src/app/models/assistance.model';
 import {
     ActionSheetController,
     AlertController,
-    ModalController
+    ModalController,
+    ToastController
 } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MechanicModels } from 'src/app/models/Mechanic.model';
 import { MechanicInfoComponent } from 'src/app/modals/mechanic-info/mechanic-info.component';
 
@@ -59,7 +60,9 @@ export class PreviewPage implements OnInit, OnDestroy {
         public actionSheetController: ActionSheetController,
         private route: ActivatedRoute,
         public alertController: AlertController,
-        private modalController: ModalController
+        private modalController: ModalController,
+        public toastController: ToastController,
+        public router: Router,
     ) {
         this.unsubscribeAll = new Subject();
         this.assistanceService.onRoadSideAssistanceData
@@ -111,7 +114,7 @@ export class PreviewPage implements OnInit, OnDestroy {
             .subscribe(mechanicData => {
                 this.mechanicInfo = [];
                 this.mechanicInfo = mechanicData[0];
-                if (mechanicData.length) {
+                if (mechanicData.length && !this.assistanceData.confirmationStatus) {
                     setTimeout(() => {
                         this.showMechanicInformation();
                     }, 1500);
@@ -121,6 +124,10 @@ export class PreviewPage implements OnInit, OnDestroy {
     }
 
     getMenus(): void {
+        if (this.assistanceData.confirmationStatus) {
+            this.presentActionSheetExit();
+            return;
+        }
         this.presentActionSheet();
     }
 
@@ -136,6 +143,23 @@ export class PreviewPage implements OnInit, OnDestroy {
                 modal.present();
                 modal.onDidDismiss().then(({ data }) => { });
             });
+    }
+
+    async presentActionSheetExit() {
+        const actionSheet = await this.actionSheetController.create({
+            header: `Your road assistance already done.`,
+            buttons: [
+                {
+                    text: 'Close this request',
+                    icon: 'close',
+                    role: 'cancel',
+                    handler: () => {
+                        this.router.navigate(['/side-bar/main-menus']);
+                    }
+                }
+            ]
+        });
+        await actionSheet.present();
     }
 
     async presentActionSheet() {
@@ -155,10 +179,14 @@ export class PreviewPage implements OnInit, OnDestroy {
                     }
                 },
                 {
-                    text: 'Not Satisfied',
-                    icon: 'sad',
+                    text: 'Show Mechanic info',
+                    icon: 'person',
                     handler: () => {
-                        console.log('Share clicked');
+                        if (!this.mechanicInfo) {
+                            this.presentToast();
+                            return;
+                        }
+                        this.showMechanicInformation();
                     }
                 },
                 {
@@ -182,5 +210,13 @@ export class PreviewPage implements OnInit, OnDestroy {
             buttons: ['OK']
         });
         await alert.present();
+    }
+
+    async presentToast() {
+        const toast = await this.toastController.create({
+            message: 'Wait for the shop to respond first.',
+            duration: 1000
+        });
+        toast.present();
     }
 }

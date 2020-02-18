@@ -13,7 +13,10 @@
 </ion-header>
 
 <ion-content class="ion-no-margin assistance-preview">
-    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    <ion-progress-bar
+        type="indeterminate"
+        *ngIf="assistanceData.status !== 'DONE'"
+    ></ion-progress-bar>
     <ion-grid>
         <ion-row>
             <agm-map
@@ -50,7 +53,7 @@
         <ion-row class="ion-justify-content-center">
             <ion-card>
                 <ion-list>
-                    <ion-item>
+                    <ion-item *ngIf="!assistanceData.confirmationStatus">
                         <ion-icon
                             name="pin"
                             slot="start"
@@ -72,6 +75,7 @@
                             <ion-label
                                 >Details
                                 <small
+                                    *ngIf="!assistanceData.confirmationStatus"
                                     >(Please wait for the shop to
                                     respond)</small
                                 ></ion-label
@@ -105,6 +109,13 @@
                                             assistanceData.status}}</ion-label
                                         >
                                     </ion-chip>
+                                    <ion-chip
+                                        color="success"
+                                        *ngIf="assistanceData.status ==='DONE'"
+                                    >
+                                        <ion-icon name="build"></ion-icon>
+                                        <ion-label>Done</ion-label>
+                                    </ion-chip>
                                 </span>
                             </ion-label>
                         </ion-item>
@@ -118,6 +129,19 @@
                                         *ngIf="!assistanceData.escalatedTime"
                                     ></ion-spinner
                                     >{{ assistanceData.escalatedTime}}</span
+                                >
+                            </ion-label>
+                        </ion-item>
+
+                        <ion-item>
+                            <ion-label
+                                ><span class="label">MECHANIC:</span
+                                ><span class="label-value"
+                                    ><ion-spinner
+                                        name="dots"
+                                        *ngIf="!assistanceData.assignedMechanic"
+                                    ></ion-spinner
+                                    >{{ mechanicInfo.name}}</span
                                 >
                             </ion-label>
                         </ion-item>

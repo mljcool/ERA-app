@@ -13,8 +13,8 @@ export interface Marker {
 export interface CustomMarkersAndSize {
   url: string;
   scaledSize: {
-      width: number;
-      height: number;
+    width: number;
+    height: number;
   };
 }
 
