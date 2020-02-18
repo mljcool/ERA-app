@@ -46,7 +46,8 @@ export class PreviewPage implements OnInit, OnDestroy {
         googleWrittenAddress: '',
         confirmationStatus: false,
         myContactNumber: [],
-        assignedMechanic: ''
+        assignedMechanic: '',
+        dateAdded: ''
     };
     mapSetup = {
         message: `I'm Here`,

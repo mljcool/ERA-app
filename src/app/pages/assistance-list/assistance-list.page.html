@@ -7,7 +7,7 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="list-assistance">
     <ion-searchbar
         [(ngModel)]="searchTerm"
         (ionChange)="setFilteredItems(searchTerm)"
@@ -22,9 +22,19 @@
             <ion-thumbnail slot="start">
                 <img [src]="shop.assistanceType.imgSrc" />
             </ion-thumbnail>
-            <ion-label>
-                {{ shop.assistanceType.label }}
+
+            <ion-label class="ion-text-wrap">
+                <ion-text>
+                    <h2>{{ shop.assistanceType.label }}</h2>
+                </ion-text>
+                <ion-text color="default">
+                    <p class="small-text">
+                        {{ shop.dateAdded.toDate() | date:'yyyy/MM/dd h:mm:ss
+                        a'}}
+                    </p>
+                </ion-text>
             </ion-label>
+
             <ion-text slot="end">
                 <ion-chip color="danger" *ngIf="shop.status ==='PENDING'">
                     <ion-icon name="close-circle"></ion-icon>

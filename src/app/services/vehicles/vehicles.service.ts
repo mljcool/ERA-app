@@ -11,12 +11,16 @@ export class VehiclesService {
   vehicleRef: AngularFirestoreCollection<VehicleModel> = null;
 
   constructor(private afs: AngularFirestore,
-              ) {
+  ) {
 
     this.vehicleRef = afs.collection(this.dbPath);
   }
 
   regVehicles(users: VehicleModel): Promise<any> {
     return this.vehicleRef.doc(users.id || '').set({ ...users });
+  }
+
+  getVehicleInfo(id: string): Promise<any> {
+    return this.afs.firestore.doc(`customerVehicle/${id}`).get();
   }
 }

@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { IAssistance } from 'src/app/models/assistance.model';
 import { map } from 'rxjs/operators';
 import { MechanicModels } from 'src/app/models/Mechanic.model';
+import * as firebase from 'firebase';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +25,12 @@ export class AssistanceService {
     }
 
     saveRoadAssistance(data: IAssistance): Promise<any> {
+        data.dateAdded = this.timestamp;
+
         return this.assistanceRef.add({ ...data });
+    }
+    get timestamp() {
+        return firebase.firestore.FieldValue.serverTimestamp();
     }
 
     getAllMyPendingAssistance(id: string): Observable<IAssistance[]> {

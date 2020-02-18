@@ -1,12 +1,80 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>My Vehicles info</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>My Vehicles info</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <app-vregform></app-vregform>
+    <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+
+    <app-vregform *ngIf="!isExist"></app-vregform>
+
+    <ion-grid *ngIf="isExist">
+        <ion-row>
+            <ion-col>
+                <ion-list-header>
+                    <ion-icon name="car"></ion-icon>
+                </ion-list-header>
+                <ion-item>
+                    <ion-label position="floating">PLate number</ion-label>
+                    <ion-input
+                        type="text"
+                        [value]="VehicleModel.plateNumber"
+                        [readonly]="true"
+                    ></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Model</ion-label>
+                    <ion-input
+                        type="text"
+                        [value]="VehicleModel.model"
+                        [readonly]="true"
+                    ></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Model Year</ion-label>
+                    <ion-input
+                        type="text"
+                        [value]="VehicleModel.modelYear"
+                        [readonly]="true"
+                    ></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Color</ion-label>
+                    <ion-input
+                        type="text"
+                        [value]="VehicleModel.color"
+                        [readonly]="true"
+                    ></ion-input>
+                </ion-item>
+                <ion-item>
+                    <br />
+                    <ion-label position="floating">Fuel type</ion-label>
+                    <ion-select
+                        placeholder="Select One"
+                        [value]="VehicleModel.fuelType"
+                        [disabled]="true"
+                    >
+                        <ion-select-option value="G"
+                            >Gasoline</ion-select-option
+                        >
+                        <ion-select-option value="D">Diesel</ion-select-option>
+                        <ion-select-option value="E">Ethanol</ion-select-option>
+                        <ion-select-option value="LP"
+                            >liquified Petroleum</ion-select-option
+                        >
+                        <ion-select-option value="BD"
+                            >Bio-diesel</ion-select-option
+                        >
+                        <ion-select-option value="CNG"
+                            >Compressed Natural Gas</ion-select-option
+                        >
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

@@ -22,4 +22,5 @@ export interface IAssistance {
   confirmationStatus: boolean;
   myContactNumber?: Array<any>;
   assignedMechanic: string;
+  dateAdded: any;
 }
