@@ -1,3 +1,4 @@
+import { Router, NavigationExtras } from '@angular/router';
 import { Injectable } from '@angular/core';
 
 import {
@@ -16,9 +17,11 @@ const { PushNotifications, Modals } = Plugins;
   providedIn: 'root'
 })
 export class NotificationService {
-
-  constructor(private userNotificationService: UserNotificationService, private googleStorageUser: StoragUserDataService) {
-  }
+  constructor(
+    private userNotificationService: UserNotificationService,
+    private googleStorageUser: StoragUserDataService,
+    private router: Router
+  ) { }
 
   notificationFeatures(featureSwitch: boolean) {
     if (!featureSwitch) {
@@ -33,13 +36,18 @@ export class NotificationService {
       'registration',
       (token: PushNotificationToken) => {
         this.googleStorageUser.getObjectGoogleUsers().then(data => {
-            const params: IUsersNotifConfig = {
-                status: true,
-                token: token.value,
-                userId: data.id,
-            }
-            this.userNotificationService.createCustomerToken(params).then(() => {
-              console.log('Push registration success, token: ' + token.value);
+          const params: IUsersNotifConfig = {
+            status: true,
+            token: token.value,
+            userId: data.id
+          };
+          this.userNotificationService
+            .createCustomerToken(params)
+            .then(() => {
+              console.log(
+                'Push registration success, token: ' +
+                token.value
+              );
             });
         });
       }
@@ -71,7 +79,23 @@ export class NotificationService {
     PushNotifications.addListener(
       'pushNotificationActionPerformed',
       (notification: PushNotificationActionPerformed) => {
-        alert('Push action performed: ' + JSON.stringify(notification));
+        const parseData = JSON.parse(JSON.stringify(notification));
+        const alertRet = Modals.alert({
+          title: 'Hello',
+          message: parseData.notification.data.extra_information
+        });
+        alertRet.then(() => {
+          const navigationExtras: NavigationExtras = {
+            queryParams: {
+              id: parseData.notification.data.assistanceId,
+              navigationId: 1,
+            }
+          };
+          this.router.navigate(
+            ['/side-bar/assistance-preview'],
+            navigationExtras
+          );
+        });
         console.log('Push action performed: ' + notification);
       }
     );

@@ -36,7 +36,7 @@ export class NotesComponent implements OnInit {
         console.log('this.assistanceData', this.assistanceData);
     }
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     async presentLoading() {
         const loading = await this.loadingController.create({
@@ -81,7 +81,8 @@ export class NotesComponent implements OnInit {
                 googleWrittenAddress: this.getApproximate.writtenAddress,
                 confirmationStatus: false,
                 myContactNumber: [this.contactOne, this.contactTwo || ''],
-                assignedMechanic: ''
+                assignedMechanic: '',
+                dateAdded: '',
             };
             this.assistanceService.saveRoadAssistance(postParams).then(() => {
                 this.loadingController.dismiss();
