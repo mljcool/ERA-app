@@ -1,15 +1,40 @@
 <ion-header translucent>
     <ion-toolbar>
-        <ion-title>Mechanic Info Content</ion-title>
+        <ion-title>Your mechanic</ion-title>
         <ion-buttons slot="end">
-            <ion-button onclick="dismissModal()">Close</ion-button>
+            <ion-button (click)="dismissModal()">Close</ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <ion-content fullscreen>
-    <ion-grid>
+    <ion-grid class="ion-padding">
         <ion-row>
             <ion-img src="assets/images/mechanic.gif"></ion-img>
+        </ion-row>
+        <ion-row>
+            <h1>
+                Hi, my name is
+                <i>{{ mechanicInfo.name }}</i>
+                I'm on my way to your location
+            </h1>
+            <p>
+                Here's more about me
+            </p>
+        </ion-row>
+        <ion-row>
+            <ion-list>
+                <ion-item>
+                    <ion-label
+                        >Nick-name: {{ mechanicInfo.nickname }}</ion-label
+                    >
+                </ion-item>
+                <ion-item>
+                    <ion-label> Contact: {{ mechanicInfo.phone }} </ion-label>
+                </ion-item>
+                <ion-item>
+                    <ion-label> Address: {{ mechanicInfo.address }} </ion-label>
+                </ion-item>
+            </ion-list>
         </ion-row>
     </ion-grid>
 </ion-content>

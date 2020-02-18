@@ -3,7 +3,11 @@ import { AssistanceService } from 'src/app/modals/assistance/assistance.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IAssistance } from 'src/app/models/assistance.model';
-import { ActionSheetController, AlertController, ModalController } from '@ionic/angular';
+import {
+    ActionSheetController,
+    AlertController,
+    ModalController
+} from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { MechanicModels } from 'src/app/models/Mechanic.model';
 import { MechanicInfoComponent } from 'src/app/modals/mechanic-info/mechanic-info.component';
@@ -55,7 +59,7 @@ export class PreviewPage implements OnInit, OnDestroy {
         public actionSheetController: ActionSheetController,
         private route: ActivatedRoute,
         public alertController: AlertController,
-        private modalController: ModalController,
+        private modalController: ModalController
     ) {
         this.unsubscribeAll = new Subject();
         this.assistanceService.onRoadSideAssistanceData
@@ -81,12 +85,13 @@ export class PreviewPage implements OnInit, OnDestroy {
                                         this.shopInformation
                                     );
                                 });
-                            this.getMyMechanicData(this.assistanceData.assignedMechanic);
+                            this.getMyMechanicData(
+                                this.assistanceData.assignedMechanic
+                            );
                             console.log(this.assistanceData);
                         });
                 }
             });
-        this.showMechanicInformation();
     }
 
     ngOnInit(): void { }
@@ -106,10 +111,12 @@ export class PreviewPage implements OnInit, OnDestroy {
             .subscribe(mechanicData => {
                 this.mechanicInfo = [];
                 this.mechanicInfo = mechanicData[0];
-                console.log(
-                    'mechanicInfo',
-                    this.mechanicInfo
-                );
+                if (mechanicData.length) {
+                    setTimeout(() => {
+                        this.showMechanicInformation();
+                    }, 1500);
+                }
+                console.log('mechanicInfo', this.mechanicInfo);
             });
     }
 
@@ -122,14 +129,12 @@ export class PreviewPage implements OnInit, OnDestroy {
             .create({
                 component: MechanicInfoComponent,
                 componentProps: {
-                    mechanicInfo: this.mechanicInfo,
+                    mechanicInfo: this.mechanicInfo
                 }
             })
             .then(modal => {
                 modal.present();
-                modal.onDidDismiss().then(({ data }) => {
-
-                });
+                modal.onDidDismiss().then(({ data }) => { });
             });
     }
 
