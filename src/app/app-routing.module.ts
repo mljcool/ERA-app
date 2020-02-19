@@ -15,6 +15,10 @@ const routes: Routes = [
       import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule),
     canLoad: [AuthGuard]
   },
+  {
+    path: 'booking-type',
+    loadChildren: () => import('./modals/booking-type/booking-type.module').then( m => m.BookingTypePageModule)
+  },
 
 
 ];

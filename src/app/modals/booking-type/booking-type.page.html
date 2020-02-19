@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Please select</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-item
+        lines="full"
+        (click)="onProceed(item)"
+        *ngFor="let item of services;"
+        button
+    >
+        <ion-thumbnail slot="start">
+            <img [src]="item.imgSrc" />
+        </ion-thumbnail>
+        <ion-label> {{ item.label }}</ion-label>
+    </ion-item>
+</ion-content>

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AutoShopServicesService } from 'src/app/services/autoshop/auto-shop-services.service';
 import { map } from 'rxjs/operators';
 import { IAutoShop } from 'src/app/models/autoShop.model';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 import { NavigationExtras, Router } from '@angular/router';
+import { BookingTypePage } from 'src/app/modals/booking-type/booking-type.page';
 
 @Component({
   selector: 'app-auto-shops',
@@ -20,7 +21,8 @@ export class AutoShopsPage implements OnInit {
   constructor(
     private autoShopSrvc: AutoShopServicesService,
     public actionSheetController: ActionSheetController,
-    private router: Router
+    private router: Router,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() { }
@@ -68,7 +70,7 @@ export class AutoShopsPage implements OnInit {
           text: 'Booking',
           icon: 'calendar',
           handler: () => {
-            console.log('Share clicked');
+            this.openTypeOfBooking();
           }
         },
         {
@@ -96,4 +98,18 @@ export class AutoShopsPage implements OnInit {
       navigationExtras
     );
   }
+
+  async openTypeOfBooking() {
+
+    const modal = await this.modalCtrl.create({
+      component: BookingTypePage,
+      cssClass: 'booking-type-modal'
+    });
+    modal.onWillDismiss().then(({ data }) => {
+      console.log(data);
+    });
+    modal.present();
+  }
+
+
 }
