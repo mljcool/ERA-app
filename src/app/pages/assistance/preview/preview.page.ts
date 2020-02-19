@@ -131,8 +131,9 @@ export class PreviewPage implements OnInit, OnDestroy {
         this.modalController
             .create({
                 component: MechanicInfoComponent,
+                cssClass: 'mechanic-modal',
                 componentProps: {
-                    mechanicInfo: this.mechanicInfo
+                    mechanicInfo: this.mechanicInfo,
                 }
             })
             .then(modal => {

@@ -67,6 +67,10 @@ const routes: Routes = [
         loadChildren: () => import('../settings/settings.module').then(m => m.SettingsPageModule)
       },
       {
+        path: 'shopping-cart',
+        loadChildren: () => import('../shopping-cart/shopping-cart.module').then(m => m.ShoppingCartPageModule)
+      },
+      {
         path: '',
         redirectTo: 'main-menus'
       }

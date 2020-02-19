@@ -30,12 +30,6 @@ export const sideBarpages: PagesLinks[] = [
     url: '/side-bar/assistance-list'
   },
   {
-    id: 5,
-    title: 'Settings',
-    icon: 'settings',
-    url: '/side-bar/settings'
-  },
-  {
     id: 6,
     title: 'Logout',
     icon: 'exit',

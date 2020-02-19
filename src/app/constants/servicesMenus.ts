@@ -16,14 +16,6 @@ export const servicesMenus: ServiceMenus[] = [
     imgSrc: './assets/images/main-menus/era-shoppin-parts.png'
   },
   {
-    id: 3,
-    title: 'Schedule a maintenance',
-    descriptions: ` We've got you covered. Get an emergency cold weather start, Any
-  time`,
-    link: '',
-    imgSrc: './assets/images/main-menus/era-schedule-maintenance.png'
-  },
-  {
     id: 4,
     title: 'Hire a car mechanic',
     descriptions: ` We've got you covered. Get an emergency cold weather start, Any

@@ -16,6 +16,7 @@ const routes: Routes = [
     canLoad: [AuthGuard]
   },
 
+
 ];
 
 @NgModule({

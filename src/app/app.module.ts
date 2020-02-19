@@ -22,6 +22,7 @@ import {
   AngularFireDatabaseModule,
   AngularFireDatabase
 } from '@angular/fire/database';
+import { CartModalPageModule } from './pages/shopping-cart/cart-modal/cart-modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,7 +34,8 @@ import {
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    CartModalPageModule
   ],
   providers: [
     StatusBar,
