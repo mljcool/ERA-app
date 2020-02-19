@@ -9,18 +9,10 @@ export const servicesMenus: ServiceMenus[] = [
   },
   {
     id: 2,
-    title: 'Shop a parts',
+    title: 'Shop a parts Hire a car mechanics and book',
     descriptions: ` We've got you covered. Get an emergency cold weather start, Any
   time`,
-    link: '',
+    link: '/side-bar/auto-shops',
     imgSrc: './assets/images/main-menus/era-shoppin-parts.png'
   },
-  {
-    id: 4,
-    title: 'Hire a car mechanic',
-    descriptions: ` We've got you covered. Get an emergency cold weather start, Any
-  time`,
-    link: '',
-    imgSrc: './assets/images/main-menus/era-hire-mechanics.png'
-  }
 ];

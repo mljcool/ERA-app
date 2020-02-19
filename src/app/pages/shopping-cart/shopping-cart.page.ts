@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CartService, Product } from './cart.service';
 import { ModalController } from '@ionic/angular';
 import { CartModalPage } from './cart-modal/cart-modal.page';
+import { categories } from './constants/categories';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -19,11 +20,25 @@ export class ShoppingCartPage implements OnInit {
 
   @ViewChild('cart', { static: false, read: ElementRef }) fab: ElementRef;
 
-  constructor(private cartService: CartService, private modalCtrl: ModalController) { }
+  constructor(private cartService: CartService, private modalCtrl: ModalController) {
+    this.cartService.getProducts()
+      .subscribe(lisOfItems => {
+        this.products = lisOfItems.map(item => {
+          item.categoryByname = categories.find(
+            cat => cat.value === item.category
+          ).name;
+          item.amount = 0;
+          return item;
+        });
+        this.isLoading = false;
+        this.copyProduct = this.products;
+        console.log(lisOfItems, this.products);
+      });
+
+  }
 
   ngOnInit() {
-    this.products = this.cartService.getProducts();
-    this.copyProduct = this.cartService.getProducts();
+
     this.cart = this.cartService.getCart();
     this.cartService.getCartItemCount().subscribe(count => {
       this.cartItemCount = count;
@@ -79,3 +94,4 @@ export class ShoppingCartPage implements OnInit {
   }
 
 }
+

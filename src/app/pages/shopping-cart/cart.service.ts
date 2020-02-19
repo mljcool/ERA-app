@@ -1,10 +1,20 @@
+
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import { map } from 'rxjs/operators';
 
 export interface Product {
-  id: number;
+  id: string;
+  key?: string;
   name: string;
+  category?: number;
   price: number;
+  quantity?: number;
+  active?: boolean;
+  description?: string;
+  uid?: string;
+  categoryByname?: string;
   amount: number;
 }
 @Injectable({
@@ -12,20 +22,44 @@ export interface Product {
 })
 export class CartService {
   data: Product[] = [
-    { id: 0, name: 'Pizza Salami', price: 8.99, amount: 0 },
-    { id: 1, name: 'Pizza Classic', price: 5.49, amount: 0 },
-    { id: 2, name: 'Sliced Bread', price: 4.99, amount: 0 },
-    { id: 3, name: 'Salad', price: 6.99, amount: 0 }
+    { id: 'dasd12', name: 'Pizza Salami', price: 8.99, amount: 0 },
+    { id: 'dasddasd12', name: 'Pizza Classic', price: 5.49, amount: 0 },
+    { id: 'asdw1', name: 'Sliced Bread', price: 4.99, amount: 0 },
+    { id: '1234', name: 'Salad', price: 6.99, amount: 0 }
   ];
 
-  private cart = [];
+  private dbPath = '/items';
   private cartItemCount = new BehaviorSubject(0);
+  private cart = [];
 
-  constructor() { }
+  shopsRef: AngularFirestoreCollection<Product> = null;
 
-  getProducts() {
-    return this.data;
+  constructor(private afs: AngularFirestore) {
+    this.shopsRef = afs.collection(this.dbPath);
   }
+
+  getProducts(): Observable<Product[]> {
+    return this.afs
+      .collection<Product>('items', ref => {
+        const query: firebase.firestore.Query = ref;
+
+        return query.where(
+          'uid',
+          '==',
+          'M87fHX4q04azt0Ane3WWk8tB7rT2'
+        );
+      })
+      .snapshotChanges()
+      .pipe(
+        map(changes =>
+          changes.map(c => ({
+            key: c.payload.doc.id,
+            ...c.payload.doc.data()
+          }))
+        )
+      );
+  }
+
 
   getCart() {
     return this.cart;
@@ -38,14 +72,15 @@ export class CartService {
   addProduct(product) {
     let added = false;
     for (const p of this.cart) {
-      if (p.id === product.id) {
+      if (p.key === product.key) {
         p.amount += 1;
         added = true;
         break;
       }
     }
     if (!added) {
-      product.amoun = 1;
+      console.log(product);
+      product.amount = 1;
       this.cart.push(product);
     }
     this.cartItemCount.next(this.cartItemCount.value + 1);
@@ -55,7 +90,7 @@ export class CartService {
     for (const [index, p] of this.cart.entries()) {
       if (p.id === product.id) {
         p.amount -= 1;
-        if (p.amount == 0) {
+        if (p.amount === 0) {
           this.cart.splice(index, 1);
         }
       }
@@ -66,7 +101,6 @@ export class CartService {
   removeProduct(product) {
     for (const [index, p] of this.cart.entries()) {
       if (p.id === product.id) {
-        console.log('insider');
         this.cart.splice(index, 1);
         this.cartItemCount.next(this.cart.length);
       }
