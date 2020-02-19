@@ -38,7 +38,7 @@ export class CartService {
     this.shopsRef = afs.collection(this.dbPath);
   }
 
-  getProducts(): Observable<Product[]> {
+  getProducts(id: string): Observable<Product[]> {
     return this.afs
       .collection<Product>('items', ref => {
         const query: firebase.firestore.Query = ref;
@@ -46,7 +46,7 @@ export class CartService {
         return query.where(
           'uid',
           '==',
-          'M87fHX4q04azt0Ane3WWk8tB7rT2'
+          id
         );
       })
       .snapshotChanges()
@@ -60,6 +60,10 @@ export class CartService {
       );
   }
 
+  clearCart(): void {
+    this.cart = [];
+    this.cartItemCount.next(0);
+  }
 
   getCart() {
     return this.cart;

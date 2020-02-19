@@ -3,6 +3,9 @@ import { CartService, Product } from './cart.service';
 import { ModalController } from '@ionic/angular';
 import { CartModalPage } from './cart-modal/cart-modal.page';
 import { categories } from './constants/categories';
+import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -10,6 +13,7 @@ import { categories } from './constants/categories';
   styleUrls: ['./shopping-cart.page.scss'],
 })
 export class ShoppingCartPage implements OnInit {
+  private unsubscribeAll: Subject<any>;
   public searchTerm = '';
   cart = [];
   cartItemCount = 0;
@@ -20,20 +24,25 @@ export class ShoppingCartPage implements OnInit {
 
   @ViewChild('cart', { static: false, read: ElementRef }) fab: ElementRef;
 
-  constructor(private cartService: CartService, private modalCtrl: ModalController) {
-    this.cartService.getProducts()
-      .subscribe(lisOfItems => {
-        this.products = lisOfItems.map(item => {
-          item.categoryByname = categories.find(
-            cat => cat.value === item.category
-          ).name;
-          item.amount = 0;
-          return item;
-        });
-        this.isLoading = false;
-        this.copyProduct = this.products;
-        console.log(lisOfItems, this.products);
+  constructor(private cartService: CartService, private modalCtrl: ModalController, private route: ActivatedRoute) {
+    this.unsubscribeAll = new Subject();
+    this.route.queryParams
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe(params => {
+        this.cartService.getProducts(params.id)
+          .subscribe(lisOfItems => {
+            this.products = lisOfItems.map(item => {
+              item.categoryByname = categories.find(
+                cat => cat.value === item.category
+              ).name;
+              item.amount = 0;
+              return item;
+            });
+            this.isLoading = false;
+            this.copyProduct = this.products;
+          });
       });
+
 
   }
 

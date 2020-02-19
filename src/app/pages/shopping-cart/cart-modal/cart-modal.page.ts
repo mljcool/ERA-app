@@ -1,6 +1,6 @@
 import { Product, CartService } from './../cart.service';
 import { Component, OnInit } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController } from '@ionic/angular';
 import { CheckoutCartService } from '../checkout.service';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 
@@ -11,13 +11,14 @@ import { StoragUserDataService } from 'src/app/services/storages/storage-user-se
 })
 export class CartModalPage implements OnInit {
   cart: Product[] = [];
-
+  isSubmitting = false;
   constructor(
     private cartService: CartService,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private checkoutSrvc: CheckoutCartService,
     private googleStorageUser: StoragUserDataService,
+    public loadingController: LoadingController
   ) { }
 
   ngOnInit() {
@@ -33,7 +34,6 @@ export class CartModalPage implements OnInit {
   }
 
   removeCartItem(product) {
-    console.log('here', product);
     this.cartService.removeProduct(product);
   }
 
@@ -46,10 +46,9 @@ export class CartModalPage implements OnInit {
   }
 
   checkout() {
-
+    this.presentLoading();
     this.googleStorageUser.getObjectGoogleUsers().then(data => {
       this.checkoutSrvc.checkoutOrders(this.cart, this.getTotal(), data.id, data.name).then(response => {
-        console.log(this.cart);
         this.alertCtrl.create({
           header: 'Thanks for your Order!',
           message: 'We will deliver your item as soon as possible',
@@ -57,17 +56,21 @@ export class CartModalPage implements OnInit {
         }).then(alert => {
           alert.present().then(() => {
             this.modalCtrl.dismiss();
+            this.loadingController.dismiss();
+            this.isSubmitting = false;
+            this.cartService.clearCart();
           });
-
         });
       });
     });
-
-
-
-
-    // Perfom PayPal or Stripe checkout process
-    console.log(this.cart);
-
   }
+
+  async presentLoading() {
+    this.isSubmitting = true;
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await loading.present();
+  }
+
 }
