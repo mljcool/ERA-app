@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import {
+  AngularFirestoreCollection,
+  AngularFirestore
+} from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import * as firebase from 'firebase';
 import { generateGUID } from 'src/app/utils/uidGenerator';
-
 
 export interface IBooking {
   start: string | any;
@@ -36,7 +38,7 @@ export interface IBooking {
 @Injectable({
   providedIn: 'root'
 })
-export class BookingFormService {
+export class MyBookingService {
   private dbPath = '/booking';
   private mechanic = [];
 
@@ -50,36 +52,21 @@ export class BookingFormService {
     return firebase.firestore.FieldValue.serverTimestamp();
   }
 
-  saveBooking(formData: any): Promise<any> {
-    const params = {
-      start: new Date(formData.startDate),
-      end: new Date(formData.startDate),
-      title: formData.categoryByname,
-      allDay: false,
-      color: {
-        primary: null,
-        secondary: null,
-      },
-      resizable: {
-        beforeStart: false,
-        afterEnd: false,
-      },
-      draggable: false,
-      meta: {
-        location: null,
-        notes: formData.notes,
-      },
-      extraData: {
-        customerData: formData.customerId,
-        status: 'PENDING',
-        referenceId: generateGUID(),
-        startTime: formData.time,
-      },
-      disposableData: formData
-    };
-    return this.bookingRef.add({ ...params });
+  getAllBookings(id: string): Observable<IBooking[]> {
+    return this.afs
+      .collection<IBooking>('booking', ref => {
+        const query: firebase.firestore.Query = ref;
+
+        return query.where('extraData.customerData.id', '==', id);
+      })
+      .snapshotChanges()
+      .pipe(
+        map(changes =>
+          changes.map(c => ({
+            key: c.payload.doc.id,
+            ...c.payload.doc.data()
+          }))
+        )
+      );
   }
-
-
-
 }

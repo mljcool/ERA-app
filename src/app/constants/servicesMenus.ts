@@ -9,7 +9,7 @@ export const servicesMenus: ServiceMenus[] = [
   },
   {
     id: 2,
-    title: 'Shop a parts Hire a car mechanics and book',
+    title: 'Shop a parts or book',
     descriptions: ` We've got you covered. Get an emergency cold weather start, Any
   time`,
     link: '/side-bar/auto-shops',

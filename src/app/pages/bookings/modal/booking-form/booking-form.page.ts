@@ -63,8 +63,8 @@ export class BookingFormPage implements OnInit {
   isSuccessSaving(): void {
     this.loadingController.dismiss();
     this.alertCtrl.create({
-      header: 'Thanks for your bookin!',
-      message: 'we will respond to you as soon as possible',
+      header: 'Thanks for booking!',
+      message: 'We will respond to you as soon as possible',
       buttons: ['OK']
     }).then(alert => {
       alert.present().then(() => {
