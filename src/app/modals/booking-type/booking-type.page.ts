@@ -12,14 +12,16 @@ export class BookingTypePage implements OnInit {
   services: AssistanceTypes[] = [
     {
       id: 1,
-      label: 'Book a mechanic',
-      imgSrc: this.srcPath('manmechanic.gif')
+      label: 'Schedule an appointment',
+      imgSrc: this.srcPath('calendar.gif')
     },
     {
       id: 2,
-      label: 'Services',
-      imgSrc: this.srcPath('servicescars.gif')
-    }];
+      label: 'Shop a parts',
+      imgSrc: this.srcPath('cart.gif')
+
+    }
+  ];
 
   constructor(private modalCtrl: ModalController) { }
 

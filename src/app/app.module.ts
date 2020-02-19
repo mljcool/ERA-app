@@ -24,6 +24,7 @@ import {
 } from '@angular/fire/database';
 import { CartModalPageModule } from './pages/shopping-cart/cart-modal/cart-modal.module';
 import { BookingTypePageModule } from './modals/booking-type/booking-type.module';
+import { BookingFormPageModule } from './pages/bookings/modal/booking-form/booking-form.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,7 +38,8 @@ import { BookingTypePageModule } from './modals/booking-type/booking-type.module
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     CartModalPageModule,
-    BookingTypePageModule
+    BookingTypePageModule,
+    BookingFormPageModule
   ],
   providers: [
     StatusBar,

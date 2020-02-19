@@ -52,38 +52,10 @@ export class AutoShopsPage implements OnInit {
     }
   }
 
-  async presentActionSheet(data: any) {
+  presentActionSheet(data: any) {
     const shopData = data;
-    console.log(shopData);
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Service type',
-      buttons: [
-        {
-          text: 'Shop a parts',
-          role: 'destructive',
-          icon: 'cart',
-          handler: () => {
-            this.proceedToShop(data, 'shopping-cart');
-          }
-        },
-        {
-          text: 'Booking',
-          icon: 'calendar',
-          handler: () => {
-            this.openTypeOfBooking(shopData);
-          }
-        },
-        {
-          text: 'Close',
-          icon: 'close',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    await actionSheet.present();
+    this.openTypeOfBooking(shopData);
+
   }
 
   proceedToShop(param: IAutoShop, url: string): void {
@@ -106,8 +78,7 @@ export class AutoShopsPage implements OnInit {
       cssClass: 'booking-type-modal'
     });
     modal.onWillDismiss().then(({ data }) => {
-      console.log(data);
-      const urlType = data.id === 1 ? 'mechanic' : 'carservices';
+      const urlType = data.id === 1 ? 'carservices' : 'shopping-cart';
       this.proceedToShop(shopData, urlType);
     });
     modal.present();

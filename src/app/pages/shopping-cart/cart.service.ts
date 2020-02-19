@@ -83,7 +83,6 @@ export class CartService {
       }
     }
     if (!added) {
-      console.log(product);
       product.amount = 1;
       this.cart.push(product);
     }
