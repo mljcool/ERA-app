@@ -70,6 +70,15 @@ const routes: Routes = [
         path: 'shopping-cart',
         loadChildren: () => import('../shopping-cart/shopping-cart.module').then(m => m.ShoppingCartPageModule)
       },
+
+      {
+        path: 'mechanic',
+        loadChildren: () => import('../bookings/mechanic/mechanic.module').then(m => m.MechanicPageModule)
+      },
+      {
+        path: 'carservices',
+        loadChildren: () => import('../bookings/carservices/carservices.module').then(m => m.CarservicesPageModule)
+      },
       {
         path: '',
         redirectTo: 'main-menus'

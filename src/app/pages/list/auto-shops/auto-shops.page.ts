@@ -70,7 +70,7 @@ export class AutoShopsPage implements OnInit {
           text: 'Booking',
           icon: 'calendar',
           handler: () => {
-            this.openTypeOfBooking();
+            this.openTypeOfBooking(shopData);
           }
         },
         {
@@ -99,7 +99,7 @@ export class AutoShopsPage implements OnInit {
     );
   }
 
-  async openTypeOfBooking() {
+  async openTypeOfBooking(shopData) {
 
     const modal = await this.modalCtrl.create({
       component: BookingTypePage,
@@ -107,6 +107,8 @@ export class AutoShopsPage implements OnInit {
     });
     modal.onWillDismiss().then(({ data }) => {
       console.log(data);
+      const urlType = data.id === 1 ? 'mechanic' : 'carservices';
+      this.proceedToShop(shopData, urlType);
     });
     modal.present();
   }

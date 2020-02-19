@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy
+} from '@angular/core';
 import { CartService, Product } from './cart.service';
 import { ModalController } from '@ionic/angular';
 import { CartModalPage } from './cart-modal/cart-modal.page';
@@ -10,9 +16,9 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.page.html',
-  styleUrls: ['./shopping-cart.page.scss'],
+  styleUrls: ['./shopping-cart.page.scss']
 })
-export class ShoppingCartPage implements OnInit {
+export class ShoppingCartPage implements OnInit, OnDestroy {
   private unsubscribeAll: Subject<any>;
   public searchTerm = '';
   cart = [];
@@ -24,12 +30,17 @@ export class ShoppingCartPage implements OnInit {
 
   @ViewChild('cart', { static: false, read: ElementRef }) fab: ElementRef;
 
-  constructor(private cartService: CartService, private modalCtrl: ModalController, private route: ActivatedRoute) {
+  constructor(
+    private cartService: CartService,
+    private modalCtrl: ModalController,
+    private route: ActivatedRoute
+  ) {
     this.unsubscribeAll = new Subject();
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(params => {
-        this.cartService.getProducts(params.id)
+        this.cartService
+          .getProducts(params.id)
           .subscribe(lisOfItems => {
             this.products = lisOfItems.map(item => {
               item.categoryByname = categories.find(
@@ -42,16 +53,22 @@ export class ShoppingCartPage implements OnInit {
             this.copyProduct = this.products;
           });
       });
-
-
   }
 
   ngOnInit() {
-
     this.cart = this.cartService.getCart();
-    this.cartService.getCartItemCount().subscribe(count => {
-      this.cartItemCount = count;
-    });
+    this.cartService
+      .getCartItemCount()
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe(count => {
+        this.cartItemCount = count;
+      });
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   addToCart(product) {
@@ -67,7 +84,10 @@ export class ShoppingCartPage implements OnInit {
       cssClass: 'cart-modal'
     });
     modal.onWillDismiss().then(() => {
-      this.fab.nativeElement.classList.remove('animated', 'bounceOutLeft')
+      this.fab.nativeElement.classList.remove(
+        'animated',
+        'bounceOutLeft'
+      );
       this.animateCSS('bounceInLeft');
     });
     modal.present();
@@ -78,9 +98,7 @@ export class ShoppingCartPage implements OnInit {
     console.log(search);
     if (searchTerm !== '') {
       const copyShops = this.copyProduct.filter(service => {
-        return service.name
-          .toLowerCase()
-          .includes(searchTerm);
+        return service.name.toLowerCase().includes(searchTerm);
       });
       this.products = [...copyShops];
     } else {
@@ -91,7 +109,7 @@ export class ShoppingCartPage implements OnInit {
 
   animateCSS(animationName, keepAnimated = false) {
     const node = this.fab.nativeElement;
-    node.classList.add('animated', animationName)
+    node.classList.add('animated', animationName);
 
     function handleAnimationEnd() {
       if (!keepAnimated) {
@@ -101,6 +119,4 @@ export class ShoppingCartPage implements OnInit {
     }
     node.addEventListener('animationend', handleAnimationEnd);
   }
-
 }
-

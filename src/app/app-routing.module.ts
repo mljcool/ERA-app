@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'booking-type',
-    loadChildren: () => import('./modals/booking-type/booking-type.module').then( m => m.BookingTypePageModule)
+    loadChildren: () => import('./modals/booking-type/booking-type.module').then(m => m.BookingTypePageModule)
   },
 
 
