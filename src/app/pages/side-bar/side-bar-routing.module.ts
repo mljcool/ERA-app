@@ -80,6 +80,10 @@ const routes: Routes = [
         loadChildren: () => import('../bookings/carservices/carservices.module').then(m => m.CarservicesPageModule)
       },
       {
+        path: 'orders',
+        loadChildren: () => import('../list/orders/orders.module').then(m => m.OrdersPageModule)
+      },
+      {
         path: '',
         redirectTo: 'main-menus'
       }

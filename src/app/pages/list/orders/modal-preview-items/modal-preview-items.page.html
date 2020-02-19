@@ -1,0 +1,46 @@
+<ion-content fullscreen>
+    <ion-header translucent>
+        <ion-toolbar>
+            <ion-title>Cart Details</ion-title>
+            <ion-buttons slot="end">
+                <ion-button (click)="close()" fill="clear" color="dark">
+                    <ion-icon name="close" slot="start"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
+
+    <div class="ion-padding">
+        <ion-list>
+            <ion-item *ngFor="let p of cart" class="ion-text-wrap">
+                <ion-grid>
+                    <ion-row class="ion-align-items-center">
+                        <ion-col size="12" class="ion-align-self-center">
+                            QTY {{ p.amount }}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="6">
+                            <b>{{ p.name }}</b>
+                        </ion-col>
+                        <ion-col size="5" class="ion-text-end">
+                            {{ p.amount * p.price | currency:"PHP":"₱" }}
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+            <ion-item>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="6">
+                            Total:
+                        </ion-col>
+                        <ion-col size="5" class="ion-text-end">
+                            {{ getTotal() | currency:"PHP":"₱" }}
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+        </ion-list>
+    </div>
+</ion-content>

@@ -25,6 +25,12 @@ export const sideBarpages: PagesLinks[] = [
   },
   {
     id: 4,
+    title: 'Orders',
+    icon: 'cart',
+    url: '/side-bar/orders'
+  },
+  {
+    id: 5,
     title: 'Assistance',
     icon: 'build',
     url: '/side-bar/assistance-list'

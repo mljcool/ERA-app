@@ -25,6 +25,7 @@ import {
 import { CartModalPageModule } from './pages/shopping-cart/cart-modal/cart-modal.module';
 import { BookingTypePageModule } from './modals/booking-type/booking-type.module';
 import { BookingFormPageModule } from './pages/bookings/modal/booking-form/booking-form.module';
+import { ModalPreviewItemsPageModule } from './pages/list/orders/modal-preview-items/modal-preview-items.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,7 +40,8 @@ import { BookingFormPageModule } from './pages/bookings/modal/booking-form/booki
     AngularFireDatabaseModule,
     CartModalPageModule,
     BookingTypePageModule,
-    BookingFormPageModule
+    BookingFormPageModule,
+    ModalPreviewItemsPageModule
   ],
   providers: [
     StatusBar,

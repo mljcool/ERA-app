@@ -21,8 +21,9 @@ const routes: Routes = [
   },
   {
     path: 'booking-form',
-    loadChildren: () => import('./pages/bookings/modal/booking-form/booking-form.module').then( m => m.BookingFormPageModule)
+    loadChildren: () => import('./pages/bookings/modal/booking-form/booking-form.module').then(m => m.BookingFormPageModule)
   },
+
 
 
 ];

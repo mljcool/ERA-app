@@ -59,10 +59,10 @@
                         </ion-col>
                     </ion-row>
                     <ion-row>
-                        <ion-col size="9">
+                        <ion-col size="6">
                             <b>{{ p.name }}</b>
                         </ion-col>
-                        <ion-col size="3" class="ion-text-end">
+                        <ion-col size="5" class="ion-text-end">
                             {{ p.amount * p.price | currency:"PHP":"₱" }}
                         </ion-col>
                     </ion-row>
@@ -71,10 +71,10 @@
             <ion-item>
                 <ion-grid>
                     <ion-row>
-                        <ion-col size="9">
+                        <ion-col size="6">
                             Total:
                         </ion-col>
-                        <ion-col size="3" class="ion-text-end">
+                        <ion-col size="5" class="ion-text-end">
                             {{ getTotal() | currency:"PHP":"₱" }}
                         </ion-col>
                     </ion-row>
