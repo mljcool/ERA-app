@@ -48,6 +48,24 @@ export class MyBookingsPage implements OnInit, OnDestroy {
 
   }
 
+  statusLColors(status: string): string {
+
+    let color = 'warning';
+    switch (status) {
+      case 'ACCPETED':
+        color = 'success';
+        break;
+      case 'DECLINE':
+        color = 'warning';
+        break;
+      default:
+        break;
+    }
+    console.log(status);
+    console.log(color);
+    return color;
+  }
+
   setFilteredItems(search: string): void {
     const searchTerm = search.toLowerCase();
     console.log(search);
