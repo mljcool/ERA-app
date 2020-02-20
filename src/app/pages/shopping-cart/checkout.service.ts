@@ -31,6 +31,7 @@ export interface Orders {
     }
   };
   products: Array<Prod[]>;
+  extraDetails: any;
 }
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,7 @@ export class CheckoutCartService {
     return firebase.firestore.FieldValue.serverTimestamp();
   }
 
-  checkoutOrders(itemData: any, total, uid, name): Promise<any> {
+  checkoutOrders(itemData: any, total: any, uid: any, name: any, extraDetails): Promise<any> {
 
     const shopId = itemData[0].uid;
     const params: Orders = {
@@ -62,8 +63,8 @@ export class CheckoutCartService {
       customer: {
         uid,
         name
-      }
-
+      },
+      extraDetails
     };
 
     return this.shopsRef.add({ ...params });

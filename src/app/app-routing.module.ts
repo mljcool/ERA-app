@@ -23,6 +23,14 @@ const routes: Routes = [
     path: 'booking-form',
     loadChildren: () => import('./pages/bookings/modal/booking-form/booking-form.module').then(m => m.BookingFormPageModule)
   },
+  {
+    path: 'loction-picker',
+    loadChildren: () => import('./modals/loction-picker/loction-picker.module').then( m => m.LoctionPickerPageModule)
+  },
+  {
+    path: 'set-contact-info',
+    loadChildren: () => import('./modals/set-contact-info/set-contact-info.module').then( m => m.SetContactInfoPageModule)
+  },
 
 
 

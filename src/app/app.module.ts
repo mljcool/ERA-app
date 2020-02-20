@@ -26,6 +26,8 @@ import { CartModalPageModule } from './pages/shopping-cart/cart-modal/cart-modal
 import { BookingTypePageModule } from './modals/booking-type/booking-type.module';
 import { BookingFormPageModule } from './pages/bookings/modal/booking-form/booking-form.module';
 import { ModalPreviewItemsPageModule } from './pages/list/orders/modal-preview-items/modal-preview-items.module';
+import { LoctionPickerPageModule } from './modals/loction-picker/loction-picker.module';
+import { SetContactInfoPageModule } from './modals/set-contact-info/set-contact-info.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,7 +43,9 @@ import { ModalPreviewItemsPageModule } from './pages/list/orders/modal-preview-i
     CartModalPageModule,
     BookingTypePageModule,
     BookingFormPageModule,
-    ModalPreviewItemsPageModule
+    ModalPreviewItemsPageModule,
+    LoctionPickerPageModule,
+    SetContactInfoPageModule,
   ],
   providers: [
     StatusBar,

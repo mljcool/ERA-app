@@ -1,0 +1,35 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ modalTitle }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="location-picker">
+    <ion-item>
+        <ion-input
+            type="text"
+            class="form-control"
+            id="txtHome"
+            (keydown.enter)="$event.preventDefault()"
+            placeholder="Enter {{modalTitle}}"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="off"
+            type="text"
+            #search
+        ></ion-input>
+    </ion-item>
+
+    <agm-map
+        [latitude]="latitude"
+        [longitude]="longitude"
+        [scrollwheel]="false"
+        [zoom]="zoom"
+    >
+        <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+    </agm-map>
+
+    <ion-button expand="full" (click)="doneLocating()" *ngIf="isSearching">
+        Done
+    </ion-button>
+</ion-content>

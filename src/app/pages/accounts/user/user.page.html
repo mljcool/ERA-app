@@ -1,59 +1,40 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>My Account</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>My Account</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-grid class="menu-list" *ngIf="userData">
-    <ion-row>
-      <ion-col>
-        <ion-card color="light">
-          <ion-item lines="none">
-            <ion-avatar slot="start">
-                <ion-img [src]="userData.imageUrl" ></ion-img>
-            </ion-avatar>
-            <ion-label>Profile Information</ion-label>
-            <ion-badge color="success">Active</ion-badge>
-          </ion-item>
+    <ion-grid class="menu-list" *ngIf="userData">
+        <ion-row>
+            <ion-col>
+                <ion-card color="light">
+                    <ion-item lines="none">
+                        <ion-avatar slot="start">
+                            <ion-img [src]="userData.imageUrl"></ion-img>
+                        </ion-avatar>
+                        <ion-label>Profile Information</ion-label>
+                        <ion-badge color="success">Active</ion-badge>
+                    </ion-item>
 
-          <ion-card-content>
-            <ion-item lines="none">
-              <ion-icon name="person" slot="start"></ion-icon>
-              <ion-label>{{ userData.givenName}} {{ userData.familyName}}</ion-label>
-            </ion-item>
-            <ion-item lines="none">
-              <ion-icon name="call" slot="start"></ion-icon>
-              <ion-label>{{ userData.email}}</ion-label>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
-        <ion-card color="light">
-          <ion-item lines="none">
-            <ion-icon name="calendar" slot="start"></ion-icon>
-            <ion-label>Total Bookings/Amount</ion-label>
-          </ion-item>
-
-          <ion-card-content>
-            <ion-item lines="none">
-              <ion-icon name="calculator" slot="start"></ion-icon>
-              <ion-label>100</ion-label>
-            </ion-item>
-            <ion-item lines="none">
-              <ion-icon name="cash" slot="start"></ion-icon>
-              <ion-label>100.25</ion-label>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+                    <ion-card-content>
+                        <ion-item lines="none">
+                            <ion-icon name="person" slot="start"></ion-icon>
+                            <ion-label
+                                >{{ userData.givenName}} {{
+                                userData.familyName}}</ion-label
+                            >
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-icon name="call" slot="start"></ion-icon>
+                            <ion-label>{{ userData.email}}</ion-label>
+                        </ion-item>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
