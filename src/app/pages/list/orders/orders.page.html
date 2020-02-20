@@ -20,6 +20,7 @@
                 <ion-label>{{ p.date.toDate() | date: "yyyy/MM/dd"}}</ion-label>
                 <ion-button
                     fill="outline"
+                    [color]="p.colorMobile"
                     slot="end"
                     (click)="viewProd(p.products)"
                 >

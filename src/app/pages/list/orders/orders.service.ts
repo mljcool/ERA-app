@@ -31,6 +31,8 @@ export interface Orders {
     }
   };
   products: Array<Prod[]>;
+  colorWeb: string;
+  colorMobile: string;
 }
 @Injectable({
   providedIn: 'root'

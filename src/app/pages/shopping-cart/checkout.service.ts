@@ -32,6 +32,8 @@ export interface Orders {
   };
   products: Array<Prod[]>;
   extraDetails: any;
+  colorWeb: string;
+  colorMobile: string;
 }
 @Injectable({
   providedIn: 'root'
@@ -64,7 +66,9 @@ export class CheckoutCartService {
         uid,
         name
       },
-      extraDetails
+      extraDetails,
+      colorWeb: 'orange-500',
+      colorMobile: 'warning',
     };
 
     return this.shopsRef.add({ ...params });
