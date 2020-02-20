@@ -87,12 +87,12 @@ export class NotificationService {
         alertRet.then(() => {
           const navigationExtras: NavigationExtras = {
             queryParams: {
-              id: parseData.notification.data.assistanceId,
+              id: parseData.notification.data.refIds,
               navigationId: 1,
             }
           };
           this.router.navigate(
-            ['/side-bar/assistance-preview'],
+            ['/side-bar/' + parseData.notification.data.typeRoute],
             navigationExtras
           );
         });
