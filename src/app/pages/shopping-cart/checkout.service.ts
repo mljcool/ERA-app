@@ -52,9 +52,14 @@ export class CheckoutCartService {
     return firebase.firestore.FieldValue.serverTimestamp();
   }
 
-  checkoutOrders(itemData: any, total: any, uid: any, name: any, extraDetails): Promise<any> {
+  checkoutOrders(itemData: any, total: any, clientUid: any, clientName: any, extraDetails): Promise<any> {
 
     const shopId = itemData[0].uid;
+    const customerInfo  = {
+      uid: clientUid,
+      name : clientName
+    };
+
     const params: Orders = {
       reference: generateGUID(),
       total,
@@ -62,16 +67,13 @@ export class CheckoutCartService {
       products: itemData,
       status: 'PENDING',
       shopId,
-      customer: {
-        uid,
-        name
-      },
+      customer: Object.assign({}, customerInfo),
       extraDetails,
       colorWeb: 'orange-500',
       colorMobile: 'warning',
     };
-
-    return this.shopsRef.add({ ...params });
+    console.log('checkoutOrders', params);
+    return this.shopsRef.add(Object.assign({}, params));
   }
 
 

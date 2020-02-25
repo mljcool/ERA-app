@@ -116,8 +116,8 @@ export class CartModalPage implements OnInit {
       const extraDetails = {
         customerAddress: this.customerAddress, customerExtraInfo: this.customerExtraInfo
       };
-
-      this.checkoutSrvc.checkoutOrders(this.cart, this.getTotal(), data.id, data.name, extraDetails).then(response => {
+      const customerName = `${data.familyName} ${data.givenName}`;
+      this.checkoutSrvc.checkoutOrders(this.cart, this.getTotal(), data.id, customerName, extraDetails).then(response => {
         this.alertCtrl.create({
           header: 'Thanks for your Order!',
           message: 'We will deliver your item as soon as possible',
