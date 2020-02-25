@@ -48,7 +48,8 @@ export class LocationsPage implements OnInit {
         private modalController: ModalController
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void { }
+    ionViewDidEnter() {
         this.autoShopSrvc.getAuthoShopList().subscribe(shopLists => {
             this.shopLists = shopLists;
             if (this.shopLists.length !== 0) {
