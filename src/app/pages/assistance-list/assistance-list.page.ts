@@ -44,9 +44,7 @@ export class AssistanceListPage implements OnInit, OnDestroy {
         .subscribe(assistanceLists => {
           this.assistanceLists = assistanceLists;
           this.shops = this.copyShops = assistanceLists;
-          if (this.assistanceLists.length >= 1) {
-            this.isLoading = false;
-          }
+          this.isLoading = false;
           console.log(assistanceLists);
         });
     });
