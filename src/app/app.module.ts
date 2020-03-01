@@ -28,6 +28,7 @@ import { BookingFormPageModule } from './pages/bookings/modal/booking-form/booki
 import { ModalPreviewItemsPageModule } from './pages/list/orders/modal-preview-items/modal-preview-items.module';
 import { LoctionPickerPageModule } from './modals/loction-picker/loction-picker.module';
 import { SetContactInfoPageModule } from './modals/set-contact-info/set-contact-info.module';
+import { ContactInfoPageModule } from './modals/contact-info/contact-info.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -46,6 +47,7 @@ import { SetContactInfoPageModule } from './modals/set-contact-info/set-contact-
     ModalPreviewItemsPageModule,
     LoctionPickerPageModule,
     SetContactInfoPageModule,
+    ContactInfoPageModule
   ],
   providers: [
     StatusBar,

@@ -30,7 +30,11 @@ const routes: Routes = [
   {
     path: 'set-contact-info',
     loadChildren: () => import('./modals/set-contact-info/set-contact-info.module').then( m => m.SetContactInfoPageModule)
+  },  {
+    path: 'contact-info',
+    loadChildren: () => import('./modals/contact-info/contact-info.module').then( m => m.ContactInfoPageModule)
   },
+
 
 
 

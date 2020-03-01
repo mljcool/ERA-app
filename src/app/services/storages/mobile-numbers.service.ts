@@ -8,7 +8,7 @@ const { Storage } = Plugins;
 @Injectable({
   providedIn: 'root'
 })
-export class StoragContactService {
+export class StorageContactService {
   async setObjectUserContact(contact: ContaInfo) {
     await Storage.set({
       key: 'contactInfo',
