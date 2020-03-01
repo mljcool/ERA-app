@@ -36,5 +36,39 @@
                 </ion-card>
             </ion-col>
         </ion-row>
+
+        <ion-row>
+            <ion-col>
+                <ion-card color="light">
+                    <ion-item lines="none">
+                       
+                        <ion-label>Contact Information</ion-label>
+                        <ion-button
+                        fill="outline"
+                        slot="end"
+                        color="success"
+                        (click)="setupContactInformations()"
+                    >
+                        <ion-icon name="add" slot="end"></ion-icon>
+                        Setup
+                    </ion-button>
+                    </ion-item>
+
+                    <ion-card-content>
+                        <ion-item lines="none">
+                            <ion-icon name="call" slot="start"></ion-icon>
+                            <ion-label
+                                >{{ userData.givenName}} {{
+                                userData.familyName}}</ion-label
+                            >
+                        </ion-item>
+                        <ion-item lines="none">
+                            <ion-icon name="call" slot="start"></ion-icon>
+                            <ion-label>{{ userData.email}}</ion-label>
+                        </ion-item>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
     </ion-grid>
 </ion-content>
