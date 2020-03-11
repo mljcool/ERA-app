@@ -4,16 +4,35 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>My Vehicles info</ion-title>
+        <ion-buttons slot="primary" *ngIf="vehicles.length">
+            <ion-buttons (click)="addNewVehicles()">
+                <ion-icon name="add-circle" slot="icon-only"></ion-icon>
+            </ion-buttons>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding vehicle-list">
     <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
 
-    <app-vregform *ngIf="!isExist"></app-vregform>
+    <app-vregform *ngIf="!vehicles.length && !isLoading"></app-vregform>
 
-    <ion-grid *ngIf="isExist">
+    <ion-list *ngIf="vehicles.length">
+        <ion-item
+            *ngFor="let shop of vehicles"
+            button
+            (click)="viewDetails(shop)"
+        >
+            <ion-icon name="car" slot="start"></ion-icon>
+            {{ shop.model }} <span class="plate-number">{{ shop.plateNumber}}</span>
+        </ion-item>
+    </ion-list>
+
+
+    <!-- <ion-grid *ngIf="isExist">
         <ion-row>
+    
+            
             <ion-col>
                 <ion-list-header>
                     <ion-icon name="car"></ion-icon>
@@ -76,5 +95,5 @@
                 </ion-item>
             </ion-col>
         </ion-row>
-    </ion-grid>
+    </ion-grid> -->
 </ion-content>

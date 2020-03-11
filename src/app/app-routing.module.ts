@@ -34,6 +34,14 @@ const routes: Routes = [
     path: 'contact-info',
     loadChildren: () => import('./modals/contact-info/contact-info.module').then( m => m.ContactInfoPageModule)
   },
+  {
+    path: 'add-vehicles',
+    loadChildren: () => import('./modals/add-vehicles/add-vehicles.module').then( m => m.AddVehiclesPageModule)
+  },
+  {
+    path: 'view-vehicles',
+    loadChildren: () => import('./modals/view-vehicles/view-vehicles.module').then( m => m.ViewVehiclesPageModule)
+  },
 
 
 

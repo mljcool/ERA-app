@@ -49,12 +49,13 @@ export class SideBarPage implements OnInit {
       return;
     }
 
-    this.userService.checkVehicleRegistration(this.userData.id).then(response => {
-      if (response) {
+    this.userService.checkVehicleRegistration(this.userData.id).subscribe(response => {
+      if (response.length !== 0) {
+        console.log('cool', response);
         this.router.navigate([pages.url]);
         return;
       }
-      if (pages.url !== '/side-bar/accounts-vehicles') {
+      if (response.length === 0) {
 
         this.isNotRegistered();
       }

@@ -37,6 +37,7 @@ export class UserPage implements OnInit {
     async openContactSetup() {
         const modal = await this.modalCtrl.create({
             component: ContactInfoPage,
+            cssClass: 'contact-setup-modal',
             componentProps: {
                 title: 'Contact info'
             }

@@ -29,6 +29,8 @@ import { ModalPreviewItemsPageModule } from './pages/list/orders/modal-preview-i
 import { LoctionPickerPageModule } from './modals/loction-picker/loction-picker.module';
 import { SetContactInfoPageModule } from './modals/set-contact-info/set-contact-info.module';
 import { ContactInfoPageModule } from './modals/contact-info/contact-info.module';
+import { AddVehiclesPageModule } from './modals/add-vehicles/add-vehicles.module';
+import { ViewVehiclesPageModule } from './modals/view-vehicles/view-vehicles.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -47,7 +49,9 @@ import { ContactInfoPageModule } from './modals/contact-info/contact-info.module
     ModalPreviewItemsPageModule,
     LoctionPickerPageModule,
     SetContactInfoPageModule,
-    ContactInfoPageModule
+    ContactInfoPageModule,
+    AddVehiclesPageModule,
+    ViewVehiclesPageModule
   ],
   providers: [
     StatusBar,
@@ -56,6 +60,6 @@ import { ContactInfoPageModule } from './modals/contact-info/contact-info.module
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: FirestoreSettingsToken, useValue: {} }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

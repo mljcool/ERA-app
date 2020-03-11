@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
 
-import { VehiclesPageRoutingModule } from './vehicles-routing.module';
+import { AddVehiclesPageRoutingModule } from './add-vehicles-routing.module';
 
-import { VehiclesPage } from './vehicles.page';
+import { AddVehiclesPage } from './add-vehicles.page';
 import { SharedModule } from 'src/app/sharedModules/shared.module';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
-    VehiclesPageRoutingModule,
     ReactiveFormsModule,
+    IonicModule,
+    AddVehiclesPageRoutingModule,
     SharedModule
   ],
-  declarations: [VehiclesPage]
+  declarations: [AddVehiclesPage]
 })
-export class VehiclesPageModule {}
+export class AddVehiclesPageModule {}

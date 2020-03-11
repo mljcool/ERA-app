@@ -25,6 +25,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Plugins } from '@capacitor/core';
 import { GoogleUser } from 'src/app/models/googleUser.model';
 import { StoragUserDataService } from '../storages/storage-user-services';
+import { InterVehicleModel } from '../vehicles/vehicles.service';
 
 const { GoogleAuth } = Plugins;
 
@@ -66,13 +67,32 @@ export class UserService {
     return this.afs.firestore.doc(`/customerUser/${uid}`).get();
   }
 
-  checkVehicleRegistration(id: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.afs.firestore.doc(`/customerVehicle/${id}`).get().then(response => {
-        resolve(response.exists);
-      });
-    });
+  // checkVehicleRegistration(id: string): Promise<boolean> {
+  //   return new Promise((resolve, reject) => {
+  //     this.afs.firestore.doc(`/customerVehicle/${id}`).get().then(response => {
+  //       resolve(response.exists);
+  //     });
+  //   });
+  // }
+
+  checkVehicleRegistration(id: string): Observable<InterVehicleModel[]> {
+    return this.afs
+      .collection<InterVehicleModel>('customerVehicle', ref => {
+        const query: firebase.firestore.Query = ref;
+
+        return query.where('id', '==', id);
+      })
+      .snapshotChanges()
+      .pipe(
+        map(changes =>
+          changes.map(c => ({
+            key: c.payload.doc.id,
+            ...c.payload.doc.data()
+          }))
+        )
+      );
   }
+
 
   checkifStillLogin(): Promise<IUsers> {
     return new Promise((resolve, reject) => {
