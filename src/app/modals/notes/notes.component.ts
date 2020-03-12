@@ -9,6 +9,7 @@ import { AssistanceService } from '../assistance/assistance.service';
 import { IAssistance } from 'src/app/models/assistance.model';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { generateGUID } from 'src/app/utils/uidGenerator';
+import { PickVehiclePage } from '../pick-vehicle/pick-vehicle.page';
 
 @Component({
     selector: 'app-notes',
@@ -36,7 +37,7 @@ export class NotesComponent implements OnInit {
         console.log('this.assistanceData', this.assistanceData);
     }
 
-    ngOnInit() { }
+    ngOnInit() {}
 
     async presentLoading() {
         const loading = await this.loadingController.create({
@@ -49,11 +50,11 @@ export class NotesComponent implements OnInit {
         this.modalCtrl.dismiss({
             dismissed: true,
             notes: this.notes,
-            id: idParams,
+            id: idParams
         });
     }
 
-    savingAssistance(): void {
+    savingAssistance(vehicleKey: string): void {
         if (!this.notes || !this.contactOne) {
             this.presentToast();
             return;
@@ -76,13 +77,15 @@ export class NotesComponent implements OnInit {
                 escalatedTime: '',
                 flatRate: '',
                 note: this.notes,
-                googleStravelTimeEstimates: this.getApproximate.esitamteTravelTime,
+                googleStravelTimeEstimates: this.getApproximate
+                    .esitamteTravelTime,
                 googleDistanceEstimates: this.getApproximate.distanceKM,
                 googleWrittenAddress: this.getApproximate.writtenAddress,
                 confirmationStatus: false,
                 myContactNumber: [this.contactOne, this.contactTwo || ''],
                 assignedMechanic: '',
                 dateAdded: '',
+                vehicleKey
             };
             this.assistanceService.saveRoadAssistance(postParams).then(() => {
                 this.loadingController.dismiss();
@@ -97,5 +100,21 @@ export class NotesComponent implements OnInit {
             duration: 600
         });
         toast.present();
+    }
+
+    getVehicle(): void {
+        this.modalCtrl
+            .create({
+                component: PickVehiclePage
+            })
+            .then(modal => {
+                modal.present();
+                modal.onDidDismiss().then(({ data }) => {
+                    console.log(data.key);
+                    if (data.key) {
+                        this.savingAssistance(data.key);
+                    }
+                });
+            });
     }
 }

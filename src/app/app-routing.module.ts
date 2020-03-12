@@ -42,6 +42,10 @@ const routes: Routes = [
     path: 'view-vehicles',
     loadChildren: () => import('./modals/view-vehicles/view-vehicles.module').then( m => m.ViewVehiclesPageModule)
   },
+  {
+    path: 'pick-vehicle',
+    loadChildren: () => import('./modals/pick-vehicle/pick-vehicle.module').then( m => m.PickVehiclePageModule)
+  },
 
 
 

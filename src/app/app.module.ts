@@ -31,6 +31,7 @@ import { SetContactInfoPageModule } from './modals/set-contact-info/set-contact-
 import { ContactInfoPageModule } from './modals/contact-info/contact-info.module';
 import { AddVehiclesPageModule } from './modals/add-vehicles/add-vehicles.module';
 import { ViewVehiclesPageModule } from './modals/view-vehicles/view-vehicles.module';
+import { PickVehiclePageModule } from './modals/pick-vehicle/pick-vehicle.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -51,7 +52,8 @@ import { ViewVehiclesPageModule } from './modals/view-vehicles/view-vehicles.mod
     SetContactInfoPageModule,
     ContactInfoPageModule,
     AddVehiclesPageModule,
-    ViewVehiclesPageModule
+    ViewVehiclesPageModule,
+    PickVehiclePageModule
   ],
   providers: [
     StatusBar,

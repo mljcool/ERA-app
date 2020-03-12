@@ -23,4 +23,5 @@ export interface IAssistance {
   myContactNumber?: Array<any>;
   assignedMechanic: string;
   dateAdded: any;
+  vehicleKey?: string;
 }
