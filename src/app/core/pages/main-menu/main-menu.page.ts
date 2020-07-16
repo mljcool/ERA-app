@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+const lorem = 'Lorem ipsum dolor sit amet,rum.';
 
 const images = [
   'bandit',
@@ -38,7 +38,7 @@ export class MainMenuPage implements OnInit {
   constructor() {
     for (let i = 0; i < 30; i++) {
       this.items.push({
-        name: i + ' - ' + images[rotateImg],
+        name: images[rotateImg],
         imgSrc: getImgSrc(),
         avatarSrc: getImgSrc(),
         content: lorem.substring(0, Math.random() * (lorem.length - 100) + 100)

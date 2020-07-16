@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-no-padding">
   <ion-grid class="new-menus">
     <ion-row>
       <ion-col>
@@ -82,23 +82,24 @@
         </ion-label>
       </ion-item-divider>
     </ion-row>
-    <ion-row>
-      <ion-col size="auto" class="horizontal-scroll-wrapper squares">
+    <ion-row class="ion-no-padding">
+      <div class="horizontal-scroll-wrapper squares">
         <ng-container *ngFor="let item of items; let i=index;">
-          <ion-card class="force-color cards">
-            <img
-              [src]="item.imgSrc"
-              [alt]="item.name"
-              height="150px"
-              width="150px"
-            />
-            <ion-card-header>
-              <ion-card-title>{{ item.name }}</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>{{ item.content }}</ion-card-content>
-          </ion-card>
+          <div class="view-card custom-card">
+            <div class="shop-title">
+              <span class="icon">
+                <ion-icon name="car"></ion-icon>
+              </span>
+              <span class="shop-name"> {{ item.name}}</span>
+            </div>
+            <div class="shop-content">
+              <span>
+                {{ item.content}}
+              </span>
+            </div>
+          </div>
         </ng-container>
-      </ion-col>
+      </div>
     </ion-row>
   </ion-grid>
 </ion-content>

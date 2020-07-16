@@ -1,51 +1,61 @@
 :host {
   .new-menus {
     height: 100%;
-  }
-  $finalHeight: 250px;
-  $finalWidth: 3 * $finalHeight;
-  $scrollBarHeight: 1px;
+    background: #edebeb24;
+    ion-card {
+      background: white;
+    }
+    $finalHeight: 250px;
+    $finalWidth: 3 * $finalHeight;
+    $scrollBarHeight: 1px;
 
-  ::-webkit-scrollbar {
-    width: $scrollBarHeight;
-    height: $scrollBarHeight;
-  }
+    ::-webkit-scrollbar {
+      width: $scrollBarHeight;
+      height: $scrollBarHeight;
+    }
 
-  ::-webkit-scrollbar-button {
-    width: $scrollBarHeight;
-    height: $scrollBarHeight;
-  }
+    ::-webkit-scrollbar-button {
+      width: $scrollBarHeight;
+      height: $scrollBarHeight;
+    }
 
-  .my-profile {
-    display: flex;
-    .my-details {
-      margin: 0 auto;
-      > li {
-        list-style: none;
+    .my-profile {
+      display: flex;
+      .my-details {
+        margin: 0 auto;
+        > li {
+          list-style: none;
+        }
       }
     }
-  }
-  .horizontal-scroll-wrapper {
-    background: #e5e5e580;
-    max-height: 500px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    transform: rotate(-90deg) translateY(-$finalHeight);
-    transform-origin: right top;
-    & > ion-card {
-      transform: rotate(90deg);
-      transform-origin: right top;
-    }
-
-    &.squares {
-      & > .cards {
-        width: $finalHeight;
-        height: $finalHeight;
-        margin: 10px 0;
+    .horizontal-scroll-wrapper {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-y: scroll;
+      height: 25vh;
+      background: #e1e1e1;
+      .view-card {
+        padding: 10px;
+        margin: 20px 5px;
+        background: white;
+        white-space: nowrap;
+        &.custom-card {
+          border-radius: 5px;
+          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+            0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+          .shop-title {
+            .icon {
+              vertical-align: middle;
+            }
+            .shop-name {
+              color: #777777;
+            }
+          }
+        }
       }
     }
-  }
-  .force-color {
-    background: white;
+    .force-color {
+      background: white;
+    }
   }
 }
