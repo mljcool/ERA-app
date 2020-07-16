@@ -35,6 +35,7 @@
       height: 25vh;
       background: #e1e1e1;
       .view-card {
+        display: grid;
         padding: 10px;
         margin: 20px 5px;
         background: white;
@@ -50,6 +51,9 @@
             .shop-name {
               color: #777777;
             }
+          }
+          .shop-rating {
+            margin-top: auto;
           }
         }
       }
