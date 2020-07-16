@@ -1,0 +1,59 @@
+:host {
+  $finalHeight: 250px;
+  $finalWidth: 3 * $finalHeight;
+  $scrollBarHeight: 1px;
+
+  ::-webkit-scrollbar {
+    width: $scrollBarHeight;
+    height: $scrollBarHeight;
+  }
+
+  ::-webkit-scrollbar-button {
+    width: $scrollBarHeight;
+    height: $scrollBarHeight;
+  }
+
+  .my-profile {
+    display: flex;
+    .my-details {
+      margin: 0 auto;
+      > li {
+        list-style: none;
+      }
+    }
+  }
+  .quick-deal {
+    margin-top: 10px;
+    background: #e5e5e580;
+
+    .horizontal-scroll-wrapper {
+      display: block;
+      width: calc(#{$finalHeight} + #{$scrollBarHeight});
+      max-height: $finalWidth;
+      margin: 2;
+      padding-top: $scrollBarHeight;
+      background: #e5e5e580;
+      overflow-y: auto;
+      overflow-x: hidden;
+      transform: rotate(-90deg) translateY(-$finalHeight);
+      transform-origin: right top;
+      & > ion-card {
+        display: block;
+        transform: rotate(90deg);
+        transform-origin: right top;
+      }
+    }
+
+    .squares {
+      padding: $finalHeight 0 0 0;
+      & > ion-card {
+        width: $finalHeight;
+        height: $finalHeight;
+        margin: 10px 0;
+      }
+    }
+  }
+  .force-color {
+    background: white;
+  }
+}

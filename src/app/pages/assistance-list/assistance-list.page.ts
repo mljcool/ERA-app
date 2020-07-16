@@ -72,7 +72,7 @@ export class AssistanceListPage implements OnInit, OnDestroy {
         id: param.id,
         navigationId: 2,
       }
-    };
+    };  
     this.router.navigate(
       ['/side-bar/assistance-preview'],
       navigationExtras

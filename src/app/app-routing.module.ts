@@ -46,6 +46,10 @@ const routes: Routes = [
     path: 'pick-vehicle',
     loadChildren: () => import('./modals/pick-vehicle/pick-vehicle.module').then( m => m.PickVehiclePageModule)
   },
+  {
+    path: 'main-menu',
+    loadChildren: () => import('./core/pages/main-menu/main-menu.module').then( m => m.MainMenuPageModule)
+  },
 
 
 
