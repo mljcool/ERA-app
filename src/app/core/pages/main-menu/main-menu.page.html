@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
+  <ion-grid class="new-menus">
     <ion-row>
       <ion-col>
         <ion-card>
@@ -52,7 +52,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
+      <ion-col size="6">
         <ion-card>
           <ion-card-header>
             My Particulars
@@ -63,7 +63,7 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
-      <ion-col>
+      <ion-col size="6">
         <ion-card>
           <ion-card-header>
             My Cars
@@ -75,26 +75,30 @@
         </ion-card>
       </ion-col>
     </ion-row>
-  </ion-grid>
-  <ion-grid class="quick-deal">
-    <ion-row nowrap class="my-quick-list">
-      <div class="horizontal-scroll-wrapper squares">
-        <ion-card
-          class="force-color cards"
-          *ngFor="let item of items; let i=index;"
-        >
-          <img
-            [src]="item.imgSrc"
-            [alt]="item.name"
-            height="150px"
-            width="150px"
-          />
-          <ion-card-header>
-            <ion-card-title>{{ item.name }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>{{ item.content }}</ion-card-content>
-        </ion-card>
-      </div>
+    <ion-row>
+      <ion-item-divider>
+        <ion-label>
+          Popular
+        </ion-label>
+      </ion-item-divider>
+    </ion-row>
+    <ion-row>
+      <ion-col size="auto" class="horizontal-scroll-wrapper squares">
+        <ng-container *ngFor="let item of items; let i=index;">
+          <ion-card class="force-color cards">
+            <img
+              [src]="item.imgSrc"
+              [alt]="item.name"
+              height="150px"
+              width="150px"
+            />
+            <ion-card-header>
+              <ion-card-title>{{ item.name }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>{{ item.content }}</ion-card-content>
+          </ion-card>
+        </ng-container>
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
