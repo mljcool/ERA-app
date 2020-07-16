@@ -19,6 +19,15 @@
       height: $scrollBarHeight;
     }
 
+    .badge-one {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      font-size: 0.7em;
+      --padding-start: 5px;
+      --padding-end: 5px;
+    }
+
     .my-profile {
       display: flex;
       .my-details {
