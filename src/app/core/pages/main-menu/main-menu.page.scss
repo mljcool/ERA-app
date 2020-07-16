@@ -45,8 +45,8 @@
     }
 
     .squares {
-      padding: $finalHeight 0 0 0;
-      & > ion-card {
+      padding: $finalHeight 10px;
+      & > .cards {
         width: $finalHeight;
         height: $finalHeight;
         margin: 10px 0;

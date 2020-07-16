@@ -36,12 +36,11 @@ export class MainMenuPage implements OnInit {
 
   items: any[] = [];
   constructor() {
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 30; i++) {
       this.items.push({
         name: i + ' - ' + images[rotateImg],
         imgSrc: getImgSrc(),
         avatarSrc: getImgSrc(),
-        imgHeight: Math.floor(Math.random() * 50 + 150),
         content: lorem.substring(0, Math.random() * (lorem.length - 100) + 100)
       });
 

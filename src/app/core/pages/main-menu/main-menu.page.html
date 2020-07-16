@@ -79,7 +79,10 @@
   <ion-grid class="quick-deal">
     <ion-row nowrap class="my-quick-list">
       <div class="horizontal-scroll-wrapper squares">
-        <ion-card class="force-color" *ngFor="let item of items; let i=index;">
+        <ion-card
+          class="force-color cards"
+          *ngFor="let item of items; let i=index;"
+        >
           <img
             [src]="item.imgSrc"
             [alt]="item.name"
