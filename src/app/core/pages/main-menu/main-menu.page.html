@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>ERA Application</ion-title>
+    <ion-buttons slot="primary">
+      <ion-buttons (click)="presentPopover()">
+        <ion-icon name="menu" slot="icon-only"></ion-icon>
+      </ion-buttons>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -10,14 +15,12 @@
       <ion-col>
         <ion-card>
           <ion-card-content class="my-profile">
-            <ion-avatar class="my-avatar">
-              <img
-                src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
-              />
-            </ion-avatar>
+            <ion-thumbnail class="my-avatar">
+              <img src="assets/images/commons/manmechanic.gif" />
+            </ion-thumbnail>
             <div class="my-data">
               <ul class="my-details">
-                <li><span class="my-name">Jhon Doe</span></li>
+                <li><span class="my-name">Hi, Jhon Doe</span></li>
               </ul>
             </div>
             <!-- Add card content here! -->
@@ -79,10 +82,19 @@
         <ng-container *ngFor="let item of items; let i=index;">
           <div class="view-card custom-card">
             <div class="shop-title">
-              <span class="icon">
-                <ion-icon name="car"></ion-icon>
+              <div>
+                <span class="icon">
+                  <ion-icon name="car"></ion-icon>
+                </span>
+                <span class="shop-name"> {{ item.name}}</span>
+              </div>
+              <span>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
               </span>
-              <span class="shop-name"> {{ item.name}}</span>
             </div>
             <div class="shop-content">
               <span>
@@ -90,13 +102,16 @@
               </span>
             </div>
             <div class="shop-rating">
-              <span>
-                <ion-icon name="star"></ion-icon>
-                <ion-icon name="star"></ion-icon>
-                <ion-icon name="star"></ion-icon>
-                <ion-icon name="star"></ion-icon>
-                <ion-icon name="star"></ion-icon>
-              </span>
+              <ion-chip size="small">
+                <ion-icon name="time" color="primary"></ion-icon>
+                <ion-label color="primary">Open</ion-label>
+              </ion-chip>
+              <div class="navigation">
+                <ion-button size="small">
+                  Directions
+                  <ion-icon slot="end" name="map"></ion-icon>
+                </ion-button>
+              </div>
             </div>
           </div>
         </ng-container>

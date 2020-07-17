@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MainMenuPageRoutingModule } from './main-menu-routing.module';
 
 import { MainMenuPage } from './main-menu.page';
+import { PopoverComponent } from 'src/app/common-ui/PopoverMenu/pop-over-menu.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,9 @@ import { MainMenuPage } from './main-menu.page';
     IonicModule,
     MainMenuPageRoutingModule
   ],
-  declarations: [MainMenuPage]
+  declarations: [MainMenuPage, PopoverComponent],
+  entryComponents: [
+    PopoverComponent
+  ]
 })
 export class MainMenuPageModule { }

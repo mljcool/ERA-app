@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.notificationService.notificationFeatures(true);
+    this.notificationService.notificationFeatures(false);
     this.userService.checkifStillLogin();
   }
 }

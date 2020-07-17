@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
+import { PopoverComponent } from 'src/app/common-ui/PopoverMenu/pop-over-menu.component';
 
 const lorem = 'Lorem ipsum dolor sit amet,rum.';
 
@@ -35,8 +37,8 @@ export class MainMenuPage implements OnInit {
 
 
   items: any[] = [];
-  constructor() {
-    for (let i = 0; i < 30; i++) {
+  constructor(public popoverController: PopoverController) {
+    for (let i = 0; i < 10; i++) {
       this.items.push({
         name: images[rotateImg],
         imgSrc: getImgSrc(),
@@ -53,5 +55,16 @@ export class MainMenuPage implements OnInit {
 
   ngOnInit() {
   }
+  async presentPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: PopoverComponent,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
+  }
+
+
 
 }
