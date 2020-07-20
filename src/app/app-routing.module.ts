@@ -58,7 +58,11 @@ const routes: Routes = [
   {
     path: 'assistance-modal',
     loadChildren: () => import('./core/modals/assistance-modal/assistance-modal.module').then(m => m.AssistanceModalPageModule)
+  },  {
+    path: 'gmap-options',
+    loadChildren: () => import('./core/modals/gmap-options/gmap-options.module').then( m => m.GmapOptionsPageModule)
   },
+
 
 
 

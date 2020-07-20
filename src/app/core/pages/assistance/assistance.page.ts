@@ -18,7 +18,7 @@ export class AssistancePage implements OnInit {
   markerDesigned = myMarker;
 
   items: any[] = [];
-  styles: any[] = mapStyleTwo;
+  styles: any[] = mapStyle;
   private unsubscribeAll: Subject<any>;
   serviceTypeParam: string = '';
 
