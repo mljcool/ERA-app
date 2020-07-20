@@ -35,6 +35,7 @@ import { PickVehiclePageModule } from './modals/pick-vehicle/pick-vehicle.module
 import { AssistanceModalPageModule } from './core/modals/assistance-modal/assistance-modal.module';
 import 'hammerjs';
 import { IonicGestureConfig } from './services/hammer/IonicGestureConfig.service';
+import { GmapOptionsPageModule } from './core/modals/gmap-options/gmap-options.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -58,8 +59,9 @@ import { IonicGestureConfig } from './services/hammer/IonicGestureConfig.service
     ViewVehiclesPageModule,
     PickVehiclePageModule,
     // NEW MODALS
-
     AssistanceModalPageModule,
+    GmapOptionsPageModule,
+    //END NEW MODALS
   ],
   providers: [
     StatusBar,

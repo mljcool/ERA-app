@@ -22,6 +22,7 @@ export class MainMenuPage implements OnInit {
   }
 
   ngOnInit() { }
+
   async presentPopover(ev: any) {
     const popover = await this.popoverController.create({
       component: PopoverComponent,

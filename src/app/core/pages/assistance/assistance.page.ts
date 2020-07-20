@@ -3,12 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { getDataShopsList } from '../../util/dummy-data';
-import { mapStyle, mapStyleTwo, myMarker } from '../../util/map-styles';
-import { aubergineTheme } from '../../map-theme/aubergine';
+import { mapStyle, myMarker } from '../../util/map-styles';
+import { myMapTheme } from '../../map-theme/themeList';
+import { GmapOptionsPage } from '../../modals/gmap-options/gmap-options.page';
+import { ModalController } from '@ionic/angular';
 import { darkTheme } from '../../map-theme/dark';
-import { nightTheme } from '../../map-theme/night';
-import { retroTheme } from '../../map-theme/retro';
-import { silverTheme } from '../../map-theme/silver';
 
 @Component({
   selector: 'app-assistance',
@@ -16,20 +15,20 @@ import { silverTheme } from '../../map-theme/silver';
   styleUrls: ['./assistance.page.scss'],
 })
 export class AssistancePage implements OnInit {
-
-  lat = 7.051980;
+  lat = 7.05198;
   lng = 125.571784;
   zoom = 15;
   markerDesigned = myMarker;
-  mapThemeStyle = { aubergineTheme, darkTheme, nightTheme, retroTheme, silverTheme }
-
+  mapThemeStyle = darkTheme;
 
   items: any[] = [];
-  styles: any[] = mapStyle;
   private unsubscribeAll: Subject<any>;
   serviceTypeParam: string = '';
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private modalCtrl: ModalController
+  ) {
     this.unsubscribeAll = new Subject();
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
@@ -38,7 +37,6 @@ export class AssistancePage implements OnInit {
         this.serviceTypeParam = serviceType;
       });
     this.items = getDataShopsList();
-    console.log('mapThemeStyle', this.mapThemeStyle);
   }
 
   ngOnInit() { }
@@ -49,8 +47,26 @@ export class AssistancePage implements OnInit {
   }
 
   getCurrentPosition(): void { }
+
   viewMenu(): void {
     console.log('here');
+  }
 
+  async onViewMapThemes() {
+    const modal = await this.modalCtrl.create({
+      component: GmapOptionsPage,
+      cssClass: 'cart-modal',
+    });
+    modal.onWillDismiss().then(({ data }) => {
+      const { themeType } = data;
+      if (!themeType) {
+        this.mapThemeStyle = [];
+        return;
+      }
+      this.mapThemeStyle = myMapTheme[themeType];
+
+      console.log('mapThemeStyle', themeType);
+    });
+    modal.present();
   }
 }

@@ -1,9 +1,33 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>gmap-options</ion-title>
+    <ion-title>Select a theme</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <ion-item
+      (click)="onProceed(theme)"
+      *ngFor="let theme of myMapTheme;"
+      button
+    >
+      <ion-thumbnail slot="start">
+        <img [src]="theme.thumSrc" />
+      </ion-thumbnail>
+      <ion-label> {{ theme.name }}</ion-label>
+    </ion-item>
+  </ion-list>
 
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col>
+        <div>
+          <ion-button (click)="closeModal()" expand="block">
+            <ion-icon name="close" slot="star"></ion-icon>
+            Close
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

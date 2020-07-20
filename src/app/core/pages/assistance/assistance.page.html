@@ -7,7 +7,7 @@
       [zoom]="zoom"
       [disableDefaultUI]="true"
       [zoomControl]="false"
-      [styles]="styles"
+      [styles]="mapThemeStyle"
     >
       <agm-marker
         [latitude]="lat"
@@ -71,7 +71,7 @@
     </div>
   </div>
   <ion-fab horizontal="end" vertical="top" slot="fixed">
-    <ion-fab-button color="light" (click)="viewMenu()">
+    <ion-fab-button color="light" (click)="onViewMapThemes()">
       <ion-icon name="menu" ios="chevron-forward-circle"></ion-icon>
     </ion-fab-button>
   </ion-fab>
