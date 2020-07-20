@@ -34,12 +34,30 @@
     }
 
     .my-profile {
-      display: flex;
+      display: grid;
+      grid-auto-flow: column;
       .my-details {
         margin: 0 auto;
+        padding: 0;
         > li {
           list-style: none;
         }
+      }
+      .timer-avatar {
+        align-self: center;
+      }
+      .my-data {
+        align-self: center;
+        .isTimer {
+          font-weight: bolder;
+          font-size: 17px;
+        }
+      }
+      .timer-label {
+        text-align: center;
+        align-self: center;
+        font-weight: bold;
+        font-size: 19px;
       }
     }
     .horizontal-scroll-wrapper {
@@ -70,6 +88,7 @@
             }
             .shop-name {
               color: #777777;
+              font-size: 14px;
             }
             .ratings-icons {
               color: #f4a34f;

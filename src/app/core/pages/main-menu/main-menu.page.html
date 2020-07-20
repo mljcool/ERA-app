@@ -15,14 +15,32 @@
       <ion-col>
         <ion-card>
           <ion-card-content class="my-profile">
-            <ion-thumbnail class="my-avatar">
+            <div class="timer-avatar">
+              <!-- <ion-thumbnail class="my-avatar">
               <img src="assets/images/commons/manmechanic.gif" />
-            </ion-thumbnail>
+            </ion-thumbnail> -->
+              <ion-thumbnail class="timer-avatar">
+                <img [src]="'assets/images/svg/new-timer.svg'" />
+              </ion-thumbnail>
+            </div>
             <div class="my-data">
               <ul class="my-details">
                 <li><span class="my-name">Hi, Jhon Doe</span></li>
+                <li><span class="my-name isTimer">Hi, Jhon Doe</span></li>
               </ul>
             </div>
+            <div class="timer-label">
+              <div>
+                <span>14mins</span>
+              </div>
+              <div>
+                <ion-button size="small">
+                  Refresh
+                  <ion-icon slot="end" name="refresh"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+
             <!-- Add card content here! -->
           </ion-card-content>
         </ion-card>
