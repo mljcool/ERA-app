@@ -1,38 +1,38 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Assistance</ion-title>
-    <ion-buttons slot="primary">
-      <ion-buttons (click)="getCurrentPosition()">
-        <ion-icon name="refresh-circle" slot="icon-only"></ion-icon>
-      </ion-buttons>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content fullscreen>
   <div class="assistance-view">
     <agm-map
+      *ngIf="items.length"
       [latitude]="lat"
       [longitude]="lng"
       [zoom]="zoom"
       [disableDefaultUI]="true"
       [zoomControl]="false"
+      [styles]="styles"
     >
-      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+      <agm-marker
+        [latitude]="lat"
+        [longitude]="lng"
+        [iconUrl]="markerDesigned"
+      ></agm-marker>
+      <agm-marker
+        *ngFor="let m of items; let i = index"
+        (markerClick)="presentModal(m)"
+        [latitude]="m.location.lat"
+        [longitude]="m.location.long"
+        [iconUrl]="m.iconUrl"
+      >
+        <agm-info-window>
+          <strong>{{ m.name }}</strong>
+        </agm-info-window>
+      </agm-marker>
     </agm-map>
     <div class="horizontal-scroll-wrapper-assistance squares">
       <ng-container *ngFor="let item of items; let i=index;">
         <div class="view-card custom-card">
-          <small class="time-status">
-            <span>Open</span>
-          </small>
-          <div class="shop-title">
-            <div>
-              <span class="icon">
-                <ion-icon name="car"></ion-icon>
-              </span>
-              <span class="shop-name"> {{ item.name}}</span>
-            </div>
+          <div class="top-details">
+            <small class="time-status">
+              <span>Open</span>
+            </small>
             <span class="ratings-icons">
               <ion-icon name="star"></ion-icon>
               <ion-icon name="star"></ion-icon>
@@ -41,6 +41,15 @@
               <ion-icon name="star"></ion-icon>
             </span>
           </div>
+
+          <div class="shop-title">
+            <div>
+              <span class="icon">
+                <ion-icon name="car"></ion-icon>
+              </span>
+              <span class="shop-name"> {{ item.name}}</span>
+            </div>
+          </div>
           <div class="shop-content">
             <small>
               Address
@@ -48,10 +57,6 @@
             <span class="address">
               {{ item.content}}
             </span>
-            <!-- <span class="time-status">
-              <ion-icon name="time" color="primary"></ion-icon>
-              Open
-            </span> -->
           </div>
           <div class="shop-rating">
             <div class="navigation">
@@ -65,4 +70,9 @@
       </ng-container>
     </div>
   </div>
+  <ion-fab horizontal="end" vertical="top" slot="fixed">
+    <ion-fab-button color="light" (click)="viewMenu()">
+      <ion-icon name="menu" ios="chevron-forward-circle"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { getDataShopsList } from '../../util/dummy-data';
+import { mapStyle, mapStyleTwo, myMarker } from '../../util/map-styles';
 
 @Component({
   selector: 'app-assistance',
@@ -10,10 +11,14 @@ import { getDataShopsList } from '../../util/dummy-data';
   styleUrls: ['./assistance.page.scss'],
 })
 export class AssistancePage implements OnInit {
-  lat = 7.0735836232495615;
-  lng = 125.60605650000001;
+
+  lat = 7.051980;
+  lng = 125.571784;
   zoom = 15;
+  markerDesigned = myMarker;
+
   items: any[] = [];
+  styles: any[] = mapStyleTwo;
   private unsubscribeAll: Subject<any>;
   serviceTypeParam: string = '';
 
@@ -26,6 +31,7 @@ export class AssistancePage implements OnInit {
         this.serviceTypeParam = serviceType;
       });
     this.items = getDataShopsList();
+    console.log(this.items);
   }
 
   ngOnInit() { }
@@ -36,4 +42,8 @@ export class AssistancePage implements OnInit {
   }
 
   getCurrentPosition(): void { }
+  viewMenu(): void {
+    console.log('here');
+
+  }
 }
