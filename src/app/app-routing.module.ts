@@ -50,6 +50,14 @@ const routes: Routes = [
     path: 'main-menu',
     loadChildren: () => import('./core/pages/main-menu/main-menu.module').then( m => m.MainMenuPageModule)
   },
+  {
+    path: 'assistance',
+    loadChildren: () => import('./core/pages/assistance/assistance.module').then( m => m.AssistancePageModule)
+  },
+  {
+    path: 'assistance-modal',
+    loadChildren: () => import('./core/modals/assistance-modal/assistance-modal.module').then( m => m.AssistanceModalPageModule)
+  },
 
 
 

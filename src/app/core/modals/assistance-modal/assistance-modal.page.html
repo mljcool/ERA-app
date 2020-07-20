@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>How can we help?</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item (click)="onProceed(item)" *ngFor="let item of services;" button>
+      <ion-thumbnail slot="start">
+        <img [src]="item.imgSrc" />
+      </ion-thumbnail>
+      <ion-label> {{ item.label }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col>
+        <div>
+          <ion-button (click)="closeModal()" expand="block">
+            <ion-icon name="close" slot="star"></ion-icon>
+            Close
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

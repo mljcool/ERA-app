@@ -32,6 +32,7 @@ import { ContactInfoPageModule } from './modals/contact-info/contact-info.module
 import { AddVehiclesPageModule } from './modals/add-vehicles/add-vehicles.module';
 import { ViewVehiclesPageModule } from './modals/view-vehicles/view-vehicles.module';
 import { PickVehiclePageModule } from './modals/pick-vehicle/pick-vehicle.module';
+import { AssistanceModalPageModule } from './core/modals/assistance-modal/assistance-modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -53,7 +54,10 @@ import { PickVehiclePageModule } from './modals/pick-vehicle/pick-vehicle.module
     ContactInfoPageModule,
     AddVehiclesPageModule,
     ViewVehiclesPageModule,
-    PickVehiclePageModule
+    PickVehiclePageModule,
+    // NEW MODALS
+
+    AssistanceModalPageModule,
   ],
   providers: [
     StatusBar,

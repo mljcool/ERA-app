@@ -25,7 +25,7 @@ export const assistTanceList: AssistanceTypes[] = [
   {
     id: 5,
     label: 'Towing',
-    imgSrc: srcPath('flatTire')
+    imgSrc: srcPath('tow')
   },
   {
     id: 6,

@@ -48,7 +48,10 @@
     </ion-row>
     <ion-row>
       <ion-col size="6">
-        <ion-card class="ion-activatable ripple-parent">
+        <ion-card
+          class="ion-activatable ripple-parent"
+          (click)="onViewAssistanceModal()"
+        >
           <img src="assets/images/main-menus/era-hire-mechanics.png" />
           <ion-card-header>
             <ion-card-subtitle>Assistance</ion-card-subtitle>
