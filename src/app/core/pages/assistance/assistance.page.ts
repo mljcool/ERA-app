@@ -4,6 +4,11 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { getDataShopsList } from '../../util/dummy-data';
 import { mapStyle, mapStyleTwo, myMarker } from '../../util/map-styles';
+import { aubergineTheme } from '../../map-theme/aubergine';
+import { darkTheme } from '../../map-theme/dark';
+import { nightTheme } from '../../map-theme/night';
+import { retroTheme } from '../../map-theme/retro';
+import { silverTheme } from '../../map-theme/silver';
 
 @Component({
   selector: 'app-assistance',
@@ -16,6 +21,8 @@ export class AssistancePage implements OnInit {
   lng = 125.571784;
   zoom = 15;
   markerDesigned = myMarker;
+  mapThemeStyle = { aubergineTheme, darkTheme, nightTheme, retroTheme, silverTheme }
+
 
   items: any[] = [];
   styles: any[] = mapStyle;
@@ -31,7 +38,7 @@ export class AssistancePage implements OnInit {
         this.serviceTypeParam = serviceType;
       });
     this.items = getDataShopsList();
-    console.log(this.items);
+    console.log('mapThemeStyle', this.mapThemeStyle);
   }
 
   ngOnInit() { }
