@@ -18,7 +18,6 @@ export class GmapOptionsPage implements OnInit {
 
   ngOnInit() {
     Object.keys(myMapTheme).forEach((theme) => {
-      // this.
       const themeName = capitalize(theme).replace('Theme', '');
       const thumSrc = `./assets/images/map-styles/${theme.replace('Theme', '')}.png`;
       this.myMapTheme.push({
@@ -34,5 +33,8 @@ export class GmapOptionsPage implements OnInit {
     this.modalCtrl.dismiss({
       themeType: type
     })
+  }
+  closeModal() {
+    this.modalCtrl.dismiss();
   }
 }

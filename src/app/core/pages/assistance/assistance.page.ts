@@ -58,14 +58,14 @@ export class AssistancePage implements OnInit {
       cssClass: 'cart-modal',
     });
     modal.onWillDismiss().then(({ data }) => {
-      const { themeType } = data;
-      if (!themeType) {
-        this.mapThemeStyle = [];
-        return;
+      if (data) {
+        const { themeType } = data;
+        if (!themeType) {
+          this.mapThemeStyle = [];
+          return;
+        }
+        this.mapThemeStyle = myMapTheme[themeType];
       }
-      this.mapThemeStyle = myMapTheme[themeType];
-
-      console.log('mapThemeStyle', themeType);
     });
     modal.present();
   }
