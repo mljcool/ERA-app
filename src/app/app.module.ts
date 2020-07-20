@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -33,6 +33,8 @@ import { AddVehiclesPageModule } from './modals/add-vehicles/add-vehicles.module
 import { ViewVehiclesPageModule } from './modals/view-vehicles/view-vehicles.module';
 import { PickVehiclePageModule } from './modals/pick-vehicle/pick-vehicle.module';
 import { AssistanceModalPageModule } from './core/modals/assistance-modal/assistance-modal.module';
+import 'hammerjs';
+import { IonicGestureConfig } from './services/hammer/IonicGestureConfig.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -64,7 +66,8 @@ import { AssistanceModalPageModule } from './core/modals/assistance-modal/assist
     SplashScreen,
     AngularFireDatabase,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: FirestoreSettingsToken, useValue: {} }
+    { provide: FirestoreSettingsToken, useValue: {} },
+    { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig }
   ],
   bootstrap: [AppComponent],
 })

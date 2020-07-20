@@ -1,9 +1,68 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>assistance</ion-title>
+    <ion-title>Assistance</ion-title>
+    <ion-buttons slot="primary">
+      <ion-buttons (click)="getCurrentPosition()">
+        <ion-icon name="refresh-circle" slot="icon-only"></ion-icon>
+      </ion-buttons>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  Service Type: {{ serviceTypeParam }}
+<ion-content fullscreen>
+  <div class="assistance-view">
+    <agm-map
+      [latitude]="lat"
+      [longitude]="lng"
+      [zoom]="zoom"
+      [disableDefaultUI]="true"
+      [zoomControl]="false"
+    >
+      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    </agm-map>
+    <div class="horizontal-scroll-wrapper-assistance squares">
+      <ng-container *ngFor="let item of items; let i=index;">
+        <div class="view-card custom-card">
+          <small class="time-status">
+            <span>Open</span>
+          </small>
+          <div class="shop-title">
+            <div>
+              <span class="icon">
+                <ion-icon name="car"></ion-icon>
+              </span>
+              <span class="shop-name"> {{ item.name}}</span>
+            </div>
+            <span class="ratings-icons">
+              <ion-icon name="star"></ion-icon>
+              <ion-icon name="star"></ion-icon>
+              <ion-icon name="star"></ion-icon>
+              <ion-icon name="star"></ion-icon>
+              <ion-icon name="star"></ion-icon>
+            </span>
+          </div>
+          <div class="shop-content">
+            <small>
+              Address
+            </small>
+            <span class="address">
+              {{ item.content}}
+            </span>
+            <!-- <span class="time-status">
+              <ion-icon name="time" color="primary"></ion-icon>
+              Open
+            </span> -->
+          </div>
+          <div class="shop-rating">
+            <div class="navigation">
+              <ion-button size="small" expand="block">
+                Directions (25mins)
+                <ion-icon slot="end" name="navigate"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
 </ion-content>
