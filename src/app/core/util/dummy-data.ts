@@ -26,15 +26,6 @@ const latLong = [
   { lat: 7.050830, long: 125.568654 },
 ]
 
-function getImgSrc() {
-  const src =
-    'https://dummyimage.com/600x400/${Math.round( Math.random() * 99999)}/fff.png';
-  rotateImg++;
-  if (rotateImg === images.length) {
-    rotateImg = 0;
-  }
-  return src;
-}
 
 let rotateImg = 0;
 
@@ -42,10 +33,9 @@ export const getDataShopsList = (): Array<any[]> => {
   const items = [];
   for (let i = 0; i < 10; i++) {
     items.push({
+      id: i + 3,
       name: images[rotateImg],
       location: latLong[i],
-      imgSrc: getImgSrc(),
-      avatarSrc: getImgSrc(),
       content: lorem.substring(0, Math.random() * (lorem.length - 100) + 100),
       iconUrl: {
         url: 'assets/images/svg/guage.svg',

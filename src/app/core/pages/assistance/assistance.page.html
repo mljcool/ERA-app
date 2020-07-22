@@ -1,7 +1,7 @@
 <ion-content fullscreen>
   <div class="assistance-view">
     <agm-map
-      *ngIf="items.length"
+      *ngIf="itemsShop.length"
       [latitude]="initMap.latitude"
       [longitude]="initMap.longitude"
       [zoom]="zoom"
@@ -23,7 +23,7 @@
         [iconUrl]="initMap.iconUrl"
       ></agm-marker>
       <agm-marker
-        *ngFor="let m of items; let i = index"
+        *ngFor="let m of itemsShop; let i = index"
         (markerClick)="presentModal(m)"
         [latitude]="m.location.lat"
         [longitude]="m.location.long"
@@ -35,7 +35,7 @@
       </agm-marker>
     </agm-map>
     <div class="horizontal-scroll-wrapper-assistance squares">
-      <ng-container *ngFor="let item of items; let i=index;">
+      <ng-container *ngFor="let item of itemsShop; let i=index;">
         <div class="view-card custom-card">
           <div class="top-details">
             <small class="time-status">

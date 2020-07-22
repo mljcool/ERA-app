@@ -6,7 +6,11 @@ import { getDataShopsList } from '../../util/dummy-data';
 import { myMarker } from '../../util/map-styles';
 import { myMapTheme } from '../../map-theme/themeList';
 import { GmapOptionsPage } from '../../modals/gmap-options/gmap-options.page';
-import { ModalController, PopoverController } from '@ionic/angular';
+import {
+  ModalController,
+  PopoverController,
+  LoadingController,
+} from '@ionic/angular';
 import { darkTheme } from '../../map-theme/dark';
 import { AssistanceMapMenusPage } from '../../modals/assistance-map-menus/assistance-map-menus.page';
 import { Plugins } from '@capacitor/core';
@@ -35,6 +39,7 @@ export class AssistancePage implements OnInit {
   public origin: any;
   public destination: any;
   public getApproximate: any;
+  public getNearest: any;
   public renderOptions = {
     suppressMarkers: true,
   };
@@ -47,7 +52,8 @@ export class AssistancePage implements OnInit {
     },
   };
 
-  items: any[] = [];
+  itemsShop: any[] = [];
+  itemsShopAll: any[] = [];
   private unsubscribeAll: Subject<any>;
   serviceTypeParam: string = '';
 
@@ -56,7 +62,8 @@ export class AssistancePage implements OnInit {
     private router: Router,
     private modalCtrl: ModalController,
     private popoverController: PopoverController,
-    private mapsApiLoader: MapsAPILoader
+    private mapsApiLoader: MapsAPILoader,
+    private loadingController: LoadingController
   ) {
     this.unsubscribeAll = new Subject();
     this.route.queryParams
@@ -65,11 +72,12 @@ export class AssistancePage implements OnInit {
         const { serviceType } = params;
         this.serviceTypeParam = serviceType;
       });
-    this.items = getDataShopsList();
+    this.itemsShop = getDataShopsList();
+    this.itemsShopAll = getDataShopsList();
   }
 
   ngOnInit() {
-    this.mapsApiLoader.load().then(() => {
+    this.mapsApiLoader.load().then((response) => {
       this.getMyCurrentPosition();
     });
   }
@@ -84,6 +92,8 @@ export class AssistancePage implements OnInit {
   viewMenu(): void {
     console.log('here');
   }
+
+
 
   async onViewMapThemes() {
     const modal = await this.modalCtrl.create({
@@ -103,6 +113,8 @@ export class AssistancePage implements OnInit {
     await modal.present();
   }
 
+
+
   async onAssistanceMenus(ev: any) {
     const popover = await this.popoverController.create({
       component: AssistanceMapMenusPage,
@@ -112,7 +124,6 @@ export class AssistancePage implements OnInit {
     });
     await popover.present();
     popover.onWillDismiss().then(({ data }) => {
-      console.log(data);
       if (data) {
         const { optionType } = data;
         switch (optionType) {
@@ -122,6 +133,13 @@ export class AssistancePage implements OnInit {
           case 'back':
             this.router.navigate(['/main-menu']);
             break;
+          case 'nearest':
+            console.log('getNearest', this.getNearest);
+            this.itemsShop = this.itemsShop.filter(shop => shop.id === this.getNearest.id);
+            break;
+          case 'refresh':
+            this.getMyCurrentPosition();
+            break;
           default:
             break;
         }
@@ -129,7 +147,9 @@ export class AssistancePage implements OnInit {
     });
   }
 
+
   async getMyCurrentPosition() {
+    this.presentLoading();
     const coordinates = await Geolocation.getCurrentPosition();
     const { coords } = coordinates;
     if (coords) {
@@ -143,8 +163,9 @@ export class AssistancePage implements OnInit {
         const { latitude, longitude } = this.initMap;
         const nearestRoute = getNearestPoint(
           { lat: latitude, long: longitude },
-          this.items
+          this.itemsShop
         );
+        this.getNearest = nearestRoute;
         this.origin = { lat: latitude, lng: longitude };
         this.destination = {
           lat: nearestRoute.location.lat,
@@ -153,10 +174,21 @@ export class AssistancePage implements OnInit {
 
         calculateDistanceNearest(this.origin, this.destination).then(
           (result) => {
-            this.getApproximate = result;
+            if (result) {
+              this.getApproximate = result;
+              this.loadingController.dismiss();
+            }
           }
         );
-      }, 300);
+      }, 1000);
     }
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Fetching location....',
+      backdropDismiss: true,
+    });
+    await loading.present();
   }
 }
