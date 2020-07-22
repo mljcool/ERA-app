@@ -224,7 +224,7 @@ export class AssistancePage implements OnInit {
   async viewShopDetals(shopDetails) {
     const modal = await this.modalCtrl.create({
       component: AssistanceSummariesPage,
-      cssClass: 'cart-modal',
+      cssClass: 'assistance-modal',
       componentProps: {
         assistanceDetails: {
           shopDetail: shopDetails,

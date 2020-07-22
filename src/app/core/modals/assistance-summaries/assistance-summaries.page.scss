@@ -1,27 +1,27 @@
 :host {
   .assitance-details {
-    .top-details {
+    .top-details-assistance {
       display: grid;
       grid-auto-flow: column;
       padding: 5px;
       background: #f6fcff;
       .mecha-avatar {
         img {
-          width: 115px;
-          height: 110px;
+          width: 87px;
+          height: 81px;
         }
       }
       .me-details {
         display: grid;
         .c-name {
           font-weight: bolder;
-          font-size: 20px;
+          font-size: 19px;
           color: #7b7b7b;
           align-self: end;
         }
         .c-details {
           font-weight: bolder;
-          font-size: 15px;
+          font-size: 14px;
           color: #7b7b7b;
         }
       }
@@ -29,7 +29,7 @@
   }
   .shop-details {
     .shop-header {
-      padding-left: 12px;
+      padding-left: 15px;
       h3 {
         color: #7b7b7b;
         margin: 0;
@@ -43,7 +43,7 @@
       white-space: nowrap;
       border-top: solid 1px #ededee;
       &.custom-card {
-        padding: 5px;
+        padding: 10px;
 
         .top-details {
           display: flex;
@@ -88,9 +88,11 @@
           border-top: solid 1px #ededee;
         }
         ion-list-header {
-          padding-left: 5px;
+          margin-top: -6px;
+          padding-left: 3px;
           color: #7b7b7b;
-          font-size: 22px;
+          font-size: 18px;
+          font-weight: bolder;
         }
       }
     }
