@@ -37,6 +37,7 @@ import 'hammerjs';
 import { IonicGestureConfig } from './services/hammer/IonicGestureConfig.service';
 import { GmapOptionsPageModule } from './core/modals/gmap-options/gmap-options.module';
 import { AssistanceMapMenusPageModule } from './core/modals/assistance-map-menus/assistance-map-menus.module';
+import { AssistanceSummariesPageModule } from './core/modals/assistance-summaries/assistance-summaries.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -63,6 +64,7 @@ import { AssistanceMapMenusPageModule } from './core/modals/assistance-map-menus
     AssistanceModalPageModule,
     GmapOptionsPageModule,
     AssistanceMapMenusPageModule,
+    AssistanceSummariesPageModule,
     //END NEW MODALS
   ],
   providers: [

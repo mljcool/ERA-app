@@ -66,6 +66,10 @@ const routes: Routes = [
     path: 'assistance-map-menus',
     loadChildren: () => import('./core/modals/assistance-map-menus/assistance-map-menus.module').then( m => m.AssistanceMapMenusPageModule)
   },
+  {
+    path: 'assistance-summaries',
+    loadChildren: () => import('./core/modals/assistance-summaries/assistance-summaries.module').then( m => m.AssistanceSummariesPageModule)
+  },
 
 
 

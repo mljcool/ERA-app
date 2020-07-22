@@ -20,6 +20,7 @@ import {
   calculateDistanceNearest,
 } from 'src/app/pages/locations/utils/nearest-location';
 import { MapsAPILoader } from '@agm/core';
+import { AssistanceSummariesPage } from '../../modals/assistance-summaries/assistance-summaries.page';
 const { Geolocation } = Plugins;
 @Component({
   selector: 'app-assistance',
@@ -102,12 +103,6 @@ export class AssistancePage implements OnInit {
   }
 
   getCurrentPosition(): void { }
-
-  viewMenu(): void {
-    console.log('here');
-  }
-
-
 
   async onViewMapThemes() {
     const modal = await this.modalCtrl.create({
@@ -226,7 +221,17 @@ export class AssistancePage implements OnInit {
     await loading.present();
   }
 
-  viewShopDetals(shopDetail): void {
-    console.log(shopDetail);
+  async viewShopDetals(shopDetails) {
+    const modal = await this.modalCtrl.create({
+      component: AssistanceSummariesPage,
+      cssClass: 'cart-modal',
+      componentProps: {
+        assistanceDetails: {
+          shopDetail: shopDetails,
+          serviceTypeParam: this.serviceTypeParam
+        },
+      }
+    });
+    await modal.present();
   }
 }

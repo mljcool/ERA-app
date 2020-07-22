@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Assistance Summary</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="assitance-details">
+    <div class="top-details">
+      <div class="mecha-avatar">
+        <img src="assets/images/commons/manmechanic.gif" />
+      </div>
+      <div class="me-details">
+        <span class="c-name">Hi Jhon Doe</span>
+        <!-- <span class="c-details">The mechanic will arrive soon</span> -->
+        <span class="c-details">These are all the information</span>
+      </div>
+    </div>
+    <div class="sub-assistance-details">
+      <div class="shop-details">
+        <div class="shop-header">
+          <h3>Shop details</h3>
+        </div>
+        <div class="view-card custom-card">
+          <div class="top-details">
+            <small class="time-status">
+              <span>Open</span>
+            </small>
+            <span class="ratings-icons">
+              <ion-icon name="star"></ion-icon>
+              <ion-icon name="star"></ion-icon>
+              <ion-icon name="star"></ion-icon>
+              <ion-icon name="star"></ion-icon>
+              <ion-icon name="star"></ion-icon>
+            </span>
+          </div>
+
+          <div class="shop-title">
+            <div>
+              <span class="icon">
+                <ion-icon name="car"></ion-icon>
+              </span>
+              <span class="shop-name"> {{ shopDetail.name}}</span>
+            </div>
+          </div>
+          <div class="shop-content">
+            <small>
+              Address
+            </small>
+            <span class="address">
+              {{ shopDetail.content}}
+            </span>
+          </div>
+          <div class="shop-rating"></div>
+          <ion-list>
+            <ion-list-header>
+              <ion-label>Assistance needed</ion-label>
+            </ion-list-header>
+
+            <ion-item class="ion-no-padding">
+              <ion-thumbnail>
+                <img [src]="serviceDetails.imgSrc" />
+              </ion-thumbnail>
+              <ion-label> {{ serviceDetails.label }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </div>
+    </div>
+
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <ion-col>
+          <div>
+            <ion-button (click)="closeModal()" expand="block">
+              <ion-icon name="checkmark" slot="star"></ion-icon>
+              Confirm
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

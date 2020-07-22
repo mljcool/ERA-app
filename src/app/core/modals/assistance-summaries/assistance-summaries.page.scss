@@ -1,0 +1,98 @@
+:host {
+  .assitance-details {
+    .top-details {
+      display: grid;
+      grid-auto-flow: column;
+      padding: 5px;
+      background: #f6fcff;
+      .mecha-avatar {
+        img {
+          width: 115px;
+          height: 110px;
+        }
+      }
+      .me-details {
+        display: grid;
+        .c-name {
+          font-weight: bolder;
+          font-size: 20px;
+          color: #7b7b7b;
+          align-self: end;
+        }
+        .c-details {
+          font-weight: bolder;
+          font-size: 15px;
+          color: #7b7b7b;
+        }
+      }
+    }
+  }
+  .shop-details {
+    .shop-header {
+      padding-left: 12px;
+      h3 {
+        color: #7b7b7b;
+        margin: 0;
+      }
+    }
+    .view-card {
+      display: grid;
+      padding: 5px;
+      margin: 5px;
+      background: white;
+      white-space: nowrap;
+      border-top: solid 1px #ededee;
+      &.custom-card {
+        padding: 5px;
+
+        .top-details {
+          display: flex;
+          justify-content: space-between;
+          .time-status {
+            > span {
+              background: #f26913;
+              padding: 1px 4px;
+              color: white;
+              border-radius: 4px;
+            }
+          }
+          .ratings-icons {
+            color: #f4a34f;
+          }
+        }
+
+        .shop-title {
+          display: flex;
+          justify-content: space-between;
+          .icon {
+            vertical-align: middle;
+          }
+          .shop-name {
+            color: #777777;
+            font-size: 14px;
+          }
+        }
+        .shop-content {
+          display: grid;
+
+          > small {
+            font-size: 65%;
+          }
+          > span {
+            font-weight: 500;
+            font-size: 15px;
+            color: #434343ee;
+          }
+        }
+        .shop-rating {
+          border-top: solid 1px #ededee;
+        }
+        ion-list-header {
+          padding-left: 5px;
+          color: #7b7b7b;
+          font-size: 22px;
+        }
+      }
+    }
+  }
+}

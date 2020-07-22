@@ -9,7 +9,7 @@ import { PopoverController, NavParams } from '@ionic/angular';
 export class AssistanceMapMenusPage implements OnInit {
 
   isNearestOnly = false;
-  constructor(public popover: PopoverController, private navParams: NavParams,) {
+  constructor(public popover: PopoverController, private navParams: NavParams) {
 
     this.isNearestOnly = this.navParams.get('isOnlyNearest');
     console.log(this.isNearestOnly);
