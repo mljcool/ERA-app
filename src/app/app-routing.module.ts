@@ -70,6 +70,10 @@ const routes: Routes = [
     path: 'assistance-summaries',
     loadChildren: () => import('./core/modals/assistance-summaries/assistance-summaries.module').then( m => m.AssistanceSummariesPageModule)
   },
+  {
+    path: 'assistance-waiting',
+    loadChildren: () => import('./core/modals/assistance-waiting/assistance-waiting.module').then( m => m.AssistanceWaitingPageModule)
+  },
 
 
 

@@ -1,26 +1,15 @@
-<ion-header *ngIf="!afterConfirmed">
+<ion-header>
   <ion-toolbar>
     <ion-title>Assistance Summary</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="afterConfirmed" *ngIf="afterConfirmed">
-    <img src="assets/images/mechanic.gif" />
-    <div class="information-arrived">
-      <h4>Your mechanic will arrive soon</h4>
-    </div>
-    <div>
-      <ion-button (click)="okayClose()">
-        Close
-      </ion-button>
-    </div>
-  </div>
   <ion-progress-bar
     *ngIf="isConfirming"
     type="indeterminate"
   ></ion-progress-bar>
-  <div class="assitance-details" *ngIf="!afterConfirmed">
+  <div class="assitance-details">
     <div class="top-details-assistance">
       <div class="mecha-avatar">
         <img src="assets/images/commons/manmechanic.gif" />

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, AlertController, ModalController } from '@ionic/angular';
 import { assistTanceList } from 'src/app/constants/assistanceTypes';
 import { Router } from '@angular/router';
+import { AssistanceWaitingPage } from '../assistance-waiting/assistance-waiting.page';
 
 @Component({
   selector: 'app-assistance-summaries',
@@ -10,7 +11,6 @@ import { Router } from '@angular/router';
 })
 export class AssistanceSummariesPage implements OnInit {
   isConfirming = false;
-  afterConfirmed = false;
   serviceDetails = {};
   shopDetail = {};
   constructor(
@@ -19,9 +19,11 @@ export class AssistanceSummariesPage implements OnInit {
     public modaCtrl: ModalController,
     private router: Router
   ) {
+
     const { shopDetail, serviceTypeParam } = this.navParams.get(
       'assistanceDetails'
     );
+
     this.serviceDetails = assistTanceList.find(
       (detail) => detail.id === parseInt(serviceTypeParam, 10)
     );
@@ -35,7 +37,6 @@ export class AssistanceSummariesPage implements OnInit {
     const confirming = setTimeout(() => {
       this.isConfirming = false;
       clearTimeout(confirming);
-      this.afterConfirmed = true;
       this.presentAlert();
     }, 1000);
   }
@@ -53,11 +54,21 @@ export class AssistanceSummariesPage implements OnInit {
       buttons: [{
         text: 'Okay',
         handler: () => {
-          this.router.navigate(['/main-menu'])
+          this.okayClose();
+          this.router.navigate(['/main-menu']);
+          this.viewWaiting({});
         }
       }],
     });
 
     await alert.present();
+  }
+
+  async viewWaiting(shopDetails) {
+    const modal = await this.modaCtrl.create({
+      component: AssistanceWaitingPage,
+      cssClass: 'cart-modal',
+    });
+    await modal.present();
   }
 }
