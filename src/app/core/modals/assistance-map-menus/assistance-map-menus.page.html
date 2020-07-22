@@ -6,7 +6,10 @@
     </ion-item>
     <ion-item (click)="onProceed('nearest')">
       <ion-icon name="locate" slot="start"></ion-icon>
-      <ion-label> Show only the nearest</ion-label>
+      <ion-label>
+        <ng-container *ngIf="!isNearestOnly">Show only nearest</ng-container>
+        <ng-container *ngIf="isNearestOnly">Show All Shop</ng-container>
+      </ion-label>
     </ion-item>
     <ion-item (click)="onProceed('theme')">
       <ion-icon name="map" slot="start"></ion-icon>

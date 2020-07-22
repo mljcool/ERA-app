@@ -30,12 +30,14 @@ export class AssistancePage implements OnInit {
   lat = 7.05198;
   lng = 125.571784;
   zoom = 15;
+  isOnlyNearest = false;
   mapThemeStyle = darkTheme;
   initMap = {
     latitude: this.lat,
     longitude: this.lng,
     iconUrl: myMarker,
   };
+  private unsubscribeAll: Subject<any>;
   public origin: any;
   public destination: any;
   public getApproximate: any;
@@ -54,7 +56,6 @@ export class AssistancePage implements OnInit {
 
   itemsShop: any[] = [];
   itemsShopAll: any[] = [];
-  private unsubscribeAll: Subject<any>;
   serviceTypeParam: string = '';
 
   constructor(
@@ -113,6 +114,24 @@ export class AssistancePage implements OnInit {
     await modal.present();
   }
 
+  filterOnlyNearest() {
+    if (!this.isOnlyNearest) {
+      this.itemsShop = this.itemsShop.filter(shop => shop.id === this.getNearest.id);
+
+    } else if (this.isOnlyNearest) {
+      this.itemsShop = this.itemsShopAll;
+      this.zoomIn();
+    }
+    this.isOnlyNearest = !this.isOnlyNearest;
+  }
+  zoomIn() {
+    const interValZoom = setInterval(() => {
+      this.zoom = this.zoom + 1;
+      if (this.zoom > 14) {
+        clearInterval(interValZoom);
+      }
+    }, 200);
+  }
 
 
   async onAssistanceMenus(ev: any) {
@@ -121,6 +140,9 @@ export class AssistancePage implements OnInit {
       cssClass: 'my-custom-class',
       event: ev,
       translucent: true,
+      componentProps: {
+        isOnlyNearest: this.isOnlyNearest
+      }
     });
     await popover.present();
     popover.onWillDismiss().then(({ data }) => {
@@ -134,8 +156,7 @@ export class AssistancePage implements OnInit {
             this.router.navigate(['/main-menu']);
             break;
           case 'nearest':
-            console.log('getNearest', this.getNearest);
-            this.itemsShop = this.itemsShop.filter(shop => shop.id === this.getNearest.id);
+            this.filterOnlyNearest();
             break;
           case 'refresh':
             this.getMyCurrentPosition();

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, NavParams } from '@ionic/angular';
 
 @Component({
   selector: 'app-assistance-map-menus',
@@ -8,7 +8,12 @@ import { PopoverController } from '@ionic/angular';
 })
 export class AssistanceMapMenusPage implements OnInit {
 
-  constructor(public popover: PopoverController) { }
+  isNearestOnly = false;
+  constructor(public popover: PopoverController, private navParams: NavParams,) {
+
+    this.isNearestOnly = this.navParams.get('isOnlyNearest');
+    console.log(this.isNearestOnly);
+  }
 
   ngOnInit() {
   }
