@@ -14,7 +14,6 @@
         [destination]="destination"
         [travelMode]="'DRIVING'"
         [renderOptions]="renderOptions"
-        [markerOptions]="markerOptions"
       >
       </agm-direction>
       <agm-marker
@@ -24,7 +23,7 @@
       ></agm-marker>
       <agm-marker
         *ngFor="let m of itemsShop; let i = index"
-        (markerClick)="presentModal(m)"
+        (markerClick)="viewShopDetals(m)"
         [latitude]="m.location.lat"
         [longitude]="m.location.long"
         [iconUrl]="m.iconUrl"

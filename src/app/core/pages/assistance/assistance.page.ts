@@ -45,12 +45,25 @@ export class AssistancePage implements OnInit {
   public renderOptions = {
     suppressMarkers: true,
   };
+  //incase will add A to B markers
   markerOptions = {
     origin: {
-      opacity: 0,
+      icon: {
+        url: 'assets/images/svg/my-marker.svg',
+        scaledSize: {
+          height: 70,
+          width: 60
+        }
+      }
     },
     destination: {
-      opacity: 0,
+      icon: {
+        url: 'assets/images/svg/guage.svg',
+        scaledSize: {
+          height: 70,
+          width: 60
+        }
+      }
     },
   };
 
@@ -211,5 +224,9 @@ export class AssistancePage implements OnInit {
       backdropDismiss: true,
     });
     await loading.present();
+  }
+
+  viewShopDetals(shopDetail): void {
+    console.log(shopDetail);
   }
 }

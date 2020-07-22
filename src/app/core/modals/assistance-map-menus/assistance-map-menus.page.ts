@@ -24,5 +24,8 @@ export class AssistanceMapMenusPage implements OnInit {
     });
 
   }
+  closeModal() {
+    this.popover.dismiss();
+  }
 
 }
