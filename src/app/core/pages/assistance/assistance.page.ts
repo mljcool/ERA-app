@@ -3,12 +3,20 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { getDataShopsList } from '../../util/dummy-data';
-import { mapStyle, myMarker } from '../../util/map-styles';
+import { myMarker } from '../../util/map-styles';
 import { myMapTheme } from '../../map-theme/themeList';
 import { GmapOptionsPage } from '../../modals/gmap-options/gmap-options.page';
-import { ModalController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
 import { darkTheme } from '../../map-theme/dark';
-
+import { AssistanceMapMenusPage } from '../../modals/assistance-map-menus/assistance-map-menus.page';
+import { Plugins } from '@capacitor/core';
+import { calculateDistance } from 'src/app/pages/locations/utils/map.utils';
+import {
+  getNearestPoint,
+  calculateDistanceNearest,
+} from 'src/app/pages/locations/utils/nearest-location';
+import { MapsAPILoader } from '@agm/core';
+const { Geolocation } = Plugins;
 @Component({
   selector: 'app-assistance',
   templateUrl: './assistance.page.html',
@@ -18,8 +26,26 @@ export class AssistancePage implements OnInit {
   lat = 7.05198;
   lng = 125.571784;
   zoom = 15;
-  markerDesigned = myMarker;
   mapThemeStyle = darkTheme;
+  initMap = {
+    latitude: this.lat,
+    longitude: this.lng,
+    iconUrl: myMarker,
+  };
+  public origin: any;
+  public destination: any;
+  public getApproximate: any;
+  public renderOptions = {
+    suppressMarkers: true,
+  };
+  markerOptions = {
+    origin: {
+      opacity: 0,
+    },
+    destination: {
+      opacity: 0,
+    },
+  };
 
   items: any[] = [];
   private unsubscribeAll: Subject<any>;
@@ -27,7 +53,10 @@ export class AssistancePage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private modalCtrl: ModalController
+    private router: Router,
+    private modalCtrl: ModalController,
+    private popoverController: PopoverController,
+    private mapsApiLoader: MapsAPILoader
   ) {
     this.unsubscribeAll = new Subject();
     this.route.queryParams
@@ -39,7 +68,11 @@ export class AssistancePage implements OnInit {
     this.items = getDataShopsList();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.mapsApiLoader.load().then(() => {
+      this.getMyCurrentPosition();
+    });
+  }
 
   ngOnDestroy(): void {
     this.unsubscribeAll.next();
@@ -67,6 +100,63 @@ export class AssistancePage implements OnInit {
         this.mapThemeStyle = myMapTheme[themeType];
       }
     });
-    modal.present();
+    await modal.present();
+  }
+
+  async onAssistanceMenus(ev: any) {
+    const popover = await this.popoverController.create({
+      component: AssistanceMapMenusPage,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true,
+    });
+    await popover.present();
+    popover.onWillDismiss().then(({ data }) => {
+      console.log(data);
+      if (data) {
+        const { optionType } = data;
+        switch (optionType) {
+          case 'theme':
+            this.onViewMapThemes();
+            break;
+          case 'back':
+            this.router.navigate(['/main-menu']);
+            break;
+          default:
+            break;
+        }
+      }
+    });
+  }
+
+  async getMyCurrentPosition() {
+    const coordinates = await Geolocation.getCurrentPosition();
+    const { coords } = coordinates;
+    if (coords) {
+      setTimeout(() => {
+        const myLocations = {
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+          message: `I'm Here....`,
+        };
+        this.initMap = { ...this.initMap, ...myLocations };
+        const { latitude, longitude } = this.initMap;
+        const nearestRoute = getNearestPoint(
+          { lat: latitude, long: longitude },
+          this.items
+        );
+        this.origin = { lat: latitude, lng: longitude };
+        this.destination = {
+          lat: nearestRoute.location.lat,
+          lng: nearestRoute.location.long,
+        };
+
+        calculateDistanceNearest(this.origin, this.destination).then(
+          (result) => {
+            this.getApproximate = result;
+          }
+        );
+      }, 300);
+    }
   }
 }

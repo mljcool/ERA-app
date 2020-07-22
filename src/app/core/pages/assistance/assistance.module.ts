@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { AssistancePageRoutingModule } from './assistance-routing.module';
-
 import { AssistancePage } from './assistance.page';
 import { ContentDrawer } from '../../components/content-drawer/content-drawer';
 import { AgmOverlays } from 'agm-overlays';

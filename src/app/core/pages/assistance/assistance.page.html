@@ -2,17 +2,25 @@
   <div class="assistance-view">
     <agm-map
       *ngIf="items.length"
-      [latitude]="lat"
-      [longitude]="lng"
+      [latitude]="initMap.latitude"
+      [longitude]="initMap.longitude"
       [zoom]="zoom"
       [disableDefaultUI]="true"
       [zoomControl]="false"
       [styles]="mapThemeStyle"
     >
+      <agm-direction
+        [origin]="origin"
+        [destination]="destination"
+        [travelMode]="'DRIVING'"
+        [renderOptions]="renderOptions"
+        [markerOptions]="markerOptions"
+      >
+      </agm-direction>
       <agm-marker
-        [latitude]="lat"
-        [longitude]="lng"
-        [iconUrl]="markerDesigned"
+        [latitude]="initMap.latitude"
+        [longitude]="initMap.longitude"
+        [iconUrl]="initMap.iconUrl"
       ></agm-marker>
       <agm-marker
         *ngFor="let m of items; let i = index"
@@ -71,7 +79,7 @@
     </div>
   </div>
   <ion-fab horizontal="end" vertical="top" slot="fixed">
-    <ion-fab-button color="light" (click)="onViewMapThemes()">
+    <ion-fab-button color="light" (click)="onAssistanceMenus()">
       <ion-icon name="menu" ios="chevron-forward-circle"></ion-icon>
     </ion-fab-button>
   </ion-fab>
