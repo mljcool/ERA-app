@@ -1,4 +1,11 @@
 :host {
+  .afterConfirmed {
+    display: grid;
+    text-align: center;
+    h4 {
+      color: #7b7b7b;
+    }
+  }
   .assitance-details {
     .top-details-assistance {
       display: grid;
