@@ -39,6 +39,8 @@ import { GmapOptionsPageModule } from './core/modals/gmap-options/gmap-options.m
 import { AssistanceMapMenusPageModule } from './core/modals/assistance-map-menus/assistance-map-menus.module';
 import { AssistanceSummariesPageModule } from './core/modals/assistance-summaries/assistance-summaries.module';
 import { AssistanceWaitingPageModule } from './core/modals/assistance-waiting/assistance-waiting.module';
+import { ServicesSharedModule } from './core/global/SharedSerivces';
+import { WorkingProgressPageModule } from './core/modals/working-progress/working-progress.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -67,7 +69,11 @@ import { AssistanceWaitingPageModule } from './core/modals/assistance-waiting/as
     AssistanceMapMenusPageModule,
     AssistanceSummariesPageModule,
     AssistanceWaitingPageModule,
+    WorkingProgressPageModule,
     //END NEW MODALS
+
+    //SharedServices
+    ServicesSharedModule.forRoot()
   ],
   providers: [
     StatusBar,

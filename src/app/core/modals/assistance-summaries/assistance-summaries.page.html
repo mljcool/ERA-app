@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Assistance Summary</ion-title>
+    <ion-buttons slot="primary">
+      <ion-buttons (click)="okayClose()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-buttons>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -69,14 +74,14 @@
             </ion-item>
             <ion-item class="ion-no-padding">
               <ion-label position="floating">Add note</ion-label>
-              <ion-textarea></ion-textarea>
+              <ion-textarea [readonly]="!canUpdate"></ion-textarea>
             </ion-item>
           </ion-list>
         </div>
       </div>
     </div>
 
-    <ion-grid class="ion-no-padding">
+    <ion-grid class="ion-no-padding" *ngIf="canUpdate">
       <ion-row class="ion-align-items-center">
         <ion-col>
           <ion-button (click)="onConfirm()" expand="block">

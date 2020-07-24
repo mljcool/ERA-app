@@ -4,6 +4,9 @@ import { PopoverComponent } from 'src/app/common-ui/PopoverMenu/pop-over-menu.co
 import { Router, NavigationExtras } from '@angular/router';
 import { AssistanceModalPage } from '../../modals/assistance-modal/assistance-modal.page';
 import { getDataShopsList } from '../../util/dummy-data';
+import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.service';
+import { AssistanceSummariesPage } from '../../modals/assistance-summaries/assistance-summaries.page';
+import { WorkingProgressPage } from '../../modals/working-progress/working-progress.page';
 
 
 @Component({
@@ -13,12 +16,15 @@ import { getDataShopsList } from '../../util/dummy-data';
 })
 export class MainMenuPage implements OnInit {
   items: any[] = [];
+  assistanceStatus: boolean = false;
   constructor(
     public popoverController: PopoverController,
     private router: Router,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private assistanceSrvc: AssistanceCoreServices
   ) {
     this.items = getDataShopsList();
+    this.assistanceStatus = this.assistanceSrvc.trackMyAssistance()
   }
 
   ngOnInit() { }
@@ -44,17 +50,43 @@ export class MainMenuPage implements OnInit {
       cssClass: 'cart-modal',
     });
     modal.onWillDismiss().then(({ data }) => {
-      console.log(data);
-      const { serviceType } = data;
-      const navigationExtras: NavigationExtras = {
-        queryParams: {
-          serviceType: serviceType,
-        }
-      };
 
-      this.router.navigate(['/assistance'], navigationExtras);
+      if (data) {
+        const { serviceType } = data;
+        const navigationExtras: NavigationExtras = {
+          queryParams: {
+            serviceType: serviceType,
+          }
+        };
+        this.router.navigate(['/assistance'], navigationExtras);
+      }
+
 
     });
     modal.present();
   }
+
+  async viewAssistanceDetals(shopDetails) {
+    const modal = await this.modalCtrl.create({
+      component: AssistanceSummariesPage,
+      cssClass: 'assistance-modal',
+      componentProps: {
+        assistanceDetails: {
+          shopDetail: shopDetails,
+          serviceTypeParam: 1,
+          canUpdate: false
+        },
+      }
+    });
+    await modal.present();
+  }
+
+  async onWIP() {
+    const modal = await this.modalCtrl.create({
+      component: WorkingProgressPage,
+      cssClass: 'wip-modal',
+    });
+    await modal.present();
+  }
+
 }

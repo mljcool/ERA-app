@@ -74,6 +74,10 @@ const routes: Routes = [
     path: 'assistance-waiting',
     loadChildren: () => import('./core/modals/assistance-waiting/assistance-waiting.module').then( m => m.AssistanceWaitingPageModule)
   },
+  {
+    path: 'working-progress',
+    loadChildren: () => import('./core/modals/working-progress/working-progress.module').then( m => m.WorkingProgressPageModule)
+  },
 
 
 

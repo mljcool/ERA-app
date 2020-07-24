@@ -13,6 +13,7 @@ export class AssistanceSummariesPage implements OnInit {
   isConfirming = false;
   serviceDetails = {};
   shopDetail = {};
+  canUpdate = false;
   constructor(
     private navParams: NavParams,
     public alertController: AlertController,
@@ -20,7 +21,7 @@ export class AssistanceSummariesPage implements OnInit {
     private router: Router
   ) {
 
-    const { shopDetail, serviceTypeParam } = this.navParams.get(
+    const { shopDetail, serviceTypeParam, canUpdate } = this.navParams.get(
       'assistanceDetails'
     );
 
@@ -28,6 +29,7 @@ export class AssistanceSummariesPage implements OnInit {
       (detail) => detail.id === parseInt(serviceTypeParam, 10)
     );
     this.shopDetail = shopDetail;
+    this.canUpdate = canUpdate;
   }
 
   ngOnInit() { }

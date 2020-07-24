@@ -16,25 +16,32 @@
         <ion-card>
           <ion-card-content class="my-profile">
             <div class="timer-avatar">
-              <!-- <ion-thumbnail class="my-avatar">
-              <img src="assets/images/commons/manmechanic.gif" />
-            </ion-thumbnail> -->
-              <ion-thumbnail class="timer-avatar">
+              <ion-thumbnail class="my-avatar" *ngIf="!assistanceStatus">
+                <img src="assets/images/commons/manmechanic.gif" />
+              </ion-thumbnail>
+              <ion-thumbnail class="timer-avatar" *ngIf="assistanceStatus">
                 <img [src]="'assets/images/svg/new-timer.svg'" />
               </ion-thumbnail>
             </div>
             <div class="my-data">
               <ul class="my-details">
                 <li><span class="my-name">Hi, Jhon Doe</span></li>
-                <li><span class="my-name isTimer">Hi, Jhon Doe</span></li>
+                <li>
+                  <span class="my-name isTimer" *ngIf="!assistanceStatus"
+                    >anything we can do to help?</span
+                  >
+                  <span class="my-name isTimer" *ngIf="assistanceStatus"
+                    >estimated time</span
+                  >
+                </li>
               </ul>
             </div>
-            <div class="timer-label">
+            <div class="timer-label" *ngIf="assistanceStatus">
               <div>
                 <span>14mins</span>
               </div>
               <div>
-                <ion-button size="small">
+                <ion-button size="small" (click)="viewAssistanceDetals('view')">
                   View Detail
                   <ion-icon slot="end" name="refresh"></ion-icon>
                 </ion-button>
@@ -60,7 +67,7 @@
         </ion-card>
       </ion-col>
       <ion-col size="6">
-        <ion-card class="ion-activatable ripple-parent">
+        <ion-card class="ion-activatable ripple-parent" (click)="onWIP()">
           <img src="assets/images/main-menus/era-shoppin-parts.png" />
           <ion-card-header>
             <ion-card-subtitle>Discover Shops</ion-card-subtitle>
@@ -71,7 +78,7 @@
     </ion-row>
     <ion-row>
       <ion-col size="6">
-        <ion-card class="ion-activatable ripple-parent">
+        <ion-card class="ion-activatable ripple-parent" (click)="onWIP()">
           <ion-badge class="badge-one" color="danger">2</ion-badge>
           <img src="assets/images/main-menus/transactions.png" />
           <ion-card-header>
@@ -81,7 +88,7 @@
         </ion-card>
       </ion-col>
       <ion-col size="6">
-        <ion-card class="ion-activatable ripple-parent">
+        <ion-card class="ion-activatable ripple-parent" (click)="onWIP()">
           <ion-badge class="badge-one" color="danger">2</ion-badge>
           <img src="assets/images/main-menus/my-car.png" />
           <ion-card-header>

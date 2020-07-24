@@ -228,7 +228,8 @@ export class AssistancePage implements OnInit {
       componentProps: {
         assistanceDetails: {
           shopDetail: shopDetails,
-          serviceTypeParam: this.serviceTypeParam
+          serviceTypeParam: this.serviceTypeParam,
+          canUpdate: true
         },
       }
     });
