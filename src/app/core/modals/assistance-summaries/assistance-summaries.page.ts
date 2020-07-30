@@ -3,6 +3,7 @@ import { NavParams, AlertController, ModalController } from '@ionic/angular';
 import { assistTanceList } from 'src/app/constants/assistanceTypes';
 import { Router } from '@angular/router';
 import { AssistanceWaitingPage } from '../assistance-waiting/assistance-waiting.page';
+import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.service';
 
 @Component({
   selector: 'app-assistance-summaries',
@@ -18,7 +19,8 @@ export class AssistanceSummariesPage implements OnInit {
     private navParams: NavParams,
     public alertController: AlertController,
     public modaCtrl: ModalController,
-    private router: Router
+    private router: Router,
+    private assistanceSrvc: AssistanceCoreServices
   ) {
 
     const { shopDetail, serviceTypeParam, canUpdate } = this.navParams.get(
@@ -59,6 +61,8 @@ export class AssistanceSummariesPage implements OnInit {
           this.okayClose();
           this.router.navigate(['/main-menu']);
           this.viewWaiting({});
+          this.assistanceSrvc.setAssistanceStatus(true);
+
         }
       }],
     });

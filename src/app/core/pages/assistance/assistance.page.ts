@@ -231,7 +231,7 @@ export class AssistancePage implements OnInit {
           serviceTypeParam: this.serviceTypeParam,
           canUpdate: true
         },
-      }
+      },
     });
     await modal.present();
   }

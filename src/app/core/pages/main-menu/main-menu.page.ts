@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PopoverController, ModalController } from '@ionic/angular';
 import { PopoverComponent } from 'src/app/common-ui/PopoverMenu/pop-over-menu.component';
 import { Router, NavigationExtras } from '@angular/router';
@@ -7,27 +7,42 @@ import { getDataShopsList } from '../../util/dummy-data';
 import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.service';
 import { AssistanceSummariesPage } from '../../modals/assistance-summaries/assistance-summaries.page';
 import { WorkingProgressPage } from '../../modals/working-progress/working-progress.page';
-
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-main-menu',
   templateUrl: './main-menu.page.html',
   styleUrls: ['./main-menu.page.scss'],
 })
-export class MainMenuPage implements OnInit {
+export class MainMenuPage implements OnInit, OnDestroy {
   items: any[] = [];
   assistanceStatus: boolean = false;
+  private _unsubscribeAll: Subject<any>;
+
   constructor(
     public popoverController: PopoverController,
     private router: Router,
     private modalCtrl: ModalController,
     private assistanceSrvc: AssistanceCoreServices
   ) {
+    this._unsubscribeAll = new Subject();
     this.items = getDataShopsList();
-    this.assistanceStatus = this.assistanceSrvc.trackMyAssistance()
+
   }
 
+  ionViewWillEnter() {
+    this.assistanceSrvc.getAssistanceStatus().then(({ isTracking }) => {
+      this.assistanceStatus = isTracking;
+    });
+  }
   ngOnInit() { }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
 
   async presentPopover(ev: any) {
     const popover = await this.popoverController.create({
@@ -41,6 +56,7 @@ export class MainMenuPage implements OnInit {
 
   navigator(url) {
     console.log(url);
+    this.router.navigate(['/' + url]);
     //assistance
   }
 
@@ -50,18 +66,15 @@ export class MainMenuPage implements OnInit {
       cssClass: 'cart-modal',
     });
     modal.onWillDismiss().then(({ data }) => {
-
       if (data) {
         const { serviceType } = data;
         const navigationExtras: NavigationExtras = {
           queryParams: {
             serviceType: serviceType,
-          }
+          },
         };
         this.router.navigate(['/assistance'], navigationExtras);
       }
-
-
     });
     modal.present();
   }
@@ -74,9 +87,9 @@ export class MainMenuPage implements OnInit {
         assistanceDetails: {
           shopDetail: shopDetails,
           serviceTypeParam: 1,
-          canUpdate: false
+          canUpdate: false,
         },
-      }
+      },
     });
     await modal.present();
   }
@@ -88,5 +101,4 @@ export class MainMenuPage implements OnInit {
     });
     await modal.present();
   }
-
 }

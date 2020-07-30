@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack();">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="addCar()">
+        <ion-icon slot="start" name="add-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Your cars</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+
+  <ion-list>
+    <ion-item>
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionChange)="setFilteredItems(searchTerm)"
+      ></ion-searchbar>
+    </ion-item>
+    <ion-item *ngFor="let cars of myCars; let index = i">
+      <ion-card class="ion-activatable ripple-parent">
+        <ion-item>
+          <ion-icon name="car"></ion-icon>
+          <ion-label>{{ cars.modelName }}</ion-label>
+          <ion-button color="warning" fill="outline" slot="end"
+            >{{ cars.plateNumber }}</ion-button
+          >
+        </ion-item>
+
+        <ion-card-content>
+          {{ cars.description }}
+        </ion-card-content>
+        <ion-item>
+          <ion-icon name="calendar"></ion-icon>
+          <small>{{ cars.dateAdded }}</small>
+        </ion-item>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+</ion-content>

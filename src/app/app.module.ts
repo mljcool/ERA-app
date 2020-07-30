@@ -41,6 +41,7 @@ import { AssistanceSummariesPageModule } from './core/modals/assistance-summarie
 import { AssistanceWaitingPageModule } from './core/modals/assistance-waiting/assistance-waiting.module';
 import { ServicesSharedModule } from './core/global/SharedSerivces';
 import { WorkingProgressPageModule } from './core/modals/working-progress/working-progress.module';
+import { AddCarsPageModule } from './core/modals/add-cars/add-cars.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -70,6 +71,7 @@ import { WorkingProgressPageModule } from './core/modals/working-progress/workin
     AssistanceSummariesPageModule,
     AssistanceWaitingPageModule,
     WorkingProgressPageModule,
+    AddCarsPageModule,
     //END NEW MODALS
 
     //SharedServices

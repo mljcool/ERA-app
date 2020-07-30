@@ -8,13 +8,15 @@ import { MainMenuPageRoutingModule } from './main-menu-routing.module';
 
 import { MainMenuPage } from './main-menu.page';
 import { PopoverComponent } from 'src/app/common-ui/PopoverMenu/pop-over-menu.component';
+import { ServicesSharedModule } from '../../global/SharedSerivces';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MainMenuPageRoutingModule
+    MainMenuPageRoutingModule,
+    ServicesSharedModule.forRoot()
   ],
   declarations: [MainMenuPage, PopoverComponent],
   entryComponents: [

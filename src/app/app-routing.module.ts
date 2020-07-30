@@ -78,6 +78,14 @@ const routes: Routes = [
     path: 'working-progress',
     loadChildren: () => import('./core/modals/working-progress/working-progress.module').then( m => m.WorkingProgressPageModule)
   },
+  {
+    path: 'my-cars',
+    loadChildren: () => import('./core/pages/my-cars/my-cars.module').then( m => m.MyCarsPageModule)
+  },
+  {
+    path: 'add-cars',
+    loadChildren: () => import('./core/modals/add-cars/add-cars.module').then( m => m.AddCarsPageModule)
+  },
 
 
 
