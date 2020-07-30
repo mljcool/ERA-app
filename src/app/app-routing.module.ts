@@ -86,6 +86,10 @@ const routes: Routes = [
     path: 'add-cars',
     loadChildren: () => import('./core/modals/add-cars/add-cars.module').then( m => m.AddCarsPageModule)
   },
+  {
+    path: 'discover-shops',
+    loadChildren: () => import('./core/pages/discover-shops/discover-shops.module').then( m => m.DiscoverShopsPageModule)
+  },
 
 
 
