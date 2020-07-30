@@ -8,7 +8,6 @@ import { VehicleModel } from 'src/app/models/vehicle.mode';
   styleUrls: ['./add-cars.page.scss'],
 })
 export class AddCarsPage implements OnInit {
-
   vehicleForm: FormGroup;
   vehicle: VehicleModel;
   isLoading = false;
@@ -24,11 +23,9 @@ export class AddCarsPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   saveData() {
     console.log(this.vehicleForm.getRawValue());
   }
-
 }
