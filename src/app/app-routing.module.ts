@@ -90,6 +90,10 @@ const routes: Routes = [
     path: 'discover-shops',
     loadChildren: () => import('./core/pages/discover-shops/discover-shops.module').then( m => m.DiscoverShopsPageModule)
   },
+  {
+    path: 'transactions',
+    loadChildren: () => import('./core/pages/transactions/transactions.module').then( m => m.TransactionsPageModule)
+  },
 
 
 

@@ -81,7 +81,10 @@
     </ion-row>
     <ion-row>
       <ion-col size="6">
-        <ion-card class="ion-activatable ripple-parent" (click)="onWIP()">
+        <ion-card
+          class="ion-activatable ripple-parent"
+          (click)="navigator('transactions')"
+        >
           <ion-badge class="badge-one" color="danger">2</ion-badge>
           <img src="assets/images/main-menus/transactions.png" />
           <ion-card-header>
