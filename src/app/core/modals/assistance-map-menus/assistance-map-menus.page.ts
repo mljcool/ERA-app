@@ -12,7 +12,6 @@ export class AssistanceMapMenusPage implements OnInit {
   constructor(public popover: PopoverController, private navParams: NavParams) {
 
     this.isNearestOnly = this.navParams.get('isOnlyNearest');
-    console.log(this.isNearestOnly);
   }
 
   ngOnInit() {

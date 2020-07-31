@@ -172,6 +172,9 @@ export class AssistancePage implements OnInit {
           case 'refresh':
             this.getMyCurrentPosition();
             break;
+          case 'gps':
+            this.onGPScautionModal(true);
+            break;
           default:
             break;
         }
@@ -244,10 +247,13 @@ export class AssistancePage implements OnInit {
     await modal.present();
   }
 
-  async onGPScautionModal() {
+  async onGPScautionModal(isFromMenu = false) {
     const modal = await this.modalCtrl.create({
       component: GpsCautionPage,
       cssClass: 'gps-modal',
+      componentProps: {
+        isFromMenu
+      }
     });
     modal.onWillDismiss().then(({ data }) => { });
     await modal.present();

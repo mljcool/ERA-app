@@ -21,7 +21,7 @@
         directions
       </p>
     </ion-row>
-    <ion-row>
+    <ion-row *ngIf="!isFromMenus">
       <ion-list lines="none">
         <ion-item>
           <ion-label>Never show this message again</ion-label>

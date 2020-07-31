@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 
 @Component({
   selector: 'app-gps-caution',
@@ -7,14 +7,14 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./gps-caution.page.scss'],
 })
 export class GpsCautionPage implements OnInit {
-
-  constructor(public modalCtrl: ModalController) { }
-
-  ngOnInit() {
+  isFromMenus: boolean = false;
+  constructor(public modalCtrl: ModalController, private navParams: NavParams) {
+    this.isFromMenus = this.navParams.get('isFromMenu');
   }
+
+  ngOnInit() { }
 
   onClose(): void {
     this.modalCtrl.dismiss();
   }
-
 }
