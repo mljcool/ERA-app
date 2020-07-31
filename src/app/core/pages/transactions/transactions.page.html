@@ -9,7 +9,7 @@
       <ion-menu-button auto-hide="false"></ion-menu-button>
     </ion-buttons>
 
-    <ion-title>Discover Shops</ion-title>
+    <ion-title>Transactions</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -23,29 +23,45 @@
         (ionChange)="setFilteredItems(searchTerm)"
       ></ion-searchbar>
     </ion-item>
-    <ion-item *ngFor="let cars of myCars; let index = i">
+    <ion-list-header>
+      <ion-label>Active Transaction</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let trans of myTransactions; let index = i">
       <ion-card class="ion-activatable ripple-parent">
         <ion-item>
-          <ion-icon name="car"></ion-icon>
-          <ion-label>{{ cars.modelName }}</ion-label>
-          <ion-button color="warning" fill="outline" slot="end">
-            <span class="ratings-icons">
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-            </span>
+          <ion-icon [name]="iconType[trans.tType]"></ion-icon>
+          <ion-label class="label-custom">{{ trans.tName }}</ion-label>
+          <ion-button slot="end">
+            {{ nameType[trans.tType]}}
           </ion-button>
         </ion-item>
         <ion-card-content>
-          {{ cars.description }}
+          {{ trans.description }}
         </ion-card-content>
         <ion-item>
-          <span class="shop-status">Open time: (8:00am-5pm)</span>
-          <span class="shop-status">
-            <ion-icon name="call"></ion-icon> +63902112111
-          </span>
+          <span class="shop-status">{{ trans.dateTransaction}}</span>
+        </ion-item>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-card>
+    </ion-item>
+    <ion-list-header>
+      <ion-label>Past Transaction</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let trans of myTransactions; let index = i">
+      <ion-card class="ion-activatable ripple-parent">
+        <ion-item>
+          <ion-icon [name]="iconType[trans.tType]"></ion-icon>
+          <ion-label class="label-custom">{{ trans.tName }}</ion-label>
+          <ion-button slot="end">
+            {{ nameType[trans.tType]}}
+          </ion-button>
+        </ion-item>
+        <ion-card-content>
+          {{ trans.description }}
+        </ion-card-content>
+        <ion-item>
+          <span class="shop-status">{{ trans.dateTransaction}}</span>
         </ion-item>
         <ion-ripple-effect></ion-ripple-effect>
       </ion-card>

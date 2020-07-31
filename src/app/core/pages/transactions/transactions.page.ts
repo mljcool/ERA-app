@@ -3,15 +3,14 @@ import { Router } from '@angular/router';
 import { AddCarsPage } from '../../modals/add-cars/add-cars.page';
 import { ModalController } from '@ionic/angular';
 
-export interface ICars {
+export interface ITransactions {
   id: number;
-  modelName: string;
+  tName: string;
   description: string;
-  plateNumber: string,
-  dateAdded: any;
-  color: string;
-  isActiveUsed: boolean;
-  fuelType: number;
+  tShopName: string,
+  dateTransaction: string;
+  tType: number;
+  isArchived: boolean;
 }
 
 @Component({
@@ -21,14 +20,16 @@ export interface ICars {
 })
 export class TransactionsPage implements OnInit, OnDestroy {
   searchTerm = '';
-  myCars: ICars[] = [];
-  copyMyCars: ICars[] = [];
+  myTransactions: ITransactions[] = [];
+  copymyTransactions: ITransactions[] = [];
   isLoading: boolean = false;
   clearTimeOut: any = null;
+  iconType: string[] = ['', 'cart', 'calendar', 'map'];
+  nameType: string[] = ['', 'Orders', 'Booking', 'Assistance'];
 
 
   constructor(private router: Router, private modalCtrl: ModalController) {
-    this.populateCars();
+    this.populateTransactions();
   }
 
   ngOnInit(): void {
@@ -42,36 +43,39 @@ export class TransactionsPage implements OnInit, OnDestroy {
     clearTimeout(this.clearTimeOut);
   }
 
+  randomIntFromInterval = (min, max) => { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 
-  populateCars(): void {
-    const cars = ['Abarth 124', 'Toyota C-HR', 'Toyota HiLux', 'Toyota Landcruiser'];
+  populateTransactions(): void {
+    const cars = ['', 'Shop Abarth 124', 'Shop C-HR', 'Shop M HiLux'];
 
-    for (let index = 0; index < cars.length; index++) {
-      this.myCars.push({
+    for (let index = 0; index < cars.length + 1; index++) {
+      this.myTransactions.push({
         id: index,
-        modelName: cars[index],
-        description: `Which is why, back in 2016, when Fiat released a new 124, many an eyebrow was arched`,
-        plateNumber: (index + Math.random() * 10).toFixed(3).toString(),
-        dateAdded: new Date(),
-        isActiveUsed: true,
-        color: 'red',
-        fuelType: 1,
+        tName: cars[this.randomIntFromInterval(1, 3)],
+        description: `
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum similique blanditiis at necessitatibus ut adipisci a modi deserunt illum aperiam vero, consequuntur nemo mollitia labore voluptatum, id pariatur perspiciatis? Facere.`,
+        tShopName: 'Sample',
+        dateTransaction: 'July 20, 2020',
+        tType: this.randomIntFromInterval(1, 3),
+        isArchived: false,
 
       });
     }
-    this.copyMyCars = this.myCars;
-    console.log(this.myCars);
+    this.copymyTransactions = this.myTransactions;
+    console.log(this.myTransactions);
   }
 
   setFilteredItems(search: string = ''): void {
     const searchTerm = (search || '').toLowerCase();
     if (searchTerm !== '') {
-      const copyShops = this.myCars.filter((cars: ICars) => {
-        return cars.modelName.toLowerCase().includes(searchTerm);
+      const copyShops = this.myTransactions.filter((cars: ITransactions) => {
+        return cars.description.toLowerCase().includes(searchTerm);
       });
-      this.myCars = [...copyShops];
+      this.myTransactions = [...copyShops];
     } else {
-      this.myCars = this.copyMyCars;
+      this.myTransactions = this.copymyTransactions;
     }
   }
 
