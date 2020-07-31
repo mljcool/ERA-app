@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>How accurate is GPS location</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="gps-cautions">
+  <ion-grid>
+    <ion-row>
+      <p>
+        It depends. GPS satellites broadcast their signals in space with a
+        certain accuracy, but what you receive depends on additional factors,
+        including satellite geometry, signal blockage, atmospheric conditions,
+        and receiver design features/quality. For example, GPS-enabled
+        smartphones are typically accurate to within a 4.9 m (16 ft.) radius
+        under open sky <br />
+        However, their accuracy worsens near buildings, bridges, and trees
+      </p>
+      <p>
+        You may need to calibrate your Google Maps app to give more accurate
+        directions
+      </p>
+    </ion-row>
+    <ion-row>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>Never show this message again</ion-label>
+          <ion-checkbox color="primary" slot="start"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </ion-row>
+    <ion-row class="footer-modal">
+      <ion-button (click)="onClose()">
+        Close
+      </ion-button>
+    </ion-row>
+  </ion-grid>
+</ion-content>

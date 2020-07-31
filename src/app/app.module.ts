@@ -42,6 +42,7 @@ import { AssistanceWaitingPageModule } from './core/modals/assistance-waiting/as
 import { ServicesSharedModule } from './core/global/SharedSerivces';
 import { WorkingProgressPageModule } from './core/modals/working-progress/working-progress.module';
 import { AddCarsPageModule } from './core/modals/add-cars/add-cars.module';
+import { GpsCautionPageModule } from './core/modals/gps-caution/gps-caution.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -72,6 +73,7 @@ import { AddCarsPageModule } from './core/modals/add-cars/add-cars.module';
     AssistanceWaitingPageModule,
     WorkingProgressPageModule,
     AddCarsPageModule,
+    GpsCautionPageModule,
     //END NEW MODALS
 
     //SharedServices

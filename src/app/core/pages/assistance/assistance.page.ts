@@ -21,6 +21,7 @@ import {
 } from 'src/app/pages/locations/utils/nearest-location';
 import { MapsAPILoader } from '@agm/core';
 import { AssistanceSummariesPage } from '../../modals/assistance-summaries/assistance-summaries.page';
+import { GpsCautionPage } from '../../modals/gps-caution/gps-caution.page';
 const { Geolocation } = Plugins;
 @Component({
   selector: 'app-assistance',
@@ -46,6 +47,8 @@ export class AssistancePage implements OnInit {
   public renderOptions = {
     suppressMarkers: true,
   };
+
+  gotViewGPS: boolean = false;
   //incase will add A to B markers
   markerOptions = {
     origin: {
@@ -53,18 +56,18 @@ export class AssistancePage implements OnInit {
         url: 'assets/images/svg/my-marker.svg',
         scaledSize: {
           height: 70,
-          width: 60
-        }
-      }
+          width: 60,
+        },
+      },
     },
     destination: {
       icon: {
         url: 'assets/images/svg/guage.svg',
         scaledSize: {
           height: 70,
-          width: 60
-        }
-      }
+          width: 60,
+        },
+      },
     },
   };
 
@@ -124,8 +127,9 @@ export class AssistancePage implements OnInit {
 
   filterOnlyNearest() {
     if (!this.isOnlyNearest) {
-      this.itemsShop = this.itemsShop.filter(shop => shop.id === this.getNearest.id);
-
+      this.itemsShop = this.itemsShop.filter(
+        (shop) => shop.id === this.getNearest.id
+      );
     } else if (this.isOnlyNearest) {
       this.itemsShop = this.itemsShopAll;
       this.zoomIn();
@@ -141,7 +145,6 @@ export class AssistancePage implements OnInit {
     }, 200);
   }
 
-
   async onAssistanceMenus(ev: any) {
     const popover = await this.popoverController.create({
       component: AssistanceMapMenusPage,
@@ -149,8 +152,8 @@ export class AssistancePage implements OnInit {
       event: ev,
       translucent: true,
       componentProps: {
-        isOnlyNearest: this.isOnlyNearest
-      }
+        isOnlyNearest: this.isOnlyNearest,
+      },
     });
     await popover.present();
     popover.onWillDismiss().then(({ data }) => {
@@ -175,7 +178,6 @@ export class AssistancePage implements OnInit {
       }
     });
   }
-
 
   async getMyCurrentPosition() {
     this.presentLoading();
@@ -218,6 +220,12 @@ export class AssistancePage implements OnInit {
       message: 'Fetching location....',
       backdropDismiss: true,
     });
+    loading.onWillDismiss().then(() => {
+      const viewNow = setTimeout(() => {
+        this.onGPScautionModal();
+        clearTimeout(viewNow);
+      }, 1000);
+    });
     await loading.present();
   }
 
@@ -229,10 +237,19 @@ export class AssistancePage implements OnInit {
         assistanceDetails: {
           shopDetail: shopDetails,
           serviceTypeParam: this.serviceTypeParam,
-          canUpdate: true
+          canUpdate: true,
         },
       },
     });
+    await modal.present();
+  }
+
+  async onGPScautionModal() {
+    const modal = await this.modalCtrl.create({
+      component: GpsCautionPage,
+      cssClass: 'gps-modal',
+    });
+    modal.onWillDismiss().then(({ data }) => { });
     await modal.present();
   }
 }
