@@ -98,6 +98,10 @@ const routes: Routes = [
     path: 'gps-caution',
     loadChildren: () => import('./core/modals/gps-caution/gps-caution.module').then( m => m.GpsCautionPageModule)
   },
+  {
+    path: 'transaction-details',
+    loadChildren: () => import('./core/pages/transaction-details/transaction-details.module').then( m => m.TransactionDetailsPageModule)
+  },
 
 
 

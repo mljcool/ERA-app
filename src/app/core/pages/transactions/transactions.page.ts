@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { AddCarsPage } from '../../modals/add-cars/add-cars.page';
 import { ModalController } from '@ionic/angular';
 
@@ -81,6 +81,15 @@ export class TransactionsPage implements OnInit, OnDestroy {
 
   onBack(): void {
     this.router.navigate(['/main-menu']);
+  }
+
+  onViewDetails(transDetails): void {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        id: transDetails.id,
+      },
+    };
+    this.router.navigate(['/transaction-details'], navigationExtras);
   }
 
   async addCar() {

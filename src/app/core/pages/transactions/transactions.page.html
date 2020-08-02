@@ -27,7 +27,10 @@
       <ion-label>Active Transaction</ion-label>
     </ion-list-header>
     <ion-item *ngFor="let trans of myTransactions; let index = i">
-      <ion-card class="ion-activatable ripple-parent">
+      <ion-card
+        (click)="onViewDetails(trans)"
+        class="ion-activatable ripple-parent"
+      >
         <ion-item>
           <ion-icon [name]="iconType[trans.tType]"></ion-icon>
           <ion-label class="label-custom">{{ trans.tName }}</ion-label>
@@ -49,7 +52,10 @@
     </ion-list-header>
 
     <ion-item *ngFor="let trans of myTransactions; let index = i">
-      <ion-card class="ion-activatable ripple-parent">
+      <ion-card
+        (click)="onViewDetails(trans)"
+        class="ion-activatable ripple-parent"
+      >
         <ion-item>
           <ion-icon [name]="iconType[trans.tType]"></ion-icon>
           <ion-label class="label-custom">{{ trans.tName }}</ion-label>
