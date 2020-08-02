@@ -1,13 +1,21 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { IProduct } from './Product.model';
+import { CartService } from './order-services/make-oders.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-make-orders',
   templateUrl: './make-orders.page.html',
   styleUrls: ['./make-orders.page.scss'],
 })
-export class MakeOrdersPage implements OnInit {
+export class MakeOrdersPage implements OnInit, OnDestroy {
   private unsubscribeAll: Subject<any>;
   public searchTerm = '';
   cart = [];
@@ -20,11 +28,26 @@ export class MakeOrdersPage implements OnInit {
 
   @ViewChild('cart', { static: false, read: ElementRef }) fab: ElementRef;
 
-  constructor() {
-    this.onPopulateDummyData();
+  constructor(private cartService: CartService) {
+    this.unsubscribeAll = new Subject();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.onPopulateDummyData();
+    this.cart = this.products;
+    this.cartService
+      .getCartItemCount()
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((count) => {
+        this.cartItemCount = count;
+      });
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
+  }
 
   onPopulateDummyData() {
     for (let index = 0; index < 10; index++) {
@@ -57,33 +80,16 @@ export class MakeOrdersPage implements OnInit {
   openCart(): void { }
 
   addToCart(product: IProduct) {
-    const findProdID = this.addedProducts.some(
-      (element) => element.id === product.id
-    );
+    this.cartService.addProduct(product);
     this.animateCSS('tada');
-    if (findProdID) {
-      this.addedProducts = this.addedProducts.map((element) => {
-        if (element.id === product.id) {
-          element.quantity += 1;
-        }
-        return element;
-      });
-      this.getTotalQTY();
-      return;
-    }
-
-    this.addedProducts.push(product);
-    this.getTotalQTY();
-
   }
 
   getTotalQTY() {
     const sum = this.addedProducts
-      .map(item => item.quantity)
+      .map((item) => item.quantity)
       .reduce((prev, curr) => prev + curr, 0);
     this.cartItemCount = sum;
   }
-
 
   animateCSS(animationName, keepAnimated = false) {
     const node = this.fab.nativeElement;
