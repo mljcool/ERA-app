@@ -58,50 +58,59 @@ const routes: Routes = [
   {
     path: 'assistance-modal',
     loadChildren: () => import('./core/modals/assistance-modal/assistance-modal.module').then(m => m.AssistanceModalPageModule)
-  },  {
+  },
+  {
     path: 'gmap-options',
-    loadChildren: () => import('./core/modals/gmap-options/gmap-options.module').then( m => m.GmapOptionsPageModule)
+    loadChildren: () => import('./core/modals/gmap-options/gmap-options.module').then(m => m.GmapOptionsPageModule)
   },
   {
     path: 'assistance-map-menus',
-    loadChildren: () => import('./core/modals/assistance-map-menus/assistance-map-menus.module').then( m => m.AssistanceMapMenusPageModule)
+    loadChildren: () => import('./core/modals/assistance-map-menus/assistance-map-menus.module').then(m => m.AssistanceMapMenusPageModule)
   },
   {
     path: 'assistance-summaries',
-    loadChildren: () => import('./core/modals/assistance-summaries/assistance-summaries.module').then( m => m.AssistanceSummariesPageModule)
+    loadChildren: () => import('./core/modals/assistance-summaries/assistance-summaries.module').then(m => m.AssistanceSummariesPageModule)
   },
   {
     path: 'assistance-waiting',
-    loadChildren: () => import('./core/modals/assistance-waiting/assistance-waiting.module').then( m => m.AssistanceWaitingPageModule)
+    loadChildren: () => import('./core/modals/assistance-waiting/assistance-waiting.module').then(m => m.AssistanceWaitingPageModule)
   },
   {
     path: 'working-progress',
-    loadChildren: () => import('./core/modals/working-progress/working-progress.module').then( m => m.WorkingProgressPageModule)
+    loadChildren: () => import('./core/modals/working-progress/working-progress.module').then(m => m.WorkingProgressPageModule)
   },
   {
     path: 'my-cars',
-    loadChildren: () => import('./core/pages/my-cars/my-cars.module').then( m => m.MyCarsPageModule)
+    loadChildren: () => import('./core/pages/my-cars/my-cars.module').then(m => m.MyCarsPageModule)
   },
   {
     path: 'add-cars',
-    loadChildren: () => import('./core/modals/add-cars/add-cars.module').then( m => m.AddCarsPageModule)
+    loadChildren: () => import('./core/modals/add-cars/add-cars.module').then(m => m.AddCarsPageModule)
   },
   {
     path: 'discover-shops',
-    loadChildren: () => import('./core/pages/discover-shops/discover-shops.module').then( m => m.DiscoverShopsPageModule)
+    loadChildren: () => import('./core/pages/discover-shops/discover-shops.module').then(m => m.DiscoverShopsPageModule)
   },
   {
     path: 'transactions',
-    loadChildren: () => import('./core/pages/transactions/transactions.module').then( m => m.TransactionsPageModule)
+    loadChildren: () => import('./core/pages/transactions/transactions.module').then(m => m.TransactionsPageModule)
   },
   {
     path: 'gps-caution',
-    loadChildren: () => import('./core/modals/gps-caution/gps-caution.module').then( m => m.GpsCautionPageModule)
+    loadChildren: () => import('./core/modals/gps-caution/gps-caution.module').then(m => m.GpsCautionPageModule)
   },
   {
-    path: 'transaction-details',
-    loadChildren: () => import('./core/pages/transaction-details/transaction-details.module').then( m => m.TransactionDetailsPageModule)
+    path: 'transaction-details-assistance',
+    loadChildren: () => import('./core/pages/transaction-details-assistance/transaction-details-assistance.module').then(m => m.TransactionDetailsAssistancePageModule)
+  },  {
+    path: 'transaction-details-order',
+    loadChildren: () => import('./core/pages/transaction-details-order/transaction-details-order.module').then( m => m.TransactionDetailsOrderPageModule)
   },
+  {
+    path: 'transaction-details-booking',
+    loadChildren: () => import('./core/pages/transaction-details-booking/transaction-details-booking.module').then( m => m.TransactionDetailsBookingPageModule)
+  },
+
 
 
 

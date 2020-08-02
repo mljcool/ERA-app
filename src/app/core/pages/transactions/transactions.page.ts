@@ -89,7 +89,7 @@ export class TransactionsPage implements OnInit, OnDestroy {
         id: transDetails.id,
       },
     };
-    this.router.navigate(['/transaction-details'], navigationExtras);
+    this.router.navigate(['/transaction-details-assistance'], navigationExtras);
   }
 
   async addCar() {

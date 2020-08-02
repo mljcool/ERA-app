@@ -21,4 +21,8 @@ export class AssistanceModalPage implements OnInit {
     })
   }
 
+  closeModal() {
+    this.modalCtrl.dismiss();
+  }
+
 }

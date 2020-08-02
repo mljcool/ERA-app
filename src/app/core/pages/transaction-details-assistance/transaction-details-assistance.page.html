@@ -1,0 +1,142 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Transaction Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="trans-details">
+  <ion-grid>
+    <ion-row>
+      <ion-card>
+        <ion-card-content class="my-trans-details">
+          <div class="timer-avatar">
+            <ion-thumbnail class="timer-avatar">
+              <img [src]="'assets/images/svg/new-timer.svg'" />
+            </ion-thumbnail>
+          </div>
+          <div class="my-data">
+            <ul class="my-details">
+              <li><span class="my-name">Hi, Jhon Doe</span></li>
+              <li>
+                <span class="my-name isTimer">estimated time</span>
+              </li>
+            </ul>
+          </div>
+          <div class="timer-label">
+            <div>
+              <span>14mins</span>
+            </div>
+          </div>
+
+          <!-- Add card content here! -->
+        </ion-card-content>
+      </ion-card>
+    </ion-row>
+    <ion-row>
+      <ion-card *ngIf="transactionType === 1">
+        <ion-card-header>
+          <ion-card-subtitle>Assistance Details</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content class="assistance-card-details">
+          <ion-list>
+            <ion-item lines="none">
+              <ion-thumbnail slot="start">
+                <ion-img [src]="assistanceType.imgSrc"></ion-img>
+              </ion-thumbnail>
+              <ion-label class="assistance-label"
+                >{{assistanceType.label}}</ion-label
+              >
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+        <ion-card-header>
+          <ion-card-subtitle>Shop Details</ion-card-subtitle>
+          <ion-card-content class="assistance-card-details shop-details">
+            <div class="shop-details">
+              <div class="shop-header">
+                <ion-label class="time-status">
+                  <span class="shope-name">Shop Lorem Sample</span>
+                </ion-label>
+                <span class="ratings-icons">
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                </span>
+              </div>
+              <div class="shop-content">
+                <ion-label class="time-status">
+                  <span
+                    >Address → (8766 Limonite Ct, Riverside, CA 92509,
+                    Agdao)</span
+                  >
+                </ion-label>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card-header>
+
+        <ion-card-header>
+          <ion-card-subtitle>Notes</ion-card-subtitle>
+          <ion-card-content class="assistance-card-details">
+            <div class="assistance-notes">
+              <p>
+                Keep close to Nature's heart... and break clear away, once in
+                awhile, and climb a mountain or spend a week in the woods. Wash
+                your spirit clean.
+              </p>
+            </div>
+          </ion-card-content>
+        </ion-card-header>
+
+        <ion-card-header>
+          <ion-card-subtitle>Map</ion-card-subtitle>
+          <ion-card-content class="assistance-card-details">
+            <div class="assistance-maps">
+              <agm-map
+                [latitude]="initMap.latitude"
+                [longitude]="initMap.longitude"
+                [zoom]="zoom"
+                [disableDefaultUI]="true"
+                [zoomControl]="false"
+                [styles]="mapThemeStyle"
+                [gestureHandling]="'none'"
+              >
+                <agm-direction
+                  [origin]="origin"
+                  [destination]="destination"
+                  [markerOptions]="markerOptions"
+                  [travelMode]="'DRIVING'"
+                  [renderOptions]="renderOptions"
+                >
+                </agm-direction>
+              </agm-map>
+            </div>
+          </ion-card-content>
+        </ion-card-header>
+      </ion-card>
+      <!-- 
+      <ion-card *ngIf="transactionType === 1">
+        <ion-card-header>
+          <ion-card-subtitle>Booking Details</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          Keep close to Nature's heart... and break clear away, once in awhile,
+          and climb a mountain or spend a week in the woods. Wash your spirit
+          clean.
+        </ion-card-content>
+      </ion-card>
+      <ion-card *ngIf="transactionType === 1">
+        <ion-card-header>
+          <ion-card-subtitle>Order Details</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          Keep close to Nature's heart... and break clear away, once in awhile,
+          and climb a mountain or spend a week in the woods. Wash your spirit
+          clean.
+        </ion-card-content>
+      </ion-card> -->
+    </ion-row>
+  </ion-grid>
+</ion-content>
