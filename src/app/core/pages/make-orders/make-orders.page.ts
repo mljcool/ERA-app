@@ -8,7 +8,6 @@ import { IProduct } from './Product.model';
   styleUrls: ['./make-orders.page.scss'],
 })
 export class MakeOrdersPage implements OnInit {
-
   private unsubscribeAll: Subject<any>;
   public searchTerm = '';
   cart = [];
@@ -17,38 +16,35 @@ export class MakeOrdersPage implements OnInit {
   copyProduct: IProduct[] = [];
   isLoading = true;
 
+  addedProducts: IProduct[] = [];
+
   @ViewChild('cart', { static: false, read: ElementRef }) fab: ElementRef;
 
   constructor() {
     this.onPopulateDummyData();
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() { }
 
   onPopulateDummyData() {
-
     for (let index = 0; index < 10; index++) {
       this.products.push({
-        id: index.toString(),
+        id: (index + 1).toString(),
         amount: 1000,
         name: 'Sample',
         price: 2000,
-        quantity: 10,
-        uid: '12312312'
-
-      })
-
+        quantity: 1,
+        uid: '12312312',
+        categoryByname: 'Sample Product',
+      });
     }
   }
-
 
   setFilteredItems(search: string): void {
     const searchTerm = search.toLowerCase();
     console.log(search);
     if (searchTerm !== '') {
-      const copyShops = this.copyProduct.filter(service => {
+      const copyShops = this.copyProduct.filter((service) => {
         return service.name.toLowerCase().includes(searchTerm);
       });
       this.products = [...copyShops];
@@ -58,14 +54,37 @@ export class MakeOrdersPage implements OnInit {
     }
   }
 
-  openCart(): void {
+  openCart(): void { }
 
-  }
-
-  addToCart(product) {
-    // this.cartService.addProduct(product);
+  addToCart(product: IProduct) {
+    const findProdID = this.addedProducts.some(
+      (element) => element.id === product.id
+    );
     this.animateCSS('tada');
+    if (findProdID) {
+      this.addedProducts = this.addedProducts.map((element) => {
+        if (element.id === product.id) {
+          element.quantity += 1;
+        }
+        return element;
+      });
+      this.getTotalQTY();
+      return;
+    }
+
+    this.addedProducts.push(product);
+    this.getTotalQTY();
+
   }
+
+  getTotalQTY() {
+    const sum = this.addedProducts
+      .map(item => item.quantity)
+      .reduce((prev, curr) => prev + curr, 0);
+    this.cartItemCount = sum;
+  }
+
+
   animateCSS(animationName, keepAnimated = false) {
     const node = this.fab.nativeElement;
     node.classList.add('animated', animationName);
@@ -78,5 +97,4 @@ export class MakeOrdersPage implements OnInit {
     }
     node.addEventListener('animationend', handleAnimationEnd);
   }
-
 }
