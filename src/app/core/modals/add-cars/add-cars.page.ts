@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { VehicleModel } from 'src/app/models/vehicle.mode';
+import { NavParams } from '@ionic/angular';
+import { ICars } from '../../pages/my-cars/my-cars.page';
 
 @Component({
   selector: 'app-add-cars',
@@ -8,18 +10,21 @@ import { VehicleModel } from 'src/app/models/vehicle.mode';
   styleUrls: ['./add-cars.page.scss'],
 })
 export class AddCarsPage implements OnInit {
+  getCarDetails: ICars;
   vehicleForm: FormGroup;
   vehicle: VehicleModel;
   isLoading = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private navParams: NavParams) {
+    this.getCarDetails = this.navParams.get('carDetails');
+    console.log(this.getCarDetails);
     this.vehicleForm = this.formBuilder.group({
-      plateNumber: ['', Validators.required],
-      modelName: ['', Validators.required],
-      modelYear: ['', Validators.required],
-      description: ['', Validators.required],
-      color: ['', Validators.required],
-      fuelType: ['', Validators.required],
+      plateNumber: [this.getCarDetails.plateNumber, Validators.required],
+      modelName: [this.getCarDetails.modelName, Validators.required],
+      modelYear: [this.getCarDetails.modelYear, Validators.required],
+      description: [this.getCarDetails.description, Validators.required],
+      color: [this.getCarDetails.color, Validators.required],
+      fuelType: [this.getCarDetails.fuelType, Validators.required],
     });
   }
 

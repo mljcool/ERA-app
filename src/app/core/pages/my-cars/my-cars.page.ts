@@ -11,7 +11,8 @@ export interface ICars {
   dateAdded: any;
   color: string;
   isActiveUsed: boolean;
-  fuelType: number;
+  fuelType: string;
+  modelYear?: string;
 }
 
 @Component({
@@ -53,9 +54,10 @@ export class MyCarsPage implements OnInit, OnDestroy {
         description: `Which is why, back in 2016, when Fiat released a new 124, many an eyebrow was arched`,
         plateNumber: (index + Math.random() * 10).toFixed(3).toString(),
         dateAdded: new Date(),
+        modelYear: '2011',
         isActiveUsed: true,
         color: 'red',
-        fuelType: 1,
+        fuelType: 'G',
 
       });
     }
@@ -79,11 +81,17 @@ export class MyCarsPage implements OnInit, OnDestroy {
     this.router.navigate(['/main-menu']);
   }
 
-  async addCar() {
+  async addCar(data = {}) {
     const modal = await this.modalCtrl.create({
       component: AddCarsPage,
       cssClass: 'cart-modal',
+      componentProps: {
+        carDetails: data
+      }
     });
     await modal.present();
+  }
+  onViewItem(carData) {
+    this.addCar(carData);
   }
 }

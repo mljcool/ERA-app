@@ -26,7 +26,10 @@
       ></ion-searchbar>
     </ion-item>
     <ion-item *ngFor="let cars of myCars; let index = i">
-      <ion-card class="ion-activatable ripple-parent">
+      <ion-card
+        (click)="onViewItem(cars)"
+        class="ion-activatable ripple-parent"
+      >
         <ion-item>
           <ion-icon name="car"></ion-icon>
           <ion-label>{{ cars.modelName }}</ion-label>
@@ -39,7 +42,8 @@
         </ion-card-content>
         <ion-item>
           <ion-icon name="calendar"></ion-icon>
-          <small>{{ cars.dateAdded }}</small>
+          <small> July 10, 2011</small>
+          <small class="in-used"> in-used</small>
         </ion-item>
         <ion-ripple-effect></ion-ripple-effect>
       </ion-card>
