@@ -94,11 +94,7 @@ export class DiscoverShopsPage implements OnInit, OnDestroy {
       console.log(data);
       if (data) {
         const { typeMenus } = data;
-        if (typeMenus === 'appointment') {
-          this.router.navigate([`make-${typeMenus}`]);
-          return;
-        }
-        this.router.navigate([`make-${typeMenus}`]);
+        this.router.navigate([`/make-${typeMenus}`]);
       }
     })
     await popover.present();

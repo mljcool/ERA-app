@@ -4,17 +4,17 @@ import { AuthGuard } from './pages/auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'main-menu', pathMatch: 'full' },
-  // {
-  //   path: 'auth',
-  //   loadChildren: () =>
-  //     import('./pages/auth/auth.module').then(m => m.AuthPageModule)
-  // },
-  // {
-  //   path: 'side-bar',
-  //   loadChildren: () =>
-  //     import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule),
-  //   canLoad: [AuthGuard]
-  // },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./pages/auth/auth.module').then(m => m.AuthPageModule)
+  },
+  {
+    path: 'side-bar',
+    loadChildren: () =>
+      import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule),
+    canLoad: [AuthGuard]
+  },
   {
     path: 'booking-type',
     loadChildren: () => import('./modals/booking-type/booking-type.module').then(m => m.BookingTypePageModule)
@@ -102,25 +102,26 @@ const routes: Routes = [
   {
     path: 'transaction-details-assistance',
     loadChildren: () => import('./core/pages/transaction-details-assistance/transaction-details-assistance.module').then(m => m.TransactionDetailsAssistancePageModule)
-  },  {
+  },
+  {
     path: 'transaction-details-order',
-    loadChildren: () => import('./core/pages/transaction-details-order/transaction-details-order.module').then( m => m.TransactionDetailsOrderPageModule)
+    loadChildren: () => import('./core/pages/transaction-details-order/transaction-details-order.module').then(m => m.TransactionDetailsOrderPageModule)
   },
   {
     path: 'transaction-details-booking',
-    loadChildren: () => import('./core/pages/transaction-details-booking/transaction-details-booking.module').then( m => m.TransactionDetailsBookingPageModule)
+    loadChildren: () => import('./core/pages/transaction-details-booking/transaction-details-booking.module').then(m => m.TransactionDetailsBookingPageModule)
   },
   {
     path: 'discover-menus',
-    loadChildren: () => import('./core/modals/discover-menus/discover-menus.module').then( m => m.DiscoverMenusPageModule)
+    loadChildren: () => import('./core/modals/discover-menus/discover-menus.module').then(m => m.DiscoverMenusPageModule)
   },
   {
     path: 'make-orders',
-    loadChildren: () => import('./core/pages/make-orders/make-orders.module').then( m => m.MakeOrdersPageModule)
+    loadChildren: () => import('./core/pages/make-orders/make-orders.module').then(m => m.MakeOrdersPageModule)
   },
   {
     path: 'make-appointment',
-    loadChildren: () => import('./core/pages/make-appointment/make-appointment.module').then( m => m.MakeAppointmentPageModule)
+    loadChildren: () => import('./core/pages/make-appointment/make-appointment.module').then(m => m.MakeAppointmentPageModule)
   },
 
 

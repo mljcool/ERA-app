@@ -3,14 +3,17 @@
     <ion-list-header>
       Please select
     </ion-list-header>
-
-    <ion-item (click)="onSelectMenus('appointment')" button>
-      <ion-icon slot="start" name="calendar"></ion-icon>
-      <ion-label>Appointment</ion-label>
-    </ion-item>
-    <ion-item (click)="onSelectMenus('order')" lines="none" button>
-      <ion-icon slot="start" name="cart"></ion-icon>
-      <ion-label>Order Item</ion-label>
+    <ion-item
+      lines="full"
+      (click)="onSelectMenus(item.type)"
+      *ngFor="let item of services; let index=i;"
+      [lines]="item.lines"
+      button
+    >
+      <ion-thumbnail slot="start">
+        <img [src]="item.imgSrc" />
+      </ion-thumbnail>
+      <ion-label> {{ item.label }} </ion-label>
     </ion-item>
   </ion-list>
 </ion-content>
