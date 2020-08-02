@@ -110,6 +110,18 @@ const routes: Routes = [
     path: 'transaction-details-booking',
     loadChildren: () => import('./core/pages/transaction-details-booking/transaction-details-booking.module').then( m => m.TransactionDetailsBookingPageModule)
   },
+  {
+    path: 'discover-menus',
+    loadChildren: () => import('./core/modals/discover-menus/discover-menus.module').then( m => m.DiscoverMenusPageModule)
+  },
+  {
+    path: 'make-orders',
+    loadChildren: () => import('./core/pages/make-orders/make-orders.module').then( m => m.MakeOrdersPageModule)
+  },
+  {
+    path: 'make-appointment',
+    loadChildren: () => import('./core/pages/make-appointment/make-appointment.module').then( m => m.MakeAppointmentPageModule)
+  },
 
 
 

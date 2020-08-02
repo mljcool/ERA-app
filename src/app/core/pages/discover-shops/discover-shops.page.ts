@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AddCarsPage } from '../../modals/add-cars/add-cars.page';
-import { ModalController } from '@ionic/angular';
+import { ModalController, PopoverController } from '@ionic/angular';
+import { DiscoverMenusPage } from '../../modals/discover-menus/discover-menus.page';
 
 export interface ICars {
   id: number;
   modelName: string;
   description: string;
-  plateNumber: string,
+  plateNumber: string;
   dateAdded: any;
   color: string;
   isActiveUsed: boolean;
@@ -26,13 +26,15 @@ export class DiscoverShopsPage implements OnInit, OnDestroy {
   isLoading: boolean = false;
   clearTimeOut: any = null;
 
-
-  constructor(private router: Router, private modalCtrl: ModalController) {
+  constructor(
+    private router: Router,
+    public popoverController: PopoverController
+  ) {
     this.populateCars();
   }
 
   ngOnInit(): void {
-    this.isLoading = true
+    this.isLoading = true;
     this.clearTimeOut = setTimeout(() => {
       this.isLoading = false;
     }, 1500);
@@ -42,9 +44,13 @@ export class DiscoverShopsPage implements OnInit, OnDestroy {
     clearTimeout(this.clearTimeOut);
   }
 
-
   populateCars(): void {
-    const cars = ['Abarth 124', 'Toyota C-HR', 'Toyota HiLux', 'Toyota Landcruiser'];
+    const cars = [
+      'Abarth 124',
+      'Toyota C-HR',
+      'Toyota HiLux',
+      'Toyota Landcruiser',
+    ];
 
     for (let index = 0; index < cars.length; index++) {
       this.myCars.push({
@@ -56,7 +62,6 @@ export class DiscoverShopsPage implements OnInit, OnDestroy {
         isActiveUsed: true,
         color: 'red',
         fuelType: 1,
-
       });
     }
     this.copyMyCars = this.myCars;
@@ -79,11 +84,23 @@ export class DiscoverShopsPage implements OnInit, OnDestroy {
     this.router.navigate(['/main-menu']);
   }
 
-  async addCar() {
-    const modal = await this.modalCtrl.create({
-      component: AddCarsPage,
-      cssClass: 'cart-modal',
+  async onShopMenus(ev: any) {
+    const popover = await this.popoverController.create({
+      component: DiscoverMenusPage,
+      event: ev,
+      translucent: true,
     });
-    await modal.present();
+    popover.onWillDismiss().then(({ data }) => {
+      console.log(data);
+      if (data) {
+        const { typeMenus } = data;
+        if (typeMenus === 'appointment') {
+          this.router.navigate([`make-${typeMenus}`]);
+          return;
+        }
+        this.router.navigate([`make-${typeMenus}`]);
+      }
+    })
+    await popover.present();
   }
 }

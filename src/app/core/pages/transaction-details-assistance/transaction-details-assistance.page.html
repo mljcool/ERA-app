@@ -5,9 +5,9 @@
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="end">
+    <!-- <ion-buttons slot="end">
       <ion-menu-button auto-hide="false"></ion-menu-button>
-    </ion-buttons>
+    </ion-buttons> -->
 
     <ion-title>Transactions Details</ion-title>
   </ion-toolbar>
@@ -99,30 +99,28 @@
           </ion-card-content>
         </ion-card-header>
 
-        <ion-card-header>
-          <ion-card-content class="assistance-card-details">
-            <div class="assistance-maps">
-              <agm-map
-                [latitude]="initMap.latitude"
-                [longitude]="initMap.longitude"
-                [zoom]="zoom"
-                [disableDefaultUI]="true"
-                [zoomControl]="false"
-                [styles]="mapThemeStyle"
-                [gestureHandling]="'none'"
+        <ion-card-content class="assistance-card-details map-views">
+          <div class="assistance-maps">
+            <agm-map
+              [latitude]="initMap.latitude"
+              [longitude]="initMap.longitude"
+              [zoom]="zoom"
+              [disableDefaultUI]="true"
+              [zoomControl]="false"
+              [styles]="mapThemeStyle"
+              [gestureHandling]="'none'"
+            >
+              <agm-direction
+                [origin]="origin"
+                [destination]="destination"
+                [markerOptions]="markerOptions"
+                [travelMode]="'DRIVING'"
+                [renderOptions]="renderOptions"
               >
-                <agm-direction
-                  [origin]="origin"
-                  [destination]="destination"
-                  [markerOptions]="markerOptions"
-                  [travelMode]="'DRIVING'"
-                  [renderOptions]="renderOptions"
-                >
-                </agm-direction>
-              </agm-map>
-            </div>
-          </ion-card-content>
-        </ion-card-header>
+              </agm-direction>
+            </agm-map>
+          </div>
+        </ion-card-content>
       </ion-card>
 
       <ion-card>
@@ -143,6 +141,25 @@
             Your car is not passing smog check. Others are giving you really
             high repair quotes
           </ion-card-content>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Your Mechanic Details</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content class="assistance-card-details">
+          <ion-list>
+            <ion-item lines="none">
+              <ion-thumbnail slot="start">
+                <ion-img [src]="'assets/images/mechanic.gif'"></ion-img>
+              </ion-thumbnail>
+              <ion-label class="assistance-label">Peter Doe</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon slot="start" name="call"></ion-icon>
+              <ion-label>+63 915 453 8812 </ion-label>
+            </ion-item>
+          </ion-list>
         </ion-card-content>
       </ion-card>
     </ion-row>

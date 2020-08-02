@@ -6,7 +6,6 @@ import { AssistanceModalPage } from '../../modals/assistance-modal/assistance-mo
 import { getDataShopsList } from '../../util/dummy-data';
 import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.service';
 import { WorkingProgressPage } from '../../modals/working-progress/working-progress.page';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({

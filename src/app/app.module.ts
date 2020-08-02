@@ -43,6 +43,7 @@ import { ServicesSharedModule } from './core/global/SharedSerivces';
 import { WorkingProgressPageModule } from './core/modals/working-progress/working-progress.module';
 import { AddCarsPageModule } from './core/modals/add-cars/add-cars.module';
 import { GpsCautionPageModule } from './core/modals/gps-caution/gps-caution.module';
+import { DiscoverMenusPageModule } from './core/modals/discover-menus/discover-menus.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -74,6 +75,7 @@ import { GpsCautionPageModule } from './core/modals/gps-caution/gps-caution.modu
     WorkingProgressPageModule,
     AddCarsPageModule,
     GpsCautionPageModule,
+    DiscoverMenusPageModule,
     //END NEW MODALS
 
     //SharedServices
