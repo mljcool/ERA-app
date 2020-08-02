@@ -42,7 +42,7 @@
       </ion-card>
     </ion-row>
     <ion-row>
-      <ion-card *ngIf="transactionType === 1">
+      <ion-card>
         <ion-card-header>
           <ion-card-subtitle>Assistance Details</ion-card-subtitle>
         </ion-card-header>
@@ -100,7 +100,6 @@
         </ion-card-header>
 
         <ion-card-header>
-          <ion-card-subtitle>Map</ion-card-subtitle>
           <ion-card-content class="assistance-card-details">
             <div class="assistance-maps">
               <agm-map
@@ -125,27 +124,27 @@
           </ion-card-content>
         </ion-card-header>
       </ion-card>
-      <!-- 
-      <ion-card *ngIf="transactionType === 1">
+
+      <ion-card>
         <ion-card-header>
-          <ion-card-subtitle>Booking Details</ion-card-subtitle>
+          <ion-card-subtitle>Estimated cost Details</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
-          Keep close to Nature's heart... and break clear away, once in awhile,
-          and climb a mountain or spend a week in the woods. Wash your spirit
-          clean.
+          <ion-list>
+            <ion-item>
+              <ion-label class="cost-price">₱ 5,200.00</ion-label>
+            </ion-item>
+          </ion-list>
+
+          <ion-card-header>
+            <ion-card-subtitle>Cost notes</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content class="assistance-card-details">
+            Your car is not passing smog check. Others are giving you really
+            high repair quotes
+          </ion-card-content>
         </ion-card-content>
       </ion-card>
-      <ion-card *ngIf="transactionType === 1">
-        <ion-card-header>
-          <ion-card-subtitle>Order Details</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          Keep close to Nature's heart... and break clear away, once in awhile,
-          and climb a mountain or spend a week in the woods. Wash your spirit
-          clean.
-        </ion-card-content>
-      </ion-card> -->
     </ion-row>
   </ion-grid>
 </ion-content>

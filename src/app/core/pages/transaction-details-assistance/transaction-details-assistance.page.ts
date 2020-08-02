@@ -70,8 +70,6 @@ export class TransactionDetailsAssistancePage implements OnInit {
       .subscribe((params) => {
         const { isFromMainMenu } = params;
         this.isFromMainMenu = !!parseInt(isFromMainMenu, 10);
-        console.log(isFromMainMenu);
-        console.log(this.isFromMainMenu);
       });
   }
 
