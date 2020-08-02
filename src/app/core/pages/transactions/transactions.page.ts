@@ -7,7 +7,7 @@ export interface ITransactions {
   id: number;
   tName: string;
   description: string;
-  tShopName: string,
+  tShopName: string;
   dateTransaction: string;
   tType: number;
   isArchived: boolean;
@@ -27,13 +27,12 @@ export class TransactionsPage implements OnInit, OnDestroy {
   iconType: string[] = ['', 'cart', 'calendar', 'map'];
   nameType: string[] = ['', 'Orders', 'Booking', 'Assistance'];
 
-
   constructor(private router: Router, private modalCtrl: ModalController) {
     this.populateTransactions();
   }
 
   ngOnInit(): void {
-    this.isLoading = true
+    this.isLoading = true;
     this.clearTimeOut = setTimeout(() => {
       this.isLoading = false;
     }, 1500);
@@ -43,9 +42,10 @@ export class TransactionsPage implements OnInit, OnDestroy {
     clearTimeout(this.clearTimeOut);
   }
 
-  randomIntFromInterval = (min, max) => { // min and max included 
+  randomIntFromInterval = (min, max) => {
+    // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
-  }
+  };
 
   populateTransactions(): void {
     const cars = ['', 'Shop Abarth 124', 'Shop C-HR', 'Shop M HiLux'];
@@ -60,7 +60,6 @@ export class TransactionsPage implements OnInit, OnDestroy {
         dateTransaction: 'July 20, 2020',
         tType: this.randomIntFromInterval(1, 3),
         isArchived: false,
-
       });
     }
     this.copymyTransactions = this.myTransactions;
@@ -87,6 +86,7 @@ export class TransactionsPage implements OnInit, OnDestroy {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         id: transDetails.id,
+        isFromMainMenu: 0,
       },
     };
     this.router.navigate(['/transaction-details-assistance'], navigationExtras);
@@ -100,5 +100,3 @@ export class TransactionsPage implements OnInit, OnDestroy {
     await modal.present();
   }
 }
-
-

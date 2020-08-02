@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { assistTanceList } from 'src/app/constants/assistanceTypes';
 import { darkTheme } from '../../map-theme/dark';
 import { myMarker } from '../../util/map-styles';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction-details',
@@ -51,15 +54,40 @@ export class TransactionDetailsAssistancePage implements OnInit {
     },
   };
   transactionType: number = 0;
+  isFromMainMenu: boolean = false;
+  private unsubscribeAll: Subject<any>;
 
-  constructor() {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.origin = { lat: this.lat, lng: this.lng };
     this.destination = { lat: 7.053428, lng: 125.571669 };
     this.transactionType = 1;
     this.assistanceType = assistTanceList.find(
       (assistance) => assistance.id === 1
     );
+    this.unsubscribeAll = new Subject();
+    this.route.queryParams
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((params) => {
+        const { isFromMainMenu } = params;
+        this.isFromMainMenu = !!parseInt(isFromMainMenu, 10);
+        console.log(isFromMainMenu);
+        console.log(this.isFromMainMenu);
+      });
   }
 
-  ngOnInit() { }
+  ngOnInit(): void { }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
+  }
+
+  onBack(): void {
+
+    if (this.isFromMainMenu) {
+      this.router.navigate(['/main-menu']);
+      return;
+    }
+    this.router.navigate(['/transactions']);
+  }
 }

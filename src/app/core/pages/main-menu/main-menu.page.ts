@@ -5,7 +5,6 @@ import { Router, NavigationExtras } from '@angular/router';
 import { AssistanceModalPage } from '../../modals/assistance-modal/assistance-modal.page';
 import { getDataShopsList } from '../../util/dummy-data';
 import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.service';
-import { AssistanceSummariesPage } from '../../modals/assistance-summaries/assistance-summaries.page';
 import { WorkingProgressPage } from '../../modals/working-progress/working-progress.page';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -79,19 +78,14 @@ export class MainMenuPage implements OnInit, OnDestroy {
     modal.present();
   }
 
-  async viewAssistanceDetals(shopDetails) {
-    const modal = await this.modalCtrl.create({
-      component: AssistanceSummariesPage,
-      cssClass: 'assistance-modal',
-      componentProps: {
-        assistanceDetails: {
-          shopDetail: shopDetails,
-          serviceTypeParam: 1,
-          canUpdate: false,
-        },
+  onViewDetails(): void {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        id: 1,
+        isFromMainMenu: 1
       },
-    });
-    await modal.present();
+    };
+    this.router.navigate(['/transaction-details-assistance'], navigationExtras);
   }
 
   async onWIP() {

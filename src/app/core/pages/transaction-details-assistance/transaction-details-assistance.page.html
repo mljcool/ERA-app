@@ -1,6 +1,15 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Transaction Details</ion-title>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack();">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button auto-hide="false"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>Transactions Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
