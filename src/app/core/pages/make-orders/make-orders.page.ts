@@ -10,7 +10,8 @@ import { IProduct } from './Product.model';
 import { CartService } from './order-services/make-oders.service';
 import { takeUntil } from 'rxjs/operators';
 import { OrdersCartModalPage } from './cart-modal/cart-modal.page';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-make-orders',
@@ -32,7 +33,9 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
 
   constructor(
     private cartService: CartService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    public alertController: AlertController,
+    private router: Router
   ) {
     this.unsubscribeAll = new Subject();
   }
@@ -48,10 +51,43 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
       });
   }
 
+  async presentAlertConfirm() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Your cart!',
+      message: 'Would you like to save it for later?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            this.router.navigate(['./discover-shops']);
+          },
+        },
+        {
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
   ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
     this.unsubscribeAll.next();
     this.unsubscribeAll.complete();
+  }
+
+  onBack() {
+    if (this.cartService.getCart().length >= 1) {
+      this.presentAlertConfirm();
+      return;
+    }
+    this.router.navigate(['./discover-shops']);
   }
 
   onPopulateDummyData() {
@@ -77,7 +113,6 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
       });
       this.products = [...copyShops];
     } else {
-      console.log('here');
       this.products = this.copyProduct;
     }
   }
@@ -94,9 +129,15 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
       component: OrdersCartModalPage,
       cssClass: 'cart-modal',
     });
-    modal.onWillDismiss().then(() => {
+    modal.onWillDismiss().then(({ data }) => {
       this.fab.nativeElement.classList.remove('animated', 'bounceOutLeft');
       this.animateCSS('bounceInLeft');
+      if (data) {
+        const gotoOrderSummary = setTimeout(() => {
+          this.router.navigate(['/order-summary']);
+          clearTimeout(gotoOrderSummary);
+        }, 800);
+      }
     });
     modal.present();
   }

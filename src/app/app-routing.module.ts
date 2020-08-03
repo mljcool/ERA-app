@@ -127,6 +127,10 @@ const routes: Routes = [
     path: 'cart-modal',
     loadChildren: () => import('./core/pages/make-orders/cart-modal/cart-modal.module').then(m => m.OrdersCartModalPageModule)
   },
+  {
+    path: 'order-summary',
+    loadChildren: () => import('./core/pages/make-orders/order-summary/order-summary.module').then(m => m.OrderSummaryPageModule)
+  }
 
 
 

@@ -58,80 +58,15 @@ export class OrdersCartModalPage implements OnInit {
     toast.present();
   }
 
-  async openLocationPicker() {
-
-    const modal = await this.modalCtrl.create({
-      component: LoctionPickerPage,
-      componentProps: {
-        title: 'Delivery Address'
-      }
-    });
-    modal.present();
-    modal.onDidDismiss().then(({ data }) => {
-      console.log(data);
-      this.customerAddress = data.address;
-      if (this.customerAddress) {
-        this.openContactPicker();
-      }
-    });
-  }
-
-  async openContactPicker() {
-
-    const modal = await this.modalCtrl.create({
-      component: SetContactInfoPage,
-      componentProps: {
-        title: 'Contact info Address'
-      }
-    });
-    modal.present();
-    modal.onDidDismiss().then(({ data }) => {
-      console.log(data);
-      this.customerExtraInfo = data.info;
-      if (this.customerExtraInfo) {
-        this.checkout();
-      }
-    });
-
-  }
-
   checkout() {
     if (this.cart.length === 0) {
-      this.presentToast('You have nothing to checkout.');
+      this.presentToast('Cart is empty');
       return;
     }
-    if (!this.customerAddress) {
-      this.presentToast('Delivery address is required');
-      this.openLocationPicker();
-      return;
-    }
-    if (!this.customerExtraInfo) {
-      this.presentToast('Contact is required');
-      this.openContactPicker();
-      return;
-    }
-    this.presentLoading();
-    this.googleStorageUser.getObjectGoogleUsers().then(data => {
+    this.modalCtrl.dismiss({
+      isCheckOut: true
+    })
 
-      const extraDetails = {
-        customerAddress: this.customerAddress, customerExtraInfo: this.customerExtraInfo
-      };
-      const customerName = `${data.familyName} ${data.givenName}`;
-      // this.checkoutSrvc.checkoutOrders(this.cart, this.getTotal(), data.id, customerName, extraDetails).then(response => {
-      //   this.alertCtrl.create({
-      //     header: 'Thanks for your Order!',
-      //     message: 'We will deliver your item as soon as possible',
-      //     buttons: ['OK']
-      //   }).then(alert => {
-      //     alert.present().then(() => {
-      //       this.modalCtrl.dismiss();
-      //       this.loadingController.dismiss();
-      //       this.isSubmitting = false;
-      //       this.cartService.clearCart();
-      //     });
-      //   });
-      // });
-    });
   }
 
   async presentLoading() {

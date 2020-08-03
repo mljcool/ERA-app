@@ -1,11 +1,15 @@
 <ion-header>
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button (click)="onBack();">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>
-      Available Items
-    </ion-title>
+    <!-- <ion-buttons slot="end">
+      <ion-menu-button auto-hide="false"></ion-menu-button>
+    </ion-buttons> -->
+
+    <ion-title>Discover Shops</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -34,6 +38,9 @@
       <ion-card-content>
         <ion-row class="ion-align-items-center">
           <ion-col size="8">
+            <ion-label class="p-qty">
+              <b>Qty: {{ p.quantity }}</b>
+            </ion-label>
             <ion-label class="priceText">
               <b>{{ p.price | currency:"PHP":"₱" }}</b>
             </ion-label>
