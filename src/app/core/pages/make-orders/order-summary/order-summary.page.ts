@@ -83,11 +83,6 @@ export class OrderSummaryPage implements OnInit {
   }
 
   onBack(): void {
-
-    if (this.isFromMainMenu) {
-      this.router.navigate(['/main-menu']);
-      return;
-    }
-    this.router.navigate(['/transactions']);
+    this.router.navigate(['/discover-shops']);
   }
 }

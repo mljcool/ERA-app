@@ -1,7 +1,46 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Auto services available</ion-title>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack();">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-buttons slot="end">
+      <ion-menu-button auto-hide="false"></ion-menu-button>
+    </ion-buttons> -->
+
+    <ion-title>List of available services</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+
+  <ion-list>
+    <ion-item>
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionChange)="setFilteredItems(searchTerm)"
+      ></ion-searchbar>
+    </ion-item>
+    <ion-item *ngFor="let shops of myCars; let index = i">
+      <ion-card
+        (click)="onShopViewService(shops)"
+        class="ion-activatable ripple-parent"
+      >
+        <ion-item>
+          <ion-icon name="cog"></ion-icon>
+          <ion-label class="car-label">{{ shops.modelName }}</ion-label>
+          <ion-button color="primary" fill="outline" slot="end">
+            <ion-icon name="calendar" slot="start"></ion-icon>
+            <ion-label>Book</ion-label>
+          </ion-button>
+        </ion-item>
+        <ion-card-content>
+          {{ shops.description }}
+        </ion-card-content>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+</ion-content>
