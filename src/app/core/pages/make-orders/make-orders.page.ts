@@ -22,12 +22,11 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
   private unsubscribeAll: Subject<any>;
   public searchTerm = '';
   cart = [];
-  cartItemCount = 0;
   products: IProduct[] = [];
   copyProduct: IProduct[] = [];
-  isLoading = true;
-
   addedProducts: IProduct[] = [];
+  cartItemCount = 0;
+  isLoading = true;
 
   @ViewChild('cart', { static: false, read: ElementRef }) fab: ElementRef;
 

@@ -1,4 +1,11 @@
+
 import { Component, OnInit } from '@angular/core';
+import { assistTanceList } from 'src/app/constants/assistanceTypes';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { darkTheme } from 'src/app/core/map-theme/dark';
+import { myMarker } from 'src/app/core/util/map-styles';
 
 @Component({
   selector: 'app-order-summary',
@@ -7,9 +14,80 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrderSummaryPage implements OnInit {
 
-  constructor() { }
+  public origin: any;
+  public destination: any;
+  public renderOptions = {
+    suppressMarkers: true,
+  };
+  assistanceType = {
+    imgSrc: '',
+    label: '',
+  };
 
-  ngOnInit() {
+  lat = 7.05198;
+  lng = 125.571784;
+  zoom = 15;
+  isOnlyNearest = false;
+  mapThemeStyle = darkTheme;
+  initMap = {
+    latitude: this.lat,
+    longitude: this.lng,
+    iconUrl: myMarker,
+  };
+
+  markerOptions = {
+    origin: {
+      icon: {
+        url: 'assets/images/svg/my-marker.svg',
+        scaledSize: {
+          height: 50,
+          width: 40,
+        },
+      },
+    },
+    destination: {
+      icon: {
+        url: 'assets/images/svg/guage.svg',
+        scaledSize: {
+          height: 50,
+          width: 40,
+        },
+      },
+    },
+  };
+  transactionType: number = 0;
+  isFromMainMenu: boolean = false;
+  private unsubscribeAll: Subject<any>;
+
+  constructor(private route: ActivatedRoute, private router: Router) {
+    this.origin = { lat: this.lat, lng: this.lng };
+    this.destination = { lat: 7.053428, lng: 125.571669 };
+    this.transactionType = 1;
+    this.assistanceType = assistTanceList.find(
+      (assistance) => assistance.id === 1
+    );
+    this.unsubscribeAll = new Subject();
+    this.route.queryParams
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((params) => {
+        const { isFromMainMenu } = params;
+        this.isFromMainMenu = !!parseInt(isFromMainMenu, 10);
+      });
   }
 
+  ngOnInit(): void { }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
+  }
+
+  onBack(): void {
+
+    if (this.isFromMainMenu) {
+      this.router.navigate(['/main-menu']);
+      return;
+    }
+    this.router.navigate(['/transactions']);
+  }
 }

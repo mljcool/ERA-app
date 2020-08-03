@@ -1,9 +1,174 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>order-summary</ion-title>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack();">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-buttons slot="end">
+      <ion-menu-button auto-hide="false"></ion-menu-button>
+    </ion-buttons> -->
+
+    <ion-title>Order Summary</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="order-summary-details">
+  <ion-grid>
+    <ion-row>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Cart Details</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content class="assistance-card-details item-cart-details">
+          <ion-row class="header row-list-items">
+            <ion-col>
+              <div>Name</div>
+            </ion-col>
+            <ion-col>
+              <div>Quntity</div>
+            </ion-col>
+            <ion-col>
+              <div>Price</div>
+            </ion-col>
+          </ion-row>
+          <ion-row class="row-list-items">
+            <ion-col>
+              <div>sample Data 121321</div>
+            </ion-col>
+            <ion-col>
+              <div class="item-qty">1</div>
+            </ion-col>
+            <ion-col>
+              <div>$1000</div>
+            </ion-col>
+          </ion-row>
+          <ion-row class="row-list-items">
+            <ion-col>
+              <div class="item-name">New Item Chair Black</div>
+            </ion-col>
+            <ion-col>
+              <div class="item-qty">1</div>
+            </ion-col>
+            <ion-col>
+              <div class="item-price">$1000</div>
+            </ion-col>
+          </ion-row>
+          <ion-row class="row-list-items">
+            <ion-col>
+              <div class="item-name total total-label">Total</div>
+            </ion-col>
+            <ion-col>
+              <div class="item-qty total total-qty">1</div>
+            </ion-col>
+            <ion-col>
+              <div class="item-price total total-price">$1000</div>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+        <ion-card-header>
+          <ion-card-subtitle>Shop Details</ion-card-subtitle>
+          <ion-card-content class="assistance-card-details shop-details">
+            <div class="shop-details">
+              <div class="shop-header">
+                <ion-label class="time-status">
+                  <span class="shope-name">Shop Lorem Sample</span>
+                </ion-label>
+                <span class="ratings-icons">
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                </span>
+              </div>
+              <div class="shop-content">
+                <ion-label class="time-status">
+                  <span
+                    >Address → (8766 Limonite Ct, Riverside, CA 92509,
+                    Agdao)</span
+                  >
+                </ion-label>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card-header>
 
+        <ion-card-header>
+          <ion-card-subtitle>Notes</ion-card-subtitle>
+          <ion-card-content class="assistance-card-details">
+            <div class="assistance-notes">
+              <p>
+                Keep close to Nature's heart... and break clear away, once in
+                awhile, and climb a mountain or spend a week in the woods. Wash
+                your spirit clean.
+              </p>
+            </div>
+          </ion-card-content>
+        </ion-card-header>
+
+        <ion-card-content class="assistance-card-details map-views">
+          <ion-card-header>
+            <ion-card-subtitle>Delivery Address</ion-card-subtitle>
+          </ion-card-header>
+          <div class="assistance-maps">
+            <agm-map
+              [latitude]="initMap.latitude"
+              [longitude]="initMap.longitude"
+              [zoom]="zoom"
+              [disableDefaultUI]="true"
+              [zoomControl]="false"
+              [styles]="mapThemeStyle"
+              [gestureHandling]="'none'"
+            >
+              <agm-direction
+                [origin]="origin"
+                [destination]="destination"
+                [markerOptions]="markerOptions"
+                [travelMode]="'DRIVING'"
+                [renderOptions]="renderOptions"
+              >
+              </agm-direction>
+            </agm-map>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Payment Transaction</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <img src="/assets/images/cod-img.png" />
+              </ion-thumbnail>
+              <ion-label>
+                <h3>Cash on delivery</h3>
+                <p>Application only accept cash on delivery</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Your Details</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content class="assistance-card-details">
+          <ion-list>
+            <ion-item>
+              <ion-icon slot="start" name="person"></ion-icon>
+              <ion-label class="assistance-label">Peter Doe</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon slot="start" name="call"></ion-icon>
+              <ion-label>+63 915 453 8812 </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-row>
+  </ion-grid>
 </ion-content>
