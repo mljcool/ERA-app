@@ -32,7 +32,7 @@ export class CartService {
   addProduct(product) {
     let added = false;
     for (const p of this.cart) {
-      if (p.key === product.key) {
+      if (p.id === product.id) {
         p.amount += 1;
         added = true;
         break;

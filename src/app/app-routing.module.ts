@@ -123,6 +123,10 @@ const routes: Routes = [
     path: 'make-appointment',
     loadChildren: () => import('./core/pages/make-appointment/make-appointment.module').then(m => m.MakeAppointmentPageModule)
   },
+  {
+    path: 'cart-modal',
+    loadChildren: () => import('./core/pages/make-orders/cart-modal/cart-modal.module').then(m => m.OrdersCartModalPageModule)
+  },
 
 
 

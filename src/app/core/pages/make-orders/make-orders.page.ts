@@ -9,6 +9,8 @@ import { Subject } from 'rxjs';
 import { IProduct } from './Product.model';
 import { CartService } from './order-services/make-oders.service';
 import { takeUntil } from 'rxjs/operators';
+import { OrdersCartModalPage } from './cart-modal/cart-modal.page';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-make-orders',
@@ -28,7 +30,10 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
 
   @ViewChild('cart', { static: false, read: ElementRef }) fab: ElementRef;
 
-  constructor(private cartService: CartService) {
+  constructor(
+    private cartService: CartService,
+    private modalCtrl: ModalController
+  ) {
     this.unsubscribeAll = new Subject();
   }
 
@@ -77,18 +82,23 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
     }
   }
 
-  openCart(): void { }
-
   addToCart(product: IProduct) {
     this.cartService.addProduct(product);
     this.animateCSS('tada');
   }
 
-  getTotalQTY() {
-    const sum = this.addedProducts
-      .map((item) => item.quantity)
-      .reduce((prev, curr) => prev + curr, 0);
-    this.cartItemCount = sum;
+  async openCart() {
+    this.animateCSS('bounceOutLeft', true);
+
+    const modal = await this.modalCtrl.create({
+      component: OrdersCartModalPage,
+      cssClass: 'cart-modal',
+    });
+    modal.onWillDismiss().then(() => {
+      this.fab.nativeElement.classList.remove('animated', 'bounceOutLeft');
+      this.animateCSS('bounceInLeft');
+    });
+    modal.present();
   }
 
   animateCSS(animationName, keepAnimated = false) {

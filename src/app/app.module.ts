@@ -44,6 +44,7 @@ import { WorkingProgressPageModule } from './core/modals/working-progress/workin
 import { AddCarsPageModule } from './core/modals/add-cars/add-cars.module';
 import { GpsCautionPageModule } from './core/modals/gps-caution/gps-caution.module';
 import { DiscoverMenusPageModule } from './core/modals/discover-menus/discover-menus.module';
+import { OrdersCartModalPageModule } from './core/pages/make-orders/cart-modal/cart-modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -76,6 +77,7 @@ import { DiscoverMenusPageModule } from './core/modals/discover-menus/discover-m
     AddCarsPageModule,
     GpsCautionPageModule,
     DiscoverMenusPageModule,
+    OrdersCartModalPageModule,
     //END NEW MODALS
 
     //SharedServices
