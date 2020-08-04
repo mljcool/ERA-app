@@ -6,22 +6,31 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title>Shope Details</ion-title>
+    <ion-title>Shop Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-subtitle>Details</ion-card-subtitle>
+      <ion-item>
+        <ion-label class="car-label">Details</ion-label>
+        <span class="ratings-icons">
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star"></ion-icon>
+        </span>
+      </ion-item>
     </ion-card-header>
     <ion-card-content class="account-card-details">
       <ion-list>
         <ion-item lines="none">
           <ion-thumbnail slot="start">
-            <ion-img [src]="'assets/images/roboto.png'"></ion-img>
+            <ion-img [src]="'assets/images/logo.png'"></ion-img>
           </ion-thumbnail>
-          <ion-label class="assistance-label">Peter Doe</ion-label>
+          <ion-label class="assistance-label">Sample Shop</ion-label>
         </ion-item>
         <ion-item>
           <ion-icon slot="start" name="call"></ion-icon>
@@ -41,7 +50,7 @@
 
   <ion-card>
     <ion-item>
-      <ion-label class="label-custom">Delivery Addres</ion-label>
+      <ion-label class="label-custom">Addres</ion-label>
     </ion-item>
     <ion-card-content class="account-card-details"> </ion-card-content>
   </ion-card>
