@@ -57,6 +57,7 @@ export class OrderSummaryPage implements OnInit {
   };
   transactionType: number = 0;
   isFromMainMenu: boolean = false;
+  isViewOnly: boolean = false;
   private unsubscribeAll: Subject<any>;
 
   constructor(private route: ActivatedRoute, private router: Router) {
@@ -70,8 +71,8 @@ export class OrderSummaryPage implements OnInit {
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((params) => {
-        const { isFromMainMenu } = params;
-        this.isFromMainMenu = !!parseInt(isFromMainMenu, 10);
+        const { isFromMainMenu, orderId, isViewOnly } = params;
+        this.isViewOnly = !!parseInt(isViewOnly, 10);
       });
   }
 
@@ -83,6 +84,10 @@ export class OrderSummaryPage implements OnInit {
   }
 
   onBack(): void {
+    if (this.isViewOnly) {
+      this.router.navigate(['/transactions']);
+      return;
+    }
     this.router.navigate(['/discover-shops']);
   }
 }
