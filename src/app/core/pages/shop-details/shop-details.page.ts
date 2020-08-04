@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-shop-details',
@@ -7,13 +7,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./shop-details.page.scss'],
 })
 export class ShopDetailsPage implements OnInit {
-
   constructor(private router: Router) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   onBack(): void {
     this.router.navigateByUrl('/main-menu');
+  }
+
+  onOrderItems(): void {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        shopId: 1,
+      },
+    };
+    this.router.navigate(['/make-orders'], navigationExtras);
+  }
+
+  onAppoinment(): void {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        shopId: 1,
+      },
+    };
+    this.router.navigate(['/make-appointment'], navigationExtras);
   }
 }

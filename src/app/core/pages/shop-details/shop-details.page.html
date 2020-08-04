@@ -57,11 +57,11 @@
 
   <ion-card>
     <ion-card-content class="account-card-details">
-      <ion-button expand="full">
+      <ion-button expand="full" (click)="onOrderItems()">
         <ion-icon slot="start" name="cart"></ion-icon>
         <ion-label> order items</ion-label>
       </ion-button>
-      <ion-button expand="full">
+      <ion-button expand="full" (click)="onAppoinment()">
         <ion-icon slot="start" name="calendar"></ion-icon>
         <ion-label> Schedule Appointment</ion-label>
       </ion-button>
