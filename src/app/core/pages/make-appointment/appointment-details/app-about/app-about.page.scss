@@ -1,0 +1,36 @@
+:host {
+  .app-details {
+    ion-card {
+      width: 100%;
+      ion-card-header {
+        padding-top: 5px;
+        padding-bottom: 2px;
+      }
+      .cost-price {
+        font-size: 20px;
+        color: #8c8c8c;
+      }
+    }
+    .assistance-card-details {
+      &.item-cart-details {
+        .item-qty {
+          padding-left: 20px;
+        }
+        .header {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .total-label {
+          text-align: end;
+        }
+        .total {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .row-list-items {
+          border-bottom: #c4c4c4 solid 1px;
+        }
+      }
+    }
+  }
+}

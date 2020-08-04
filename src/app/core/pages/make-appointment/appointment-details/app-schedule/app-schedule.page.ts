@@ -8,9 +8,18 @@ import { Router } from '@angular/router';
 })
 export class AppSchedulePage implements OnInit {
 
+  minDate: string = new Date().toISOString();
+  isSubmitting = false;
+  bookingData: any = {};
+  servicesData: any;
+
   constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  submitBooking(data: any): void {
+
   }
 
   onBack(): void {

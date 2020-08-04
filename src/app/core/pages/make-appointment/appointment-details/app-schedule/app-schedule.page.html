@@ -13,4 +13,47 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Date</ion-label>
+      <ion-datetime
+        [min]="minDate"
+        value="1990-02-19"
+        placeholder="Select Date"
+        [(ngModel)]="bookingData.startDate"
+      ></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Start Time</ion-label>
+      <ion-datetime
+        display-format="h:mm A"
+        picker-format="h:mm A"
+        value="1990-02-19T07:43Z"
+        [(ngModel)]="bookingData.time"
+      ></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Add contact info</ion-label>
+      <ion-input
+        [(ngModel)]="bookingData.contact"
+        type="tel"
+        placeholder="contact"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Notes</ion-label>
+      <ion-textarea
+        [(ngModel)]="bookingData.notes"
+        placeholder="notes..."
+      ></ion-textarea>
+    </ion-item>
+  </ion-list>
+  <ion-button
+    expand="full"
+    (click)="submitBooking(bookingData)"
+    *ngIf="!isSubmitting"
+  >
+    Submit
+  </ion-button>
+</ion-content>
