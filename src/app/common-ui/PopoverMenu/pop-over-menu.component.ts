@@ -20,4 +20,10 @@ export class PopoverComponent implements OnInit {
     this.popover.dismiss()
   }
 
+  viewMyAcount(): void {
+    this.popover.dismiss({
+      viewAccount: true
+    })
+  }
+
 }

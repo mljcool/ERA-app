@@ -49,7 +49,15 @@ export class MainMenuPage implements OnInit, OnDestroy {
       event: ev,
       translucent: true,
     });
-    return await popover.present();
+    popover.onWillDismiss().then(({ data }) => {
+      if (data) {
+        const { viewAccount } = data;
+        if (viewAccount) {
+          this.router.navigateByUrl('/my-account');
+        }
+      }
+    });
+    await popover.present();
   }
 
   navigator(url) {

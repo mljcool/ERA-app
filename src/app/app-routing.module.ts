@@ -135,7 +135,11 @@ const routes: Routes = [
   {
     path: 'appoinment-details',
     loadChildren: () => import('./core/pages/make-appointment/appointment-details/appointment-details.module').then(m => m.AppointmentDetailsPageModule)
+  },  {
+    path: 'my-account',
+    loadChildren: () => import('./core/pages/my-account/my-account.module').then( m => m.MyAccountPageModule)
   }
+
 
 
 
