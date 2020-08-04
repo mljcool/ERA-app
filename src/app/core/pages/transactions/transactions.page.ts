@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { AddCarsPage } from '../../modals/add-cars/add-cars.page';
-import { ModalController } from '@ionic/angular';
+import { ModalController, PopoverController, ActionSheetController } from '@ionic/angular';
 
 export interface ITransactions {
   id: number;
@@ -27,7 +27,12 @@ export class TransactionsPage implements OnInit, OnDestroy {
   iconType: string[] = ['', 'cart', 'calendar', 'map'];
   nameType: string[] = ['', 'Orders', 'Booking', 'Assistance'];
 
-  constructor(private router: Router, private modalCtrl: ModalController) {
+  constructor(
+    private router: Router,
+    private modalCtrl: ModalController,
+    public popoverController: PopoverController,
+    public actionSheetController: ActionSheetController
+  ) {
     this.populateTransactions();
   }
 
@@ -99,4 +104,31 @@ export class TransactionsPage implements OnInit, OnDestroy {
     });
     await modal.present();
   }
+  async onViewFilteredBy() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Show only',
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Orders',
+        icon: 'cart',
+        handler: () => {
+          console.log('Delete clicked');
+        }
+      }, {
+        text: 'Appointments',
+        icon: 'calendar',
+        handler: () => {
+          console.log('Share clicked');
+        }
+      }, {
+        text: 'Assistance',
+        icon: 'car',
+        handler: () => {
+          console.log('Play clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
 }
