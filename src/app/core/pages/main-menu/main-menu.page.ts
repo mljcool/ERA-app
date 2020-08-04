@@ -102,4 +102,13 @@ export class MainMenuPage implements OnInit, OnDestroy {
     });
     await modal.present();
   }
+
+  viewShopDetails(data): void {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        shopId: 1,
+      },
+    };
+    this.router.navigate(['/shop-details'], navigationExtras);
+  }
 }
