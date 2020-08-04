@@ -138,6 +138,10 @@ const routes: Routes = [
   },  {
     path: 'my-account',
     loadChildren: () => import('./core/pages/my-account/my-account.module').then( m => m.MyAccountPageModule)
+  },
+  {
+    path: 'shop-details',
+    loadChildren: () => import('./core/pages/shop-details/shop-details.module').then( m => m.ShopDetailsPageModule)
   }
 
 
