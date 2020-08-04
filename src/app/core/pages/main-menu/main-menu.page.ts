@@ -7,6 +7,8 @@ import { getDataShopsList } from '../../util/dummy-data';
 import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.service';
 import { WorkingProgressPage } from '../../modals/working-progress/working-progress.page';
 import { Subject } from 'rxjs';
+import { AuthServiceService } from 'src/app/pages/auth/auth-service.service';
+import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 
 @Component({
   selector: 'app-main-menu',
@@ -22,7 +24,9 @@ export class MainMenuPage implements OnInit, OnDestroy {
     public popoverController: PopoverController,
     private router: Router,
     private modalCtrl: ModalController,
-    private assistanceSrvc: AssistanceCoreServices
+    private assistanceSrvc: AssistanceCoreServices,
+    private authService: AuthServiceService,
+    private googleStorageUser: StoragUserDataService,
   ) {
     this._unsubscribeAll = new Subject();
     this.items = getDataShopsList();
@@ -51,9 +55,18 @@ export class MainMenuPage implements OnInit, OnDestroy {
     });
     popover.onWillDismiss().then(({ data }) => {
       if (data) {
-        const { viewAccount } = data;
+        const { viewAccount, onLogOut } = data;
         if (viewAccount) {
           this.router.navigateByUrl('/my-account');
+        }
+        if (onLogOut) {
+          this.authService.logout().then(response => {
+            if (!response) {
+              this.googleStorageUser.clearUserStorage().then(() => {
+                this.router.navigateByUrl('');
+              });
+            }
+          });
         }
       }
     });

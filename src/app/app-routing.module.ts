@@ -49,7 +49,8 @@ const routes: Routes = [
   },
   {
     path: 'main-menu',
-    loadChildren: () => import('./core/pages/main-menu/main-menu.module').then(m => m.MainMenuPageModule)
+    loadChildren: () => import('./core/pages/main-menu/main-menu.module').then(m => m.MainMenuPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'assistance',
@@ -135,13 +136,14 @@ const routes: Routes = [
   {
     path: 'appoinment-details',
     loadChildren: () => import('./core/pages/make-appointment/appointment-details/appointment-details.module').then(m => m.AppointmentDetailsPageModule)
-  },  {
+  },
+  {
     path: 'my-account',
-    loadChildren: () => import('./core/pages/my-account/my-account.module').then( m => m.MyAccountPageModule)
+    loadChildren: () => import('./core/pages/my-account/my-account.module').then(m => m.MyAccountPageModule)
   },
   {
     path: 'shop-details',
-    loadChildren: () => import('./core/pages/shop-details/shop-details.module').then( m => m.ShopDetailsPageModule)
+    loadChildren: () => import('./core/pages/shop-details/shop-details.module').then(m => m.ShopDetailsPageModule)
   }
 
 
