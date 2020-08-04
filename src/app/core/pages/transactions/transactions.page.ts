@@ -95,8 +95,36 @@ export class TransactionsPage implements OnInit, OnDestroy {
         isFromMainMenu: 0,
       },
     };
+    if (navigate === 'booking') {
+      this.onBookings(transDetails);
+      return;
+    }
+    if (navigate === 'orders') {
+      this.onOrders(transDetails);
+      return;
+    }
     this.router.navigate([`/transaction-details-${navigate}`], navigationExtras);
   }
+
+  onBookings(transDetails: any) {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        bookingId: transDetails.id,
+        isViewOnly: 1,
+      },
+    };
+    this.router.navigate(['/appoinment-details/app-schedule'], navigationExtras);
+  }
+  onOrders(transDetails: any) {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        orderId: transDetails.id,
+        isViewOnly: 1,
+      },
+    };
+    this.router.navigate(['/order-summary'], navigationExtras);
+  }
+
 
   async addCar() {
     const modal = await this.modalCtrl.create({
