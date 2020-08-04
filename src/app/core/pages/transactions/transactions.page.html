@@ -57,10 +57,11 @@
         class="ion-activatable ripple-parent"
       >
         <ion-item>
-          <ion-icon [name]="iconType[trans.tType]"></ion-icon>
+          <ion-icon [name]="'checkbox'"></ion-icon>
           <ion-label class="label-custom">{{ trans.tName }}</ion-label>
-          <ion-button slot="end">
-            {{ nameType[trans.tType]}}
+          <ion-button slot="end" color="success" fill="outline">
+            <ion-icon slot="start" [name]="iconType[trans.tType]"></ion-icon>
+            <ion-label>{{ nameType[trans.tType]}}</ion-label>
           </ion-button>
         </ion-item>
         <ion-card-content>

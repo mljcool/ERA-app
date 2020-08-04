@@ -83,6 +83,11 @@ export class OrderSummaryPage implements OnInit {
     this.unsubscribeAll.complete();
   }
 
+
+  proceedOrder(): void {
+
+  }
+
   onBack(): void {
     if (this.isViewOnly) {
       this.router.navigate(['/transactions']);

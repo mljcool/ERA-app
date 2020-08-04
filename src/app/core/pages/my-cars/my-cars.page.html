@@ -32,9 +32,9 @@
       >
         <ion-item>
           <ion-icon name="car"></ion-icon>
-          <ion-label>{{ cars.modelName }}</ion-label>
-          <ion-button color="warning" slot="end"
-            >{{ cars.plateNumber }}</ion-button
+          <ion-label class="car-name">{{ cars.modelName }}</ion-label>
+          <span title="plate numer" class="plate-number"
+            >{{ cars.plateNumber }}</span
           >
         </ion-item>
         <ion-card-content>

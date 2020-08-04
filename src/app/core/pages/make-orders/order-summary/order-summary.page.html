@@ -5,9 +5,11 @@
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <!-- <ion-buttons slot="end">
-      <ion-menu-button auto-hide="false"></ion-menu-button>
-    </ion-buttons> -->
+    <ion-buttons slot="end">
+      <ion-button (click)="proceedOrder()">
+        <ion-icon slot="start" name="cart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
 
     <ion-title>Order Summary</ion-title>
   </ion-toolbar>
@@ -110,6 +112,9 @@
         <ion-card-content class="assistance-card-details map-views">
           <ion-card-header>
             <ion-card-subtitle>Delivery Address</ion-card-subtitle>
+            <ion-button color="primary" expand="full"
+              >Change Delivery address</ion-button
+            >
           </ion-card-header>
           <div class="assistance-maps">
             <agm-map
