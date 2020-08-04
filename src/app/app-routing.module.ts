@@ -104,8 +104,8 @@ const routes: Routes = [
     loadChildren: () => import('./core/pages/transaction-details-assistance/transaction-details-assistance.module').then(m => m.TransactionDetailsAssistancePageModule)
   },
   {
-    path: 'transaction-details-order',
-    loadChildren: () => import('./core/pages/transaction-details-order/transaction-details-order.module').then(m => m.TransactionDetailsOrderPageModule)
+    path: 'transaction-details-orders',
+    loadChildren: () => import('./core/pages/transaction-details-orders/transaction-details-order.module').then(m => m.TransactionDetailsOrderPageModule)
   },
   {
     path: 'transaction-details-booking',

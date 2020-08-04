@@ -88,13 +88,14 @@ export class TransactionsPage implements OnInit, OnDestroy {
   }
 
   onViewDetails(transDetails): void {
+    const navigate = this.nameType[transDetails.tType].toLocaleLowerCase();
     const navigationExtras: NavigationExtras = {
       queryParams: {
         id: transDetails.id,
         isFromMainMenu: 0,
       },
     };
-    this.router.navigate(['/transaction-details-assistance'], navigationExtras);
+    this.router.navigate([`/transaction-details-${navigate}`], navigationExtras);
   }
 
   async addCar() {
