@@ -1,6 +1,6 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="app-schedule">
+    <ion-tab-button (click)="onNavigate('app-schedule')">
       <ion-icon name="calendar"></ion-icon>
       <ion-label>Schedule</ion-label>
     </ion-tab-button>
@@ -10,12 +10,12 @@
       <ion-label>Mechanic</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="app-address">
+    <ion-tab-button (click)="onNavigate('app-address')">
       <ion-icon name="map"></ion-icon>
       <ion-label>Address</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="app-about">
+    <ion-tab-button (click)="onNavigate('app-about')">
       <ion-icon name="information"></ion-icon>
       <ion-label>About</ion-label>
     </ion-tab-button>

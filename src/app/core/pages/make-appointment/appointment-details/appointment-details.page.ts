@@ -29,6 +29,10 @@ export class AppointmentDetailsPage implements OnInit {
   }
 
   onNavigate(urls) {
+    if (!this.isViewOnly) {
+      this.router.navigate(['/appoinment-details/' + urls]);
+      return;
+    }
     const navigationExtras: NavigationExtras = {
       queryParams: {
         bookingId: this.bookingId,
