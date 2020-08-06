@@ -7,14 +7,23 @@ import { IonicModule } from '@ionic/angular';
 import { ShopDetailsPageRoutingModule } from './shop-details-routing.module';
 
 import { ShopDetailsPage } from './shop-details.page';
+import { AgmOverlays } from 'agm-overlays';
+import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ShopDetailsPageRoutingModule
+    ShopDetailsPageRoutingModule,
+    AgmOverlays,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCM9feJhmKCUUsDv9zg6dQcYeAHEAHwM08',
+      libraries: ['geometry', 'places']
+    }),
+    AgmDirectionModule
   ],
   declarations: [ShopDetailsPage]
 })
-export class ShopDetailsPageModule {}
+export class ShopDetailsPageModule { }

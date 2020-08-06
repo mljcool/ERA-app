@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
+import { darkTheme } from '../../map-theme/dark';
+import { myMarker } from '../../util/map-styles';
 
 @Component({
   selector: 'app-shop-details',
@@ -7,6 +9,27 @@ import { Router, NavigationExtras } from '@angular/router';
   styleUrls: ['./shop-details.page.scss'],
 })
 export class ShopDetailsPage implements OnInit {
+
+  public origin: any;
+  public destination: any;
+  public renderOptions = {
+    suppressMarkers: true,
+  };
+  assistanceType = {
+    imgSrc: '',
+    label: '',
+  };
+
+  lat = 7.05198;
+  lng = 125.571784;
+  zoom = 15;
+  isOnlyNearest = false;
+  mapThemeStyle = darkTheme;
+  initMap = {
+    latitude: this.lat,
+    longitude: this.lng,
+    iconUrl: myMarker,
+  };
   constructor(private router: Router) { }
 
   ngOnInit() { }

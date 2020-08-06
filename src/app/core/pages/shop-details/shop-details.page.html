@@ -52,7 +52,25 @@
     <ion-item>
       <ion-label class="label-custom">Addres</ion-label>
     </ion-item>
-    <ion-card-content class="account-card-details"> </ion-card-content>
+    <ion-card-content class="account-card-details">
+      <div class="assistance-maps">
+        <agm-map
+          [latitude]="initMap.latitude"
+          [longitude]="initMap.longitude"
+          [zoom]="zoom"
+          [disableDefaultUI]="true"
+          [zoomControl]="false"
+          [styles]="mapThemeStyle"
+          [gestureHandling]="'none'"
+        >
+          <agm-marker
+            [latitude]="initMap.latitude"
+            [longitude]="initMap.longitude"
+            [iconUrl]="initMap.iconUrl"
+          ></agm-marker>
+        </agm-map>
+      </div>
+    </ion-card-content>
   </ion-card>
 
   <ion-card>
