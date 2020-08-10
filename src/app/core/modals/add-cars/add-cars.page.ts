@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { VehicleModel } from 'src/app/models/vehicle.mode';
-import { NavParams } from '@ionic/angular';
+import { NavParams, ModalController } from '@ionic/angular';
 import { ICars } from '../../pages/my-cars/my-cars.page';
 
 @Component({
@@ -15,7 +15,7 @@ export class AddCarsPage implements OnInit {
   vehicle: VehicleModel;
   isLoading = false;
 
-  constructor(private formBuilder: FormBuilder, private navParams: NavParams) {
+  constructor(private formBuilder: FormBuilder, private navParams: NavParams, private modalCtrl: ModalController) {
     this.getCarDetails = this.navParams.get('carDetails');
     console.log(this.getCarDetails);
     this.vehicleForm = this.formBuilder.group({
@@ -31,6 +31,7 @@ export class AddCarsPage implements OnInit {
   ngOnInit() { }
 
   saveData() {
-    console.log(this.vehicleForm.getRawValue());
+    const formData = this.vehicleForm.getRawValue();
+    this.modalCtrl.dismiss({ ...formData })
   }
 }

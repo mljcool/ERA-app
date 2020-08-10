@@ -4,12 +4,7 @@ import { ActionSheetController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthServiceService } from './auth-service.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import {
-  FirebaseUISignInSuccessWithAuthResult,
-  FirebaseUISignInFailure
-} from 'firebaseui-angular';
 import '@codetrix-studio/capacitor-google-auth';
-
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 
 const { Modals } = Plugins;
@@ -19,7 +14,7 @@ const { Modals } = Plugins;
   templateUrl: './auth.page.html',
   styleUrls: ['./auth.page.scss']
 })
-export class AuthPage implements OnInit {
+export class AuthPage {
   fullName: string;
 
   constructor(
@@ -29,10 +24,11 @@ export class AuthPage implements OnInit {
     private authService: AuthServiceService,
     public afAuth: AngularFireAuth,
     private googleStorageUser: StoragUserDataService
-  ) {}
+  ) { }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.googleStorageUser.getObjectGoogleUsers().then(response => {
+      console.log('hereee......................');
       if (!!response) {
         console.log(response.isLogin);
         this.navigateMainPage();
@@ -43,6 +39,7 @@ export class AuthPage implements OnInit {
   async userGoogleLogin() {
     this.loadingIndicators();
     this.authService.login().then(response => {
+      console.log('hereee222......................', response);
       if (response) {
         this.loadingController.dismiss().then(() => {
           this.navigateMainPage();
@@ -52,7 +49,7 @@ export class AuthPage implements OnInit {
   }
 
   navigateMainPage(): void {
-    this.router.navigateByUrl('/side-bar');
+    this.router.navigateByUrl('/main-menu');
   }
 
   async loadingIndicators() {

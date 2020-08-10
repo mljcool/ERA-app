@@ -34,14 +34,13 @@ export class MainMenuPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    this.assistanceSrvc.getAssistanceStatus().then(({ isTracking }) => {
-      this.assistanceStatus = isTracking;
-    });
+    // this.assistanceSrvc.getAssistanceStatus().then(({ isTracking }) => {
+    //   this.assistanceStatus = isTracking;
+    // });
   }
   ngOnInit() { }
 
   ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
@@ -55,15 +54,17 @@ export class MainMenuPage implements OnInit, OnDestroy {
     });
     popover.onWillDismiss().then(({ data }) => {
       if (data) {
-        const { viewAccount, onLogOut } = data;
+        const { viewAccount, isLogOut } = data;
         if (viewAccount) {
           this.router.navigateByUrl('/my-account');
         }
-        if (onLogOut) {
+        console.log('here Logout', data);
+        if (isLogOut) {
           this.authService.logout().then(response => {
+            console.log('here Logout', response);
             if (!response) {
               this.googleStorageUser.clearUserStorage().then(() => {
-                this.router.navigateByUrl('');
+                this.router.navigateByUrl('/auth');
               });
             }
           });

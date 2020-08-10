@@ -2,12 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AddCarsPage } from '../../modals/add-cars/add-cars.page';
 import { ModalController } from '@ionic/angular';
+import { MyCarsCoreService } from '../../configs/firebaseRef/MyCarsCore';
+import { firebase } from 'src/app/core/configs/firebase/firebase.config';
 
 export interface ICars {
   id: number;
   modelName: string;
   description: string;
-  plateNumber: string,
+  plateNumber: string;
   dateAdded: any;
   color: string;
   isActiveUsed: boolean;
@@ -27,25 +29,30 @@ export class MyCarsPage implements OnInit, OnDestroy {
   isLoading: boolean = false;
   clearTimeOut: any = null;
 
-
-  constructor(private router: Router, private modalCtrl: ModalController) {
+  constructor(private router: Router, private modalCtrl: ModalController, private myCarSrvc: MyCarsCoreService) {
     this.populateCars();
   }
 
   ngOnInit(): void {
-    this.isLoading = true
+    this.isLoading = true;
     this.clearTimeOut = setTimeout(() => {
       this.isLoading = false;
     }, 1500);
+
+    this.myCarSrvc.userChecker();
   }
 
   ngOnDestroy(): void {
     clearTimeout(this.clearTimeOut);
   }
 
-
   populateCars(): void {
-    const cars = ['Abarth 124', 'Toyota C-HR', 'Toyota HiLux', 'Toyota Landcruiser'];
+    const cars = [
+      'Abarth 124',
+      'Toyota C-HR',
+      'Toyota HiLux',
+      'Toyota Landcruiser',
+    ];
 
     for (let index = 0; index < cars.length; index++) {
       this.myCars.push({
@@ -58,7 +65,6 @@ export class MyCarsPage implements OnInit, OnDestroy {
         isActiveUsed: true,
         color: 'red',
         fuelType: 'G',
-
       });
     }
     this.copyMyCars = this.myCars;
@@ -86,9 +92,17 @@ export class MyCarsPage implements OnInit, OnDestroy {
       component: AddCarsPage,
       cssClass: 'cart-modal',
       componentProps: {
-        carDetails: data
+        carDetails: data,
+      },
+    });
+
+    modal.onWillDismiss().then(({ data }) => {
+      console.log(data);
+      if (data) {
+        this.myCarSrvc.insertNewCars(data);
       }
     });
+
     await modal.present();
   }
   onViewItem(carData) {

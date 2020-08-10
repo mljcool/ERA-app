@@ -16,11 +16,12 @@ export class AuthServiceService {
   get userIsAuthenticated() {
     return this._userIsAuthenticated;
   }
-  constructor(private googleStorageUser: StoragUserDataService) {}
+  constructor(private googleStorageUser: StoragUserDataService) { }
 
   async login(): Promise<boolean> {
     const googleUser: GoogleUser = await GoogleAuth.signIn();
     if (googleUser && googleUser.authentication.idToken) {
+      console.log('googleUser', googleUser);
       this.googleStorageUser.setObjectGoogleUsers(googleUser);
       this._userIsAuthenticated = true;
     }

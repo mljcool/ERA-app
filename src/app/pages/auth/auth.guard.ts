@@ -10,7 +10,7 @@ import { AuthServiceService } from './auth-service.service';
 export class AuthGuard implements CanLoad, OnDestroy {
   timeServices: any;
 
-  constructor(private auths: AuthServiceService, private router: Router) {}
+  constructor(private auths: AuthServiceService, private router: Router) { }
 
   canLoad(
     route: Route,
@@ -19,8 +19,8 @@ export class AuthGuard implements CanLoad, OnDestroy {
     // if (!this.auths.userIsAuthenticated) {
     //   this.router.navigate(['/auth']);
     // }
-    return true;
-    // return this.auths.userIsAuthenticated;
+    // return true;
+    return this.auths.userIsAuthenticated;
   }
 
   // ONLY USE ME FOR TESTING
