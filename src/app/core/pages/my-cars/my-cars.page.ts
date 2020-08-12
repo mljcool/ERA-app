@@ -77,24 +77,29 @@ export class MyCarsPage implements OnInit, OnDestroy {
     this.router.navigate(['/main-menu']);
   }
 
-  async addCar(data = {}) {
+  async addCar(carData = {}, isUpdate = false) {
     const modal = await this.modalCtrl.create({
       component: AddCarsPage,
       cssClass: 'cart-modal',
       componentProps: {
-        carDetails: data,
+        carDetails: carData,
       },
     });
 
     modal.onWillDismiss().then(({ data }) => {
       if (data) {
+        if (isUpdate) {
+          const assignNewData = { ...carData, ...data };
+          this.myCarSrvc.updateMyCars(assignNewData);
+          return;
+        }
         this.myCarSrvc.insertNewCars(data);
       }
     });
 
     await modal.present();
   }
-  onViewItem(carData) {
-    this.addCar(carData);
+  onViewItem(carData, isUpdate) {
+    this.addCar(carData, isUpdate);
   }
 }

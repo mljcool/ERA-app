@@ -33,15 +33,14 @@ export class MyCarsCoreService {
     this.googleStorageUser.getObjectGoogleUsers().then((user) => {
       this.userId = user.id;
       this.getmyCars();
-
     });
   }
 
-  async presentAlert() {
+  async presentAlert(message) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Saved',
-      message: 'Car successfully added',
+      message: 'Car successfully ' + message,
       buttons: ['OK'],
     });
 
@@ -83,7 +82,7 @@ export class MyCarsCoreService {
       data.userId = this.userId;
       data.uid = generateGUID();
       this.userCarsRef.add(data).then(() => {
-        this.presentAlert();
+        this.presentAlert('added');
         this.isInUsedUpdatOthers(data);
       });
     } else {
@@ -94,15 +93,29 @@ export class MyCarsCoreService {
   async isInUsedUpdatOthers(data) {
     if (data.insUsed) {
       const allCars = this.onMyCars.getValue();
-      allCars.forEach(cars => {
+      allCars.forEach((cars) => {
         if (cars.uid !== data.uid) {
-          this.userCarsRef.doc(cars.key).update({
-            insUsed: false
-          }).then(() => { });
+          this.userCarsRef
+            .doc(cars.key)
+            .update({
+              insUsed: false,
+            })
+            .then(() => { });
         }
       });
     }
-    console.log('cooooool', this.onMyCars.getValue());
+  }
+
+  updateMyCars(data: any = {}) {
+    if (data && data.key) {
+      console.log(data);
+      this.userCarsRef
+        .doc(data.key)
+        .set(data)
+        .then(() => {
+          this.presentAlert('updated');
+        });
+    }
   }
 
   insertNewCars(data: any) {

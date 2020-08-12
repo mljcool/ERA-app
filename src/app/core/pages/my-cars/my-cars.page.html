@@ -27,7 +27,7 @@
     </ion-item>
     <ion-item *ngFor="let cars of myCars; let index = i">
       <ion-card
-        (click)="onViewItem(cars)"
+        (click)="onViewItem(cars, true)"
         class="ion-activatable ripple-parent car-card"
       >
         <ion-item>
