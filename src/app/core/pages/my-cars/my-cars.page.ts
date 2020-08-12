@@ -4,6 +4,8 @@ import { AddCarsPage } from '../../modals/add-cars/add-cars.page';
 import { ModalController } from '@ionic/angular';
 import { MyCarsCoreService } from '../../configs/firebaseRef/MyCarsCore';
 import { firebase } from 'src/app/core/configs/firebase/firebase.config';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 export interface ICars {
   id: number;
@@ -15,6 +17,7 @@ export interface ICars {
   isActiveUsed: boolean;
   fuelType: string;
   modelYear?: string;
+  dateCreated?: any;
 }
 
 @Component({
@@ -29,46 +32,31 @@ export class MyCarsPage implements OnInit, OnDestroy {
   isLoading: boolean = false;
   clearTimeOut: any = null;
 
-  constructor(private router: Router, private modalCtrl: ModalController, private myCarSrvc: MyCarsCoreService) {
-    this.populateCars();
+  private _unsubscribeAll: Subject<any>;
+
+  constructor(
+    private router: Router,
+    private modalCtrl: ModalController,
+    private myCarSrvc: MyCarsCoreService
+  ) {
+    this._unsubscribeAll = new Subject();
+    this.myCarSrvc.onMyCars
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((myCars) => {
+        this.isLoading = true;
+        this.myCars = myCars;
+        this.clearTimeOut = setTimeout(() => {
+          this.isLoading = false;
+        }, 1500);
+      });
   }
 
-  ngOnInit(): void {
-    this.isLoading = true;
-    this.clearTimeOut = setTimeout(() => {
-      this.isLoading = false;
-    }, 1500);
-
-    this.myCarSrvc.userChecker();
-  }
+  ngOnInit(): void { }
 
   ngOnDestroy(): void {
     clearTimeout(this.clearTimeOut);
-  }
-
-  populateCars(): void {
-    const cars = [
-      'Abarth 124',
-      'Toyota C-HR',
-      'Toyota HiLux',
-      'Toyota Landcruiser',
-    ];
-
-    for (let index = 0; index < cars.length; index++) {
-      this.myCars.push({
-        id: index,
-        modelName: cars[index],
-        description: `Which is why, back in 2016, when Fiat released a new 124, many an eyebrow was arched`,
-        plateNumber: (index + Math.random() * 10).toFixed(3).toString(),
-        dateAdded: new Date(),
-        modelYear: '2011',
-        isActiveUsed: true,
-        color: 'red',
-        fuelType: 'G',
-      });
-    }
-    this.copyMyCars = this.myCars;
-    console.log(this.myCars);
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   setFilteredItems(search: string = ''): void {

@@ -28,7 +28,7 @@
     <ion-item *ngFor="let cars of myCars; let index = i">
       <ion-card
         (click)="onViewItem(cars)"
-        class="ion-activatable ripple-parent"
+        class="ion-activatable ripple-parent car-card"
       >
         <ion-item>
           <ion-icon name="car"></ion-icon>
@@ -42,7 +42,7 @@
         </ion-card-content>
         <ion-item>
           <ion-icon name="calendar"></ion-icon>
-          <small> July 10, 2011</small>
+          <small> {{ cars.dateCreated.toDate() | date: 'dd MMM hh:mm' }}</small>
           <small class="in-used" *ngIf="cars.id === 1"> in-used</small>
         </ion-item>
         <ion-ripple-effect></ion-ripple-effect>

@@ -5,48 +5,119 @@ import {
 } from '@angular/fire/firestore';
 import { generateGUID } from 'src/app/utils/uidGenerator';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { ToastController } from '@ionic/angular';
-import firebase from 'firebase';
+import { ToastController, AlertController } from '@ionic/angular';
+import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
+import { firebase } from '../firebase/firebase.config';
+import { async } from '@angular/core/testing';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MyCarsCoreService {
+  onMyCars: BehaviorSubject<Array<any>>;
+  userId: any = '';
   private dbPath = '/newMyCars';
 
   userCarsRef: AngularFirestoreCollection<any> = null;
 
-  constructor(private db: AngularFirestore, private afAuth: AngularFireAuth, public toastController: ToastController) {
+  constructor(
+    private db: AngularFirestore,
+    private afAuth: AngularFireAuth,
+    public toastController: ToastController,
+    private googleStorageUser: StoragUserDataService,
+    public alertController: AlertController
+  ) {
     this.userCarsRef = this.db.collection(this.dbPath);
-  }
-
-  async presentToast() {
-    const toast = await this.toastController.create({
-      message: 'Please Login again session token null',
-      duration: 3000
+    this.onMyCars = new BehaviorSubject([]);
+    this.googleStorageUser.getObjectGoogleUsers().then((user) => {
+      this.userId = user.id;
+      this.getmyCars();
     });
-    toast.present();
   }
 
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Saved',
+      message: 'Car successfully added',
+      buttons: ['OK'],
+    });
 
-  userChecker(): void {
-    var user = firebase.auth().currentUser;
-    console.log(user);
-
+    await alert.present();
   }
 
-  insertNewCars(data: any) {
-    this.afAuth.auth.onAuthStateChanged((user) => {
-      console.log('Save user', user)
+  async useRightAway(data) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirm!',
+      message: 'Make this car ' + data.modelName + ' in use?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            data.insUsed = false;
+            this.saveMyCar(data);
+          },
+        },
+        {
+          text: 'Okay',
+          handler: () => {
+            data.insUsed = true;
+            this.saveMyCar(data);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  saveMyCar(data: any): void {
+    this.googleStorageUser.getObjectGoogleUsers().then((user) => {
       if (user) {
+        data.dateCreated = firebase.firestore.Timestamp.fromDate(new Date());
+        data.userId = user.id;
         data.uid = generateGUID();
         this.userCarsRef.add(data).then(() => {
-          console.log('Save success')
+          this.presentAlert();
         });
       } else {
         this.presentToast();
       }
     });
-
   }
+
+  insertNewCars(data: any) {
+    this.useRightAway(data);
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Please Login again session token null',
+      duration: 3000,
+    });
+    toast.present();
+  }
+
+  userChecker(): void {
+    var user = firebase.auth().currentUser;
+    console.log(user);
+  }
+
+  getmyCars = () => {
+    const cars = firebase
+      .firestore()
+      .collection('newMyCars')
+      .where('userId', '==', this.userId);
+    cars.onSnapshot((snapshot) => {
+      const myCars = snapshot.docs.map((car) => ({
+        key: car.id,
+        ...car.data(),
+      }));
+      this.onMyCars.next(myCars);
+    });
+  };
 }

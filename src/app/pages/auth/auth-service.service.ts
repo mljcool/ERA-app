@@ -35,14 +35,11 @@ export class AuthServiceService {
       checkUserExist(googleUser.email).then((response) => {
         if (!response) {
           saveUser(googleUser).then(() => {
-
+            this.googleStorageUser.setObjectGoogleUsers(googleUser);
+            this._userIsAuthenticated = true;
           })
         }
-        console.log('response', response);
       });
-      console.log('googleUser', googleUser);
-      this.googleStorageUser.setObjectGoogleUsers(googleUser);
-      this._userIsAuthenticated = true;
     }
     return Promise.resolve(this._userIsAuthenticated);
   }

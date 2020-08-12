@@ -4,7 +4,6 @@
 
 
 import { firebase } from '../firebase/firebase.config';
-import { generateGUID } from 'src/app/utils/uidGenerator';
 
 const firestoreRef = firebase.firestore();
 
