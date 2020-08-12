@@ -108,7 +108,6 @@ export class MyCarsCoreService {
 
   updateMyCars(data: any = {}) {
     if (data && data.key) {
-      console.log(data);
       this.userCarsRef
         .doc(data.key)
         .set(data)
@@ -116,6 +115,29 @@ export class MyCarsCoreService {
           this.presentAlert('updated');
         });
     }
+  }
+
+  onMakeInUsed(data: any = {}) {
+    const allCars = this.onMyCars.getValue();
+    allCars.forEach((cars) => {
+      if (cars.uid !== data.uid) {
+        this.userCarsRef
+          .doc(cars.key)
+          .update({
+            insUsed: false,
+          })
+          .then(() => { });
+      }
+      else if (cars.uid === data.uid) {
+        this.userCarsRef
+          .doc(cars.key)
+          .update({
+            insUsed: true,
+          })
+          .then(() => { });
+      }
+    });
+    this.presentAlert('in-used');
   }
 
   insertNewCars(data: any) {

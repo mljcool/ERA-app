@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AddCarsPage } from '../../modals/add-cars/add-cars.page';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ActionSheetController } from '@ionic/angular';
 import { MyCarsCoreService } from '../../configs/firebaseRef/MyCarsCore';
-import { firebase } from 'src/app/core/configs/firebase/firebase.config';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -38,7 +37,8 @@ export class MyCarsPage implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private modalCtrl: ModalController,
-    private myCarSrvc: MyCarsCoreService
+    private myCarSrvc: MyCarsCoreService,
+    public actionSheetController: ActionSheetController
   ) {
     this._unsubscribeAll = new Subject();
     this.myCarSrvc.onMyCars
@@ -99,7 +99,39 @@ export class MyCarsPage implements OnInit, OnDestroy {
 
     await modal.present();
   }
+
+
   onViewItem(carData, isUpdate) {
-    this.addCar(carData, isUpdate);
+    this.presentActionSheet(carData, isUpdate);
+
+  }
+
+  async presentActionSheet(carData: ICars, isUpdate) {
+    const actionSheet = await this.actionSheetController.create({
+      header: carData.modelName,
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Details',
+        icon: 'share',
+        handler: () => {
+          this.addCar(carData, isUpdate);
+        }
+      }, {
+        text: 'Make this in-used',
+        icon: 'checkmark',
+        handler: () => {
+          this.myCarSrvc.onMakeInUsed(carData);
+        }
+      },
+      {
+        text: 'Delete',
+        role: 'destructive',
+        icon: 'trash',
+        handler: () => {
+          console.log('Delete clicked');
+        }
+      },]
+    });
+    await actionSheet.present();
   }
 }
