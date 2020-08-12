@@ -18,6 +18,7 @@ import { StoragUserDataService } from 'src/app/services/storages/storage-user-se
 export class MainMenuPage implements OnInit, OnDestroy {
   items: any[] = [];
   assistanceStatus: boolean = false;
+  userData: any = {};
   private _unsubscribeAll: Subject<any>;
 
   constructor(
@@ -34,11 +35,16 @@ export class MainMenuPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    // this.assistanceSrvc.getAssistanceStatus().then(({ isTracking }) => {
-    //   this.assistanceStatus = isTracking;
-    // });
+    this.googleStorageUser.getObjectGoogleUsers().then(data => {
+      this.userData = data;
+      console.log(this.userData);
+    });
   }
-  ngOnInit() { }
+  ngOnInit() {
+
+    console.log('ALWAYS HERE.....................')
+
+  }
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next();

@@ -19,8 +19,8 @@ export class AuthGuard implements CanLoad, OnDestroy {
     // if (!this.auths.userIsAuthenticated) {
     //   this.router.navigate(['/auth']);
     // }
-    // return true;
-    return this.auths.userIsAuthenticated;
+    return true;
+    // return this.auths.userIsAuthenticated;
   }
 
   // ONLY USE ME FOR TESTING

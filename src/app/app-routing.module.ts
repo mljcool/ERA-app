@@ -9,12 +9,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/auth/auth.module').then(m => m.AuthPageModule),
   },
-  {
-    path: 'side-bar',
-    loadChildren: () =>
-      import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule),
-    canLoad: [AuthGuard]
-  },
+  // {
+  //   path: 'side-bar',
+  //   loadChildren: () =>
+  //     import('./pages/side-bar/side-bar.module').then(m => m.SideBarPageModule),
+  //   canLoad: [AuthGuard]
+  // },
   {
     path: 'booking-type',
     loadChildren: () => import('./modals/booking-type/booking-type.module').then(m => m.BookingTypePageModule)

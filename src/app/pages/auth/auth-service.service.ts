@@ -3,6 +3,8 @@ import '@codetrix-studio/capacitor-google-auth';
 import { GoogleUser } from 'src/app/models/googleUser.model';
 import { Plugins } from '@capacitor/core';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { checkUserExist, saveUser } from 'src/app/core/configs/firebaseRef/UserCore';
 
 const { GoogleAuth } = Plugins;
 
@@ -12,15 +14,32 @@ const { GoogleAuth } = Plugins;
 export class AuthServiceService {
   // tslint:disable-next-line: variable-name
   private _userIsAuthenticated = false;
+  private dbPath = '/newCustomers';
+  userRef: AngularFirestoreCollection<any> = null;
 
-  get userIsAuthenticated() {
-    return this._userIsAuthenticated;
+
+
+  constructor(private afs: AngularFirestore, private googleStorageUser: StoragUserDataService) {
+
+    this.userRef = afs.collection(this.dbPath);
   }
-  constructor(private googleStorageUser: StoragUserDataService) { }
+
+
+  checkUserIfRegistered(emailAddress) {
+    this.userRef.ref.doc('').isEqual(emailAddress).valueOf
+  }
 
   async login(): Promise<boolean> {
     const googleUser: GoogleUser = await GoogleAuth.signIn();
     if (googleUser && googleUser.authentication.idToken) {
+      checkUserExist(googleUser.email).then((response) => {
+        if (!response) {
+          saveUser(googleUser).then(() => {
+
+          })
+        }
+        console.log('response', response);
+      });
       console.log('googleUser', googleUser);
       this.googleStorageUser.setObjectGoogleUsers(googleUser);
       this._userIsAuthenticated = true;
@@ -33,5 +52,9 @@ export class AuthServiceService {
     const googleUser: GoogleUser = await GoogleAuth.signOut();
     console.log(googleUser);
     return Promise.resolve(this._userIsAuthenticated);
+  }
+
+  get userIsAuthenticated() {
+    return this._userIsAuthenticated;
   }
 }
