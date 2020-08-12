@@ -15,6 +15,7 @@ export interface ICars {
   dateAdded: any;
   color: string;
   isActiveUsed: boolean;
+  insUsed: boolean;
   fuelType: string;
   modelYear?: string;
   dateCreated?: any;
@@ -45,6 +46,7 @@ export class MyCarsPage implements OnInit, OnDestroy {
       .subscribe((myCars) => {
         this.isLoading = true;
         this.myCars = myCars;
+        console.log('myCars', this.myCars);
         this.clearTimeOut = setTimeout(() => {
           this.isLoading = false;
         }, 1500);
@@ -85,7 +87,6 @@ export class MyCarsPage implements OnInit, OnDestroy {
     });
 
     modal.onWillDismiss().then(({ data }) => {
-      console.log(data);
       if (data) {
         this.myCarSrvc.insertNewCars(data);
       }

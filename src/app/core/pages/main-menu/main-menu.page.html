@@ -98,7 +98,9 @@
           class="ion-activatable ripple-parent"
           (click)="navigator('my-cars')"
         >
-          <ion-badge class="badge-one" color="danger">2</ion-badge>
+          <ion-badge class="badge-one" color="danger"
+            >{{ countCars }}</ion-badge
+          >
           <img src="assets/images/main-menus/my-car.png" />
           <ion-card-header>
             <ion-card-subtitle>My Cars</ion-card-subtitle>

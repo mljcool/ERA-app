@@ -9,6 +9,8 @@ import { WorkingProgressPage } from '../../modals/working-progress/working-progr
 import { Subject } from 'rxjs';
 import { AuthServiceService } from 'src/app/pages/auth/auth-service.service';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
+import { MyCarsCoreService } from '../../configs/firebaseRef/MyCarsCore';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-menu',
@@ -17,6 +19,7 @@ import { StoragUserDataService } from 'src/app/services/storages/storage-user-se
 })
 export class MainMenuPage implements OnInit, OnDestroy {
   items: any[] = [];
+  countCars = 0;
   assistanceStatus: boolean = false;
   userData: any = {};
   private _unsubscribeAll: Subject<any>;
@@ -28,6 +31,7 @@ export class MainMenuPage implements OnInit, OnDestroy {
     private assistanceSrvc: AssistanceCoreServices,
     private authService: AuthServiceService,
     private googleStorageUser: StoragUserDataService,
+    private myCarSrvc: MyCarsCoreService
   ) {
     this._unsubscribeAll = new Subject();
     this.items = getDataShopsList();
@@ -39,6 +43,12 @@ export class MainMenuPage implements OnInit, OnDestroy {
       this.userData = data;
       console.log(this.userData);
     });
+    this._unsubscribeAll = new Subject();
+    this.myCarSrvc.onMyCars
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((myCars) => {
+        this.countCars = myCars.length;
+      });
   }
   ngOnInit() {
 

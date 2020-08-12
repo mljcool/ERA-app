@@ -33,6 +33,7 @@ export class MyCarsCoreService {
     this.googleStorageUser.getObjectGoogleUsers().then((user) => {
       this.userId = user.id;
       this.getmyCars();
+
     });
   }
 
@@ -52,6 +53,7 @@ export class MyCarsCoreService {
       cssClass: 'my-custom-class',
       header: 'Confirm!',
       message: 'Make this car ' + data.modelName + ' in use?',
+      backdropDismiss: false,
       buttons: [
         {
           text: 'Cancel',
@@ -76,18 +78,31 @@ export class MyCarsCoreService {
   }
 
   saveMyCar(data: any): void {
-    this.googleStorageUser.getObjectGoogleUsers().then((user) => {
-      if (user) {
-        data.dateCreated = firebase.firestore.Timestamp.fromDate(new Date());
-        data.userId = user.id;
-        data.uid = generateGUID();
-        this.userCarsRef.add(data).then(() => {
-          this.presentAlert();
-        });
-      } else {
-        this.presentToast();
-      }
-    });
+    if (this.userId) {
+      data.dateCreated = firebase.firestore.Timestamp.fromDate(new Date());
+      data.userId = this.userId;
+      data.uid = generateGUID();
+      this.userCarsRef.add(data).then(() => {
+        this.presentAlert();
+        this.isInUsedUpdatOthers(data);
+      });
+    } else {
+      this.presentToast();
+    }
+  }
+
+  async isInUsedUpdatOthers(data) {
+    if (data.insUsed) {
+      const allCars = this.onMyCars.getValue();
+      allCars.forEach(cars => {
+        if (cars.uid !== data.uid) {
+          this.userCarsRef.doc(cars.key).update({
+            insUsed: false
+          }).then(() => { });
+        }
+      });
+    }
+    console.log('cooooool', this.onMyCars.getValue());
   }
 
   insertNewCars(data: any) {
