@@ -23,7 +23,7 @@
       ></agm-marker>
       <agm-marker
         *ngFor="let m of itemsShop; let i = index"
-        (markerClick)="viewShopDetals(m)"
+        (markerClick)="viewShopDetails(m)"
         [latitude]="m.shopLocation.latitude"
         [longitude]="m.shopLocation.longitude"
         [iconUrl]="m.iconUrl"

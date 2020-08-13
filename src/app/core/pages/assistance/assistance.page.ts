@@ -213,14 +213,15 @@ export class AssistancePage implements OnInit {
         this.getNearest = nearestRoute;
         this.origin = { lat: latitude, lng: longitude };
         this.destination = {
-          lat: nearestRoute.shopLocation.latitude,
-          lng: nearestRoute.shopLocation.longitude,
+          lat: (nearestRoute || { shopLocation: { latitude: null } }).shopLocation.latitude,
+          lng: (nearestRoute || { shopLocation: { longitude: null } }).shopLocation.longitude,
         };
 
         calculateDistanceNearest(this.origin, this.destination).then(
           (result) => {
             if (result) {
               this.getApproximate = result;
+              console.log('getApproximate', this.getApproximate);
               this.loadingController.dismiss();
             }
           }
@@ -243,7 +244,7 @@ export class AssistancePage implements OnInit {
     await loading.present();
   }
 
-  async viewShopDetals(shopDetails) {
+  async viewShopDetails(shopDetails) {
     const modal = await this.modalCtrl.create({
       component: AssistanceSummariesPage,
       cssClass: 'assistance-modal',
@@ -251,6 +252,7 @@ export class AssistancePage implements OnInit {
         assistanceDetails: {
           shopDetail: shopDetails,
           serviceTypeParam: this.serviceTypeParam,
+          getApproximate: this.getApproximate,
           canUpdate: true,
         },
       },

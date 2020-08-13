@@ -4,6 +4,8 @@ import { assistTanceList } from 'src/app/constants/assistanceTypes';
 import { Router } from '@angular/router';
 import { AssistanceWaitingPage } from '../assistance-waiting/assistance-waiting.page';
 import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.service';
+import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
+import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCore';
 
 @Component({
   selector: 'app-assistance-summaries',
@@ -12,18 +14,22 @@ import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.ser
 })
 export class AssistanceSummariesPage implements OnInit {
   isConfirming = false;
-  serviceDetails = {};
-  shopDetail = {};
+  getApproximate: any = {};
+  serviceDetails: any = {};
+  assistanceNotes: any;
+  shopDetail: any = {};
+  userData: any = {};
   canUpdate = false;
   constructor(
     private navParams: NavParams,
     public alertController: AlertController,
     public modaCtrl: ModalController,
     private router: Router,
-    private assistanceSrvc: AssistanceCoreServices
+    private googleStorageUser: StoragUserDataService,
+    private assistanceSrvc: AppAssistanceCoreService,
   ) {
 
-    const { shopDetail, serviceTypeParam, canUpdate } = this.navParams.get(
+    const { shopDetail, serviceTypeParam, canUpdate, getApproximate } = this.navParams.get(
       'assistanceDetails'
     );
 
@@ -31,18 +37,37 @@ export class AssistanceSummariesPage implements OnInit {
       (detail) => detail.id === parseInt(serviceTypeParam, 10)
     );
     this.shopDetail = shopDetail;
+    this.getApproximate = getApproximate;
     this.canUpdate = canUpdate;
+    this.googleStorageUser.getObjectGoogleUsers().then((data) => {
+      this.userData = data;
+      console.log('userData', this.userData);
+      console.log('serviceDetails', this.serviceDetails);
+      console.log('shopDetail', this.shopDetail);
+      console.log('getApproximate', this.getApproximate);
+    });
   }
 
   ngOnInit() { }
 
   onConfirm() {
     this.isConfirming = true;
-    const confirming = setTimeout(() => {
-      this.isConfirming = false;
-      clearTimeout(confirming);
-      this.presentAlert();
-    }, 1000);
+    const constructData = {
+      shopId: this.shopDetail.uid,
+      assistanceTypeId: this.serviceDetails.id,
+      notes: this.assistanceNotes,
+      ...this.getApproximate,
+    }
+    this.assistanceSrvc.saveAssistance(constructData).then((response) => {
+      if (response) {
+        const confirming = setTimeout(() => {
+          this.isConfirming = false;
+          clearTimeout(confirming);
+          this.presentAlert();
+        }, 1000);
+      }
+    })
+
   }
 
   okayClose() {
@@ -61,8 +86,6 @@ export class AssistanceSummariesPage implements OnInit {
           this.okayClose();
           this.router.navigate(['/main-menu']);
           this.viewWaiting({});
-          this.assistanceSrvc.setAssistanceStatus(true);
-
         }
       }],
     });
