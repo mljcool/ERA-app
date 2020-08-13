@@ -320,3 +320,11 @@ export const myMarker = {
     width: 60
   }
 }
+
+export const shopIcon = {
+  url: 'assets/images/svg/guage.svg',
+  scaledSize: {
+    height: 70,
+    width: 60
+  }
+}

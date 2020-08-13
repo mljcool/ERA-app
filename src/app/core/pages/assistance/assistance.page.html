@@ -24,8 +24,8 @@
       <agm-marker
         *ngFor="let m of itemsShop; let i = index"
         (markerClick)="viewShopDetals(m)"
-        [latitude]="m.location.lat"
-        [longitude]="m.location.long"
+        [latitude]="m.shopLocation.latitude"
+        [longitude]="m.shopLocation.longitude"
         [iconUrl]="m.iconUrl"
       >
         <agm-info-window>
@@ -61,14 +61,16 @@
             <small>
               Address
             </small>
-            <span class="address">
-              {{ item.content}}
-            </span>
+            <ion-label>
+              <span class="address">
+                {{ item.address}}
+              </span>
+            </ion-label>
           </div>
           <div class="shop-rating">
             <div class="navigation">
               <ion-button size="small" expand="block">
-                Directions (25mins)
+                Directions
                 <ion-icon slot="end" name="navigate"></ion-icon>
               </ion-button>
             </div>

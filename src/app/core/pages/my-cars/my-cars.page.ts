@@ -78,6 +78,7 @@ export class MyCarsPage implements OnInit, OnDestroy {
   }
 
   async addCar(carData = {}, isUpdate = false) {
+
     const modal = await this.modalCtrl.create({
       component: AddCarsPage,
       cssClass: 'cart-modal',

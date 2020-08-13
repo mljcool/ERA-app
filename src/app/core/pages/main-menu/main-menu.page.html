@@ -118,7 +118,7 @@
     </ion-row>
     <ion-row class="ion-no-padding">
       <div class="horizontal-scroll-wrapper squares">
-        <ng-container *ngFor="let item of items; let i=index;">
+        <ng-container *ngFor="let item of shops; let i=index;">
           <div class="view-card custom-card">
             <div class="shop-title">
               <div>
@@ -137,7 +137,7 @@
             </div>
             <div class="shop-content">
               <span>
-                {{ item.content}}
+                {{ item.secondName}}
               </span>
             </div>
             <div class="shop-rating">

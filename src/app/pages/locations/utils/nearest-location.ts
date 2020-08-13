@@ -1,4 +1,5 @@
 export const getNearestPoint = (origin, destination) => {
+  console.log('destination', destination);
   const PythagorasEquirectangular = (lat1, lon1, lat2, lon2) => {
     const Deg2Rad = (deg) => (deg * Math.PI) / 180;
 
@@ -20,8 +21,8 @@ export const getNearestPoint = (origin, destination) => {
     const dif = PythagorasEquirectangular(
       origin.lat,
       origin.long,
-      destination[index].location.lat,
-      destination[index].location.long
+      destination[index].shopLocation.latitude,
+      destination[index].shopLocation.longitude
     );
 
     if (dif < minDif) {

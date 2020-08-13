@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { getDataShopsList } from '../../util/dummy-data';
-import { myMarker } from '../../util/map-styles';
+import { myMarker, shopIcon } from '../../util/map-styles';
 import { myMapTheme } from '../../map-theme/themeList';
 import { GmapOptionsPage } from '../../modals/gmap-options/gmap-options.page';
 import {
@@ -22,6 +22,7 @@ import {
 import { MapsAPILoader } from '@agm/core';
 import { AssistanceSummariesPage } from '../../modals/assistance-summaries/assistance-summaries.page';
 import { GpsCautionPage } from '../../modals/gps-caution/gps-caution.page';
+import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 const { Geolocation } = Plugins;
 @Component({
   selector: 'app-assistance',
@@ -81,7 +82,8 @@ export class AssistancePage implements OnInit {
     private modalCtrl: ModalController,
     private popoverController: PopoverController,
     private mapsApiLoader: MapsAPILoader,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private shopSrvc: ShopCoreService
   ) {
     this.unsubscribeAll = new Subject();
     this.route.queryParams
@@ -90,8 +92,16 @@ export class AssistancePage implements OnInit {
         const { serviceType } = params;
         this.serviceTypeParam = serviceType;
       });
-    this.itemsShop = getDataShopsList();
-    this.itemsShopAll = getDataShopsList();
+
+    this.shopSrvc.onAllShops
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((shops) => {
+        this.itemsShop = shops.map((shop) => {
+          shop.iconUrl = shopIcon;
+          return shop;
+        });
+        this.itemsShopAll = this.itemsShop;
+      });
   }
 
   ngOnInit() {
@@ -199,11 +209,12 @@ export class AssistancePage implements OnInit {
           { lat: latitude, long: longitude },
           this.itemsShop
         );
+        console.log('nearestRoute', nearestRoute);
         this.getNearest = nearestRoute;
         this.origin = { lat: latitude, lng: longitude };
         this.destination = {
-          lat: nearestRoute.location.lat,
-          lng: nearestRoute.location.long,
+          lat: nearestRoute.shopLocation.latitude,
+          lng: nearestRoute.shopLocation.longitude,
         };
 
         calculateDistanceNearest(this.origin, this.destination).then(

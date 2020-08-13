@@ -11,6 +11,7 @@ import { AuthServiceService } from 'src/app/pages/auth/auth-service.service';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { MyCarsCoreService } from '../../configs/firebaseRef/MyCarsCore';
 import { takeUntil } from 'rxjs/operators';
+import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 
 @Component({
   selector: 'app-main-menu',
@@ -18,10 +19,11 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./main-menu.page.scss'],
 })
 export class MainMenuPage implements OnInit, OnDestroy {
-  items: any[] = [];
+  shops: any[] = [];
   countCars = 0;
   assistanceStatus: boolean = false;
   userData: any = {};
+
   private _unsubscribeAll: Subject<any>;
 
   constructor(
@@ -31,15 +33,19 @@ export class MainMenuPage implements OnInit, OnDestroy {
     private assistanceSrvc: AssistanceCoreServices,
     private authService: AuthServiceService,
     private googleStorageUser: StoragUserDataService,
-    private myCarSrvc: MyCarsCoreService
+    private myCarSrvc: MyCarsCoreService,
+    private shopSrvc: ShopCoreService
   ) {
     this._unsubscribeAll = new Subject();
-    this.items = getDataShopsList();
-
+    this.shopSrvc.onAllShops
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((shops) => {
+        this.shops = shops;
+      });
   }
 
   ionViewWillEnter() {
-    this.googleStorageUser.getObjectGoogleUsers().then(data => {
+    this.googleStorageUser.getObjectGoogleUsers().then((data) => {
       this.userData = data;
       console.log(this.userData);
     });
@@ -51,9 +57,7 @@ export class MainMenuPage implements OnInit, OnDestroy {
       });
   }
   ngOnInit() {
-
-    console.log('ALWAYS HERE.....................')
-
+    console.log('ALWAYS HERE.....................');
   }
 
   ngOnDestroy(): void {
@@ -76,7 +80,7 @@ export class MainMenuPage implements OnInit, OnDestroy {
         }
         console.log('here Logout', data);
         if (isLogOut) {
-          this.authService.logout().then(response => {
+          this.authService.logout().then((response) => {
             console.log('here Logout', response);
             if (!response) {
               this.googleStorageUser.clearUserStorage().then(() => {
@@ -119,7 +123,7 @@ export class MainMenuPage implements OnInit, OnDestroy {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         id: 1,
-        isFromMainMenu: 1
+        isFromMainMenu: 1,
       },
     };
     this.router.navigate(['/transaction-details-assistance'], navigationExtras);
@@ -133,10 +137,10 @@ export class MainMenuPage implements OnInit, OnDestroy {
     await modal.present();
   }
 
-  viewShopDetails(data): void {
+  viewShopDetails({ uid }): void {
     const navigationExtras: NavigationExtras = {
       queryParams: {
-        shopId: 1,
+        shopId: uid,
       },
     };
     this.router.navigate(['/shop-details'], navigationExtras);

@@ -23,14 +23,14 @@
         (ionChange)="setFilteredItems(searchTerm)"
       ></ion-searchbar>
     </ion-item>
-    <ion-item *ngFor="let shops of myCars; let index = i">
+    <ion-item *ngFor="let shops of allShops; let index = i">
       <ion-card
         (click)="onShopMenus(shops)"
-        class="ion-activatable ripple-parent"
+        class="ion-activatable ripple-parent shop-card"
       >
         <ion-item>
           <ion-icon name="car"></ion-icon>
-          <ion-label class="car-label">{{ shops.modelName }}</ion-label>
+          <ion-label class="car-label">{{ shops.name }}</ion-label>
           <ion-button color="warning" fill="outline" slot="end">
             <span class="ratings-icons">
               <ion-icon name="star"></ion-icon>
@@ -42,12 +42,12 @@
           </ion-button>
         </ion-item>
         <ion-card-content>
-          {{ shops.description }}
+          {{ shops.address }}
         </ion-card-content>
         <ion-item>
           <span class="shop-status">Open time: (8:00am-5pm)</span>
           <span class="shop-status">
-            <ion-icon name="call"></ion-icon> +63902112111
+            <ion-icon name="call"></ion-icon> {{ shops.mobile }}
           </span>
         </ion-item>
         <ion-ripple-effect></ion-ripple-effect>

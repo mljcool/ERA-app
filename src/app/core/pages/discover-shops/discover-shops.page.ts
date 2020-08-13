@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { DiscoverMenusPage } from '../../modals/discover-menus/discover-menus.page';
+import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 export interface ICars {
   id: number;
@@ -21,62 +24,47 @@ export interface ICars {
 })
 export class DiscoverShopsPage implements OnInit, OnDestroy {
   searchTerm = '';
-  myCars: ICars[] = [];
-  copyMyCars: ICars[] = [];
+  allShops: any[] = [];
+  copyShops: any[] = [];
   isLoading: boolean = false;
   clearTimeOut: any = null;
+  private _unsubscribeAll: Subject<any>;
 
   constructor(
     private router: Router,
-    public popoverController: PopoverController
+    public popoverController: PopoverController,
+    private shopSrvc: ShopCoreService
   ) {
-    this.populateCars();
+    this._unsubscribeAll = new Subject();
+    this.isLoading = true;
+    this.shopSrvc.onAllShops
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((shops) => {
+        this.allShops = shops;
+        this.copyShops = shops;
+        this.clearTimeOut = setTimeout(() => {
+          this.isLoading = false;
+        }, 1500);
+      });
   }
 
-  ngOnInit(): void {
-    this.isLoading = true;
-    this.clearTimeOut = setTimeout(() => {
-      this.isLoading = false;
-    }, 1500);
-  }
+  ngOnInit(): void { }
 
   ngOnDestroy(): void {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
     clearTimeout(this.clearTimeOut);
-  }
-
-  populateCars(): void {
-    const cars = [
-      'Abarth 124',
-      'Toyota C-HR',
-      'Toyota HiLux',
-      'Toyota Landcruiser',
-    ];
-
-    for (let index = 0; index < cars.length; index++) {
-      this.myCars.push({
-        id: index,
-        modelName: cars[index],
-        description: `Which is why, back in 2016, when Fiat released a new 124, many an eyebrow was arched`,
-        plateNumber: (index + Math.random() * 10).toFixed(3).toString(),
-        dateAdded: new Date(),
-        isActiveUsed: true,
-        color: 'red',
-        fuelType: 1,
-      });
-    }
-    this.copyMyCars = this.myCars;
-    console.log(this.myCars);
   }
 
   setFilteredItems(search: string = ''): void {
     const searchTerm = (search || '').toLowerCase();
     if (searchTerm !== '') {
-      const copyShops = this.myCars.filter((cars: ICars) => {
-        return cars.modelName.toLowerCase().includes(searchTerm);
+      const copyShops = this.allShops.filter((shop) => {
+        return shop.name.toLowerCase().includes(searchTerm);
       });
-      this.myCars = [...copyShops];
+      this.allShops = [...copyShops];
     } else {
-      this.myCars = this.copyMyCars;
+      this.allShops = this.copyShops;
     }
   }
 
@@ -96,7 +84,7 @@ export class DiscoverShopsPage implements OnInit, OnDestroy {
         const { typeMenus } = data;
         this.router.navigate([`/make-${typeMenus}`]);
       }
-    })
+    });
     await popover.present();
   }
 }
