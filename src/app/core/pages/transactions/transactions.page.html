@@ -13,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="transactions">
   <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
 
   <ion-list>
@@ -26,27 +26,39 @@
     <ion-list-header>
       <ion-label>Active Transaction</ion-label>
     </ion-list-header>
-    <ion-item *ngFor="let trans of myTransactions; let index = i">
+
+    <ion-item
+      *ngFor="let pendingAssintance of assistanceListPending; let index = i"
+    >
       <ion-card
-        (click)="onViewDetails(trans)"
+        (click)="onViewAssistanceDetails(pendingAssintance)"
         class="ion-activatable ripple-parent"
       >
         <ion-item>
-          <ion-label class="label-custom">{{ trans.tName }}</ion-label>
+          <ion-label class="label-custom"
+            >{{ pendingAssintance.assistanceName }}</ion-label
+          >
           <ion-button slot="end" fill="outline">
-            <ion-icon slot="start" [name]="iconType[trans.tType]"></ion-icon>
-            <ion-label>{{ nameType[trans.tType]}}</ion-label>
+            <ion-icon slot="start" name="map"></ion-icon>
+            <ion-label>{{ pendingAssintance.type}}</ion-label>
           </ion-button>
         </ion-item>
         <ion-card-content>
-          {{ trans.description }}
+          {{ pendingAssintance.notes }}
         </ion-card-content>
         <ion-item>
-          <span class="shop-status">{{ trans.dateTransaction}}</span>
+          <span class="shop-status"
+            >{{ pendingAssintance.dateCreated.toDate() | date: 'dd MMM hh:mm'
+            }}</span
+          >
+          <span class="shop-status">{{ pendingAssintance.status }}</span>
         </ion-item>
         <ion-ripple-effect></ion-ripple-effect>
       </ion-card>
     </ion-item>
+
+    <!-- =========================== -->
+
     <ion-list-header>
       <ion-label>Past Transaction</ion-label>
     </ion-list-header>

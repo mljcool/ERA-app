@@ -27,6 +27,7 @@ export class AppAssistanceCoreService {
     this.onAssistance = new BehaviorSubject([]);
     this.googleStorageUser.getObjectGoogleUsers().then((user) => {
       this.userId = user.id;
+      this.getAllAssistance();
     });
   }
 
@@ -38,6 +39,7 @@ export class AppAssistanceCoreService {
         data.userId = this.userId;
         data.assistanceUId = generateGUID();
         data.status = 'PENDING';
+        data.type = 'ASSITANCE';
         console.log('ASSISTANCE DATA', data);
         this.assintanceRef.add(data).then(() => {
           resolve(true);
@@ -47,4 +49,23 @@ export class AppAssistanceCoreService {
       }
     });
   }
+
+  getAllAssistance = () => {
+    const assistance = firebase
+      .firestore()
+      .collection('newAssistance')
+      .where('userId', '==', this.userId);
+    assistance.onSnapshot((snapshot) => {
+      const myAssistance = snapshot.docs.map((car) => ({
+        key: car.id,
+        ...car.data(),
+      }));
+      this.onAssistance.next(myAssistance);
+    });
+  };
+
+  getOneAssistance = (assistanceUId) => {
+    return firebase.firestore().collection('newAssistance').where('assistanceUId', '==', assistanceUId);
+  };
+
 }

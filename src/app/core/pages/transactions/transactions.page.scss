@@ -1,4 +1,9 @@
 :host {
+  .transactions {
+    ion-card {
+      width: 100%;
+    }
+  }
   .label-custom {
     margin-left: 4px;
     font-size: 14px;

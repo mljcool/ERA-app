@@ -5,6 +5,9 @@ import { myMarker } from '../../util/map-styles';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
+import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCore';
+import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 
 @Component({
   selector: 'app-transaction-details',
@@ -53,27 +56,89 @@ export class TransactionDetailsAssistancePage implements OnInit {
       },
     },
   };
-  transactionType: number = 0;
   isFromMainMenu: boolean = false;
+  userData: any = {};
+  shopsDetails: any = {};
+  assistanceDetails: any = {};
+  services: AssistanceTypes[] = assistTanceList;
+  isLoaded = false;
+
   private unsubscribeAll: Subject<any>;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    this.origin = { lat: this.lat, lng: this.lng };
-    this.destination = { lat: 7.053428, lng: 125.571669 };
-    this.transactionType = 1;
-    this.assistanceType = assistTanceList.find(
-      (assistance) => assistance.id === 1
-    );
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private googleStorageUser: StoragUserDataService,
+    private assistanceSrvc: AppAssistanceCoreService,
+    private shopSrvc: ShopCoreService
+  ) {
     this.unsubscribeAll = new Subject();
+  }
+
+  ngOnInit(): void {
+    this.googleStorageUser.getObjectGoogleUsers().then((data) => {
+      this.userData = data;
+    });
+
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((params) => {
-        const { isFromMainMenu } = params;
+        const { isFromMainMenu, id } = params;
         this.isFromMainMenu = !!parseInt(isFromMainMenu, 10);
+        if (id) {
+          this.getAssistanceDetails(id);
+        }
       });
   }
 
-  ngOnInit(): void { }
+  getAssistanceDetails(id = '') {
+    this.assistanceSrvc.getOneAssistance(id).onSnapshot((snapshot) => {
+      const assistanceDetails = snapshot.docs.map((shop) => ({
+        key: shop.id,
+        ...shop.data(),
+        serviceDetails: this.findServiceType(shop.data().assistanceTypeId),
+      }));
+      if (assistanceDetails.length) {
+        this.assistanceDetails = assistanceDetails[0];
+        this.getShopDetails(this.assistanceDetails.shopId);
+      }
+    });
+  }
+
+  getShopDetails(shopId) {
+    if (shopId) {
+      this.shopSrvc.getOneShops(shopId).onSnapshot((snapshot) => {
+        const shopsDetails = snapshot.docs.map((shop) => ({
+          key: shop.id,
+          ...shop.data(),
+        }));
+
+        if (shopsDetails.length) {
+          this.shopsDetails = shopsDetails[0];
+          this.setLocations();
+        }
+      });
+    }
+  }
+
+  setLocations() {
+    const { shopLocation = {} } = this.shopsDetails;
+    const { userLocation = {} } = this.assistanceDetails;
+    this.destination = {
+      lat: shopLocation.latitude,
+      lng: shopLocation.longitude,
+    };
+    this.origin = {
+      lat: userLocation.latitude,
+      lng: userLocation.longitude,
+    };
+    this.isLoaded = true;
+  }
+
+  findServiceType(ids): any {
+    const srvcType = this.services.find((srvc) => srvc.id === ids);
+    return srvcType;
+  }
 
   ngOnDestroy(): void {
     this.unsubscribeAll.next();
@@ -81,7 +146,6 @@ export class TransactionDetailsAssistancePage implements OnInit {
   }
 
   onBack(): void {
-
     if (this.isFromMainMenu) {
       this.router.navigate(['/main-menu']);
       return;

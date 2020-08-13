@@ -253,6 +253,7 @@ export class AssistancePage implements OnInit {
           shopDetail: shopDetails,
           serviceTypeParam: this.serviceTypeParam,
           getApproximate: this.getApproximate,
+          userLocation: this.initMap,
           canUpdate: true,
         },
       },

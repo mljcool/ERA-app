@@ -4,7 +4,6 @@ import { PopoverComponent } from 'src/app/common-ui/PopoverMenu/pop-over-menu.co
 import { Router, NavigationExtras } from '@angular/router';
 import { AssistanceModalPage } from '../../modals/assistance-modal/assistance-modal.page';
 import { getDataShopsList } from '../../util/dummy-data';
-import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.service';
 import { WorkingProgressPage } from '../../modals/working-progress/working-progress.page';
 import { Subject } from 'rxjs';
 import { AuthServiceService } from 'src/app/pages/auth/auth-service.service';
@@ -12,6 +11,7 @@ import { StoragUserDataService } from 'src/app/services/storages/storage-user-se
 import { MyCarsCoreService } from '../../configs/firebaseRef/MyCarsCore';
 import { takeUntil } from 'rxjs/operators';
 import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
+import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCore';
 
 @Component({
   selector: 'app-main-menu',
@@ -20,7 +20,9 @@ import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 })
 export class MainMenuPage implements OnInit, OnDestroy {
   shops: any[] = [];
+  assistanceList: any[] = [];
   countCars = 0;
+  countTransaction = 0;
   assistanceStatus: boolean = false;
   userData: any = {};
 
@@ -30,11 +32,11 @@ export class MainMenuPage implements OnInit, OnDestroy {
     public popoverController: PopoverController,
     private router: Router,
     private modalCtrl: ModalController,
-    private assistanceSrvc: AssistanceCoreServices,
+    private assistanceSrvc: AppAssistanceCoreService,
     private authService: AuthServiceService,
     private googleStorageUser: StoragUserDataService,
     private myCarSrvc: MyCarsCoreService,
-    private shopSrvc: ShopCoreService
+    private shopSrvc: ShopCoreService,
   ) {
     this._unsubscribeAll = new Subject();
     this.shopSrvc.onAllShops
@@ -42,6 +44,14 @@ export class MainMenuPage implements OnInit, OnDestroy {
       .subscribe((shops) => {
         this.shops = shops;
       });
+    this.assistanceSrvc.onAssistance
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((assistanceList) => {
+        console.log('assistanceList', assistanceList);
+        this.assistanceList = assistanceList.filter(data => data.status === 'PENDING');
+        this.countTransaction = assistanceList.length;
+      });
+
   }
 
   ionViewWillEnter() {

@@ -14,7 +14,7 @@
 </ion-header>
 
 <ion-content class="trans-details">
-  <ion-grid>
+  <ion-grid *ngIf="isLoaded">
     <ion-row>
       <ion-card>
         <ion-card-content class="my-trans-details">
@@ -25,7 +25,7 @@
           </div>
           <div class="my-data">
             <ul class="my-details">
-              <li><span class="my-name">Hi, Jhon Doe</span></li>
+              <li><span class="my-name">Hi, {{ userData.name}}</span></li>
               <li>
                 <span class="my-name isTimer">estimated time</span>
               </li>
@@ -33,7 +33,7 @@
           </div>
           <div class="timer-label">
             <div>
-              <span>14mins</span>
+              <span>{{ assistanceDetails.esitamteTravelTime}}</span>
             </div>
           </div>
 
@@ -50,10 +50,12 @@
           <ion-list>
             <ion-item lines="none">
               <ion-thumbnail slot="start">
-                <ion-img [src]="assistanceType.imgSrc"></ion-img>
+                <ion-img
+                  [src]="assistanceDetails.serviceDetails.imgSrc"
+                ></ion-img>
               </ion-thumbnail>
               <ion-label class="assistance-label"
-                >{{assistanceType.label}}</ion-label
+                >{{assistanceDetails.serviceDetails.label}}</ion-label
               >
             </ion-item>
           </ion-list>
@@ -64,7 +66,7 @@
             <div class="shop-details">
               <div class="shop-header">
                 <ion-label class="time-status">
-                  <span class="shope-name">Shop Lorem Sample</span>
+                  <span class="shope-name">{{ shopsDetails.name}}</span>
                 </ion-label>
                 <span class="ratings-icons">
                   <ion-icon name="star"></ion-icon>
@@ -76,10 +78,7 @@
               </div>
               <div class="shop-content">
                 <ion-label class="time-status">
-                  <span
-                    >Address → (8766 Limonite Ct, Riverside, CA 92509,
-                    Agdao)</span
-                  >
+                  <span>Address → ({{shopsDetails.address}})</span>
                 </ion-label>
               </div>
             </div>
@@ -91,9 +90,7 @@
           <ion-card-content class="assistance-card-details">
             <div class="assistance-notes">
               <p>
-                Keep close to Nature's heart... and break clear away, once in
-                awhile, and climb a mountain or spend a week in the woods. Wash
-                your spirit clean.
+                {{ assistanceDetails.notes}}
               </p>
             </div>
           </ion-card-content>

@@ -39,4 +39,8 @@ export class ShopCoreService {
       this.onAllShops.next(allShop);
     });
   };
+
+  getOneShops = (uid) => {
+    return firebase.firestore().collection('newShopList').where('uid', '==', uid);
+  };
 }

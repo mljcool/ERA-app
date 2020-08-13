@@ -2,6 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { AddCarsPage } from '../../modals/add-cars/add-cars.page';
 import { ModalController, PopoverController, ActionSheetController } from '@ionic/angular';
+import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCore';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { assistTanceList } from 'src/app/constants/assistanceTypes';
 
 export interface ITransactions {
   id: number;
@@ -22,18 +26,38 @@ export class TransactionsPage implements OnInit, OnDestroy {
   searchTerm = '';
   myTransactions: ITransactions[] = [];
   copymyTransactions: ITransactions[] = [];
+  assistanceListPending: any[] = [];
   isLoading: boolean = false;
   clearTimeOut: any = null;
   iconType: string[] = ['', 'cart', 'calendar', 'map'];
   nameType: string[] = ['', 'Orders', 'Booking', 'Assistance'];
 
+  services: AssistanceTypes[] = assistTanceList;
+
+  private _unsubscribeAll: Subject<any>;
   constructor(
     private router: Router,
     private modalCtrl: ModalController,
     public popoverController: PopoverController,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    private assistanceSrvc: AppAssistanceCoreService,
   ) {
     this.populateTransactions();
+    this._unsubscribeAll = new Subject();
+    this.assistanceSrvc.onAssistance
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((assistanceList) => {
+        console.log('assistanceList', assistanceList);
+        this.assistanceListPending = assistanceList.filter(data => data.status === 'PENDING').map(datas => {
+          datas.assistanceName = this.findServiceType(datas.assistanceTypeId);
+          return datas;
+        });
+      });
+  }
+
+  findServiceType(ids): string {
+    const srvcType = this.services.find(srvc => srvc.id === ids).label;
+    return srvcType
   }
 
   ngOnInit(): void {
@@ -104,6 +128,16 @@ export class TransactionsPage implements OnInit, OnDestroy {
       return;
     }
     this.router.navigate([`/transaction-details-${navigate}`], navigationExtras);
+  }
+
+  onViewAssistanceDetails(transDetails): void {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        id: transDetails.assistanceUId,
+        isFromMainMenu: 0,
+      },
+    };
+    this.router.navigate([`/transaction-details-assistance`], navigationExtras);
   }
 
   onBookings(transDetails: any) {

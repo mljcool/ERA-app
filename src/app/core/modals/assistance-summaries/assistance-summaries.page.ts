@@ -16,6 +16,7 @@ export class AssistanceSummariesPage implements OnInit {
   isConfirming = false;
   getApproximate: any = {};
   serviceDetails: any = {};
+  userLocation: any = {};
   assistanceNotes: any;
   shopDetail: any = {};
   userData: any = {};
@@ -29,7 +30,7 @@ export class AssistanceSummariesPage implements OnInit {
     private assistanceSrvc: AppAssistanceCoreService,
   ) {
 
-    const { shopDetail, serviceTypeParam, canUpdate, getApproximate } = this.navParams.get(
+    const { shopDetail, serviceTypeParam, canUpdate, getApproximate, userLocation } = this.navParams.get(
       'assistanceDetails'
     );
 
@@ -37,6 +38,7 @@ export class AssistanceSummariesPage implements OnInit {
       (detail) => detail.id === parseInt(serviceTypeParam, 10)
     );
     this.shopDetail = shopDetail;
+    this.userLocation = userLocation;
     this.getApproximate = getApproximate;
     this.canUpdate = canUpdate;
     this.googleStorageUser.getObjectGoogleUsers().then((data) => {
@@ -45,6 +47,7 @@ export class AssistanceSummariesPage implements OnInit {
       console.log('serviceDetails', this.serviceDetails);
       console.log('shopDetail', this.shopDetail);
       console.log('getApproximate', this.getApproximate);
+      console.log('userLocation', this.userLocation);
     });
   }
 
@@ -55,7 +58,11 @@ export class AssistanceSummariesPage implements OnInit {
     const constructData = {
       shopId: this.shopDetail.uid,
       assistanceTypeId: this.serviceDetails.id,
-      notes: this.assistanceNotes,
+      notes: this.assistanceNotes || '',
+      userLocation: {
+        latitude: this.userLocation.latitude,
+        longitude: this.userLocation.longitude
+      },
       ...this.getApproximate,
     }
     this.assistanceSrvc.saveAssistance(constructData).then((response) => {

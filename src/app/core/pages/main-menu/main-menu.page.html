@@ -85,7 +85,9 @@
           class="ion-activatable ripple-parent"
           (click)="navigator('transactions')"
         >
-          <ion-badge class="badge-one" color="danger">2</ion-badge>
+          <ion-badge class="badge-one" color="danger"
+            >{{ countTransaction}}</ion-badge
+          >
           <img src="assets/images/main-menus/transactions.png" />
           <ion-card-header>
             <ion-card-subtitle>Transactions</ion-card-subtitle>
