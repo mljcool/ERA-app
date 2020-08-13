@@ -33,7 +33,12 @@
           </div>
           <div class="timer-label">
             <div>
-              <span>{{ assistanceDetails.esitamteTravelTime}}</span>
+              <span *ngIf="assistanceDetails.status === 'PENDING'"
+                >Waiting....</span
+              >
+              <span *ngIf="assistanceDetails.status === 'INPROGRESS'"
+                >{{ assistanceDetails.esitamteTravelTime}}</span
+              >
             </div>
           </div>
 

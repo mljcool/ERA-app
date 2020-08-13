@@ -40,7 +40,9 @@ export class AppAssistanceCoreService {
         data.assistanceUId = generateGUID();
         data.status = 'PENDING';
         data.type = 'ASSITANCE';
-        console.log('ASSISTANCE DATA', data);
+        data.costNotes = '';
+        data.mechanicId = '';
+        data.costAmount = 0;
         this.assintanceRef.add(data).then(() => {
           resolve(true);
         });
