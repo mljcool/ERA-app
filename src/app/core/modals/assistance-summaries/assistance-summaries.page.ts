@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, AlertController, ModalController } from '@ionic/angular';
 import { assistTanceList } from 'src/app/constants/assistanceTypes';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { AssistanceWaitingPage } from '../assistance-waiting/assistance-waiting.page';
 import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.service';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
@@ -65,12 +65,12 @@ export class AssistanceSummariesPage implements OnInit {
       },
       ...this.getApproximate,
     }
-    this.assistanceSrvc.saveAssistance(constructData).then((response) => {
-      if (response) {
+    this.assistanceSrvc.saveAssistance(constructData).then(({ Data, isSuccess }) => {
+      if (isSuccess) {
         const confirming = setTimeout(() => {
           this.isConfirming = false;
           clearTimeout(confirming);
-          this.presentAlert();
+          this.presentAlert(Data);
         }, 1000);
       }
     })
@@ -81,7 +81,7 @@ export class AssistanceSummariesPage implements OnInit {
     this.modaCtrl.dismiss();
   }
 
-  async presentAlert() {
+  async presentAlert(data) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Info',
@@ -91,13 +91,22 @@ export class AssistanceSummariesPage implements OnInit {
         text: 'Okay',
         handler: () => {
           this.okayClose();
-          this.router.navigate(['/main-menu']);
-          this.viewWaiting({});
+          this.onViewAssistanceDetails(data);
         }
       }],
     });
 
     await alert.present();
+  }
+
+  onViewAssistanceDetails(transDetails): void {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        id: transDetails.assistanceUId,
+        isFromMainMenu: 0,
+      },
+    };
+    this.router.navigate([`/transaction-details-assistance`], navigationExtras);
   }
 
   async viewWaiting(shopDetails) {

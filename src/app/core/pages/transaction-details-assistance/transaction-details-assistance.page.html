@@ -9,7 +9,7 @@
       <ion-menu-button auto-hide="false"></ion-menu-button>
     </ion-buttons> -->
 
-    <ion-title>Transactions Details</ion-title>
+    <ion-title>Transaction Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -34,7 +34,7 @@
           <div class="timer-label">
             <div>
               <span *ngIf="assistanceDetails.status === 'PENDING'"
-                >Waiting....</span
+                >Pending....</span
               >
               <span *ngIf="assistanceDetails.status === 'INPROGRESS'"
                 >{{ assistanceDetails.esitamteTravelTime}}</span
@@ -130,19 +130,32 @@
           <ion-card-subtitle>Estimated cost Details</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
-          <ion-list>
-            <ion-item>
-              <ion-label class="cost-price">₱ 5,200.00</ion-label>
+          <ng-container *ngIf="assistanceDetails.status === 'PENDING'">
+            <ion-item lines="none">
+              <ion-thumbnail slot="start">
+                <ion-img
+                  [src]="'assets/images/svg/gear.svg'"
+                  width="250px"
+                ></ion-img>
+              </ion-thumbnail>
+              <ion-label class="assistance-label">Please wait</ion-label>
             </ion-item>
-          </ion-list>
+          </ng-container>
+          <ng-container *ngIf="assistanceDetails.status === 'INPROGRESS'">
+            <ion-list>
+              <ion-item>
+                <ion-label class="cost-price">₱ 5,200.00</ion-label>
+              </ion-item>
+            </ion-list>
 
-          <ion-card-header>
-            <ion-card-subtitle>Cost notes</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content class="assistance-card-details">
-            Your car is not passing smog check. Others are giving you really
-            high repair quotes
-          </ion-card-content>
+            <ion-card-header>
+              <ion-card-subtitle>Cost notes</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content class="assistance-card-details">
+              Your car is not passing smog check. Others are giving you really
+              high repair quotes
+            </ion-card-content>
+          </ng-container>
         </ion-card-content>
       </ion-card>
       <ion-card>
@@ -150,18 +163,37 @@
           <ion-card-subtitle>Your Mechanic Details</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content class="assistance-card-details">
-          <ion-list>
+          <ng-container *ngIf="assistanceDetails.status === 'PENDING'">
             <ion-item lines="none">
               <ion-thumbnail slot="start">
-                <ion-img [src]="'assets/images/mechanic.gif'"></ion-img>
+                <ion-img
+                  [src]="'assets/images/svg/gear.svg'"
+                  width="250px"
+                ></ion-img>
               </ion-thumbnail>
-              <ion-label class="assistance-label">Peter Doe</ion-label>
+              <ion-label class="assistance-label"
+                >while we validate data......</ion-label
+              >
             </ion-item>
-            <ion-item>
-              <ion-icon slot="start" name="call"></ion-icon>
-              <ion-label>+63 915 453 8812 </ion-label>
-            </ion-item>
-          </ion-list>
+          </ng-container>
+          <ng-container *ngIf="assistanceDetails.status === 'INPROGRESS'">
+            <ion-list>
+              <ion-item lines="none">
+                <ion-thumbnail slot="start">
+                  <ion-img [src]="'assets/images/mechanic.gif'"></ion-img>
+                </ion-thumbnail>
+                <ion-label class="assistance-label">Peter Doe</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-icon slot="start" name="call"></ion-icon>
+                <ion-label>
+                  <a [href]="'tel:'+'+63 915 453 8812 '">
+                    +63 915 453 8812
+                  </a>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ng-container>
         </ion-card-content>
       </ion-card>
     </ion-row>

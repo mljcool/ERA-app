@@ -88,7 +88,6 @@ export class MainMenuPage implements OnInit, OnDestroy {
         if (viewAccount) {
           this.router.navigateByUrl('/my-account');
         }
-        console.log('here Logout', data);
         if (isLogOut) {
           this.authService.logout().then((response) => {
             console.log('here Logout', response);

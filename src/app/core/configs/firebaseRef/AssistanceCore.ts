@@ -44,7 +44,10 @@ export class AppAssistanceCoreService {
         data.mechanicId = '';
         data.costAmount = 0;
         this.assintanceRef.add(data).then(() => {
-          resolve(true);
+          resolve({
+            isSuccess: true,
+            Data: data
+          });
         });
       } else {
         resolve(false);
