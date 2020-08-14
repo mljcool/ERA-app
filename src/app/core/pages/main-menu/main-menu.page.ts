@@ -5,11 +5,11 @@ import { Router, NavigationExtras } from '@angular/router';
 import { AssistanceModalPage } from '../../modals/assistance-modal/assistance-modal.page';
 import { getDataShopsList } from '../../util/dummy-data';
 import { WorkingProgressPage } from '../../modals/working-progress/working-progress.page';
-import { Subject } from 'rxjs';
+import { Subject, zip } from 'rxjs';
 import { AuthServiceService } from 'src/app/pages/auth/auth-service.service';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { MyCarsCoreService } from '../../configs/firebaseRef/MyCarsCore';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCore';
 
@@ -39,19 +39,7 @@ export class MainMenuPage implements OnInit, OnDestroy {
     private shopSrvc: ShopCoreService,
   ) {
     this._unsubscribeAll = new Subject();
-    this.shopSrvc.onAllShops
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((shops) => {
-        this.shops = shops;
-      });
-    this.assistanceSrvc.onAssistance
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((assistanceList) => {
-        console.log('assistanceList', assistanceList);
-        this.assistanceList = assistanceList.filter(data => data.status === 'PENDING');
-        this.countTransaction = assistanceList.length;
-      });
-
+    this.getAllObservalbles();
   }
 
   ionViewWillEnter() {
@@ -59,13 +47,25 @@ export class MainMenuPage implements OnInit, OnDestroy {
       this.userData = data;
       console.log(this.userData);
     });
-    this._unsubscribeAll = new Subject();
-    this.myCarSrvc.onMyCars
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((myCars) => {
-        this.countCars = myCars.length;
+  }
+
+  getAllObservalbles() {
+    const onMyCars$ = this.myCarSrvc.onMyCars;
+    const onAllShops$ = this.shopSrvc.onAllShops;
+    const onAssistance$ = this.assistanceSrvc.onAssistance;
+
+    zip(onAllShops$, onMyCars$, onAssistance$)
+      .pipe(takeUntil(this._unsubscribeAll),
+        map(([onAllShops$, onMyCars$, onAssistance$]) => ({ onAllShops$, onMyCars$, onAssistance$ })),
+      ).subscribe(observers => {
+        const { onAllShops$, onMyCars$, onAssistance$ } = observers;
+        this.shops = onAllShops$;
+        this.countCars = onMyCars$.length;
+        this.assistanceList = onAssistance$.filter(data => data.status === 'PENDING');
+        this.countTransaction = onAssistance$.length;
       });
   }
+
   ngOnInit() {
     console.log('ALWAYS HERE.....................');
   }

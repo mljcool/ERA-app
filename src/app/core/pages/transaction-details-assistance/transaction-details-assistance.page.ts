@@ -3,11 +3,12 @@ import { assistTanceList } from 'src/app/constants/assistanceTypes';
 import { darkTheme } from '../../map-theme/dark';
 import { myMarker } from '../../util/map-styles';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, zip, of } from 'rxjs';
+import { takeUntil, map, delay, distinctUntilChanged } from 'rxjs/operators';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCore';
 import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
+import { MyCarsCoreService } from '../../configs/firebaseRef/MyCarsCore';
 
 @Component({
   selector: 'app-transaction-details',
@@ -60,6 +61,7 @@ export class TransactionDetailsAssistancePage implements OnInit {
   userData: any = {};
   shopsDetails: any = {};
   assistanceDetails: any = {};
+  myCars: any[] = [];
   services: AssistanceTypes[] = assistTanceList;
   isLoaded = false;
 
@@ -70,25 +72,31 @@ export class TransactionDetailsAssistancePage implements OnInit {
     private router: Router,
     private googleStorageUser: StoragUserDataService,
     private assistanceSrvc: AppAssistanceCoreService,
-    private shopSrvc: ShopCoreService
+    private shopSrvc: ShopCoreService,
+    private myCarSrvc: MyCarsCoreService,
   ) {
     this.unsubscribeAll = new Subject();
+    const queryParams$ = this.route.queryParams;
+    const onMyCars$ = this.myCarSrvc.onMyCars;
+    zip(queryParams$, onMyCars$)
+      .pipe(takeUntil(this.unsubscribeAll),
+        map(([queryParams$, onMyCars$]) => ({ queryParams$, onMyCars$ })),
+      )
+      .subscribe(({ queryParams$, onMyCars$ }) => {
+        const { isFromMainMenu, id } = queryParams$;
+        this.isFromMainMenu = !!parseInt(isFromMainMenu, 10);
+        if (id) {
+          this.getAssistanceDetails(id);
+          this.myCars = onMyCars$.filter(car => car.insUsed);
+        }
+
+      });
   }
 
   ngOnInit(): void {
     this.googleStorageUser.getObjectGoogleUsers().then((data) => {
       this.userData = data;
     });
-
-    this.route.queryParams
-      .pipe(takeUntil(this.unsubscribeAll))
-      .subscribe((params) => {
-        const { isFromMainMenu, id } = params;
-        this.isFromMainMenu = !!parseInt(isFromMainMenu, 10);
-        if (id) {
-          this.getAssistanceDetails(id);
-        }
-      });
   }
 
   getAssistanceDetails(id = '') {

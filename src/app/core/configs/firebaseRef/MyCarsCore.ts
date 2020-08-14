@@ -15,7 +15,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class MyCarsCoreService {
-  onMyCars: BehaviorSubject<Array<any>>;
+  onMyCars: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   userId: any = '';
   private dbPath = '/newMyCars';
 
@@ -29,7 +29,6 @@ export class MyCarsCoreService {
     public alertController: AlertController
   ) {
     this.userCarsRef = this.db.collection(this.dbPath);
-    this.onMyCars = new BehaviorSubject([]);
     this.googleStorageUser.getObjectGoogleUsers().then((user) => {
       this.userId = user.id;
       this.getmyCars();
