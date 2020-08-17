@@ -11,4 +11,5 @@ export interface GoogleUser {
     idToken: string;
   };
   isLogin?: boolean;
+  idToken?: string;
 }
