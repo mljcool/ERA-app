@@ -40,15 +40,11 @@ export class AuthServiceService {
       if (googleUser && googleUser.authentication.idToken) {
         checkUserExist(googleUser.email).then((response) => {
           if (!response) {
-            saveUser(googleUser).then(() => {
-              this.googleStorageUser.setObjectGoogleUsers(googleUser);
-              this._userIsAuthenticated = true;
-              resolve(true);
-            });
-          } else {
-            this._userIsAuthenticated = true;
-            resolve(true);
+            saveUser(googleUser).then(() =>{});
           }
+          this.googleStorageUser.setObjectGoogleUsers(googleUser);
+          this._userIsAuthenticated = true;
+          resolve(true);
         });
       }
     });

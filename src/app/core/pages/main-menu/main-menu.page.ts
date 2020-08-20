@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PopoverController, ModalController } from '@ionic/angular';
+import { PopoverController, ModalController, AlertController } from '@ionic/angular';
 import { PopoverComponent } from 'src/app/common-ui/PopoverMenu/pop-over-menu.component';
 import { Router, NavigationExtras } from '@angular/router';
 import { AssistanceModalPage } from '../../modals/assistance-modal/assistance-modal.page';
@@ -12,6 +12,7 @@ import { MyCarsCoreService } from '../../configs/firebaseRef/MyCarsCore';
 import { takeUntil, map } from 'rxjs/operators';
 import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCore';
+import { getAccountDetails } from '../../configs/firebaseRef/UserCore';
 
 @Component({
   selector: 'app-main-menu',
@@ -24,7 +25,9 @@ export class MainMenuPage implements OnInit, OnDestroy {
   countCars = 0;
   countTransaction = 0;
   assistanceStatus: boolean = false;
-  userData: any = {};
+  userData: any = {
+    name: '',
+  };
 
   private _unsubscribeAll: Subject<any>;
 
@@ -37,15 +40,32 @@ export class MainMenuPage implements OnInit, OnDestroy {
     private googleStorageUser: StoragUserDataService,
     private myCarSrvc: MyCarsCoreService,
     private shopSrvc: ShopCoreService,
+    public alertController: AlertController
   ) {
     this._unsubscribeAll = new Subject();
+    this.getUserData();
     this.getAllObservalbles();
   }
 
-  ionViewWillEnter() {
+  getUserData() {
     this.googleStorageUser.getObjectGoogleUsers().then((data) => {
-      this.userData = data;
-      console.log(this.userData);
+      getAccountDetails(data.id).onSnapshot((snapshot) => {
+        const userData = snapshot.docs.map((car) => ({
+          key: car.id,
+          ...car.data(),
+        })).find((resp: any) => resp.id === data.id);
+        this.userData = {
+          ...this.userData,
+          ...userData
+        };
+        if (this.userData.isNew) {
+          const contact = setTimeout(() => {
+            this.checkerIsNewUser();
+            clearTimeout(contact);
+          }, 1500);
+        }
+        console.log('userData userData', userData);
+      });
     });
   }
 
@@ -55,15 +75,43 @@ export class MainMenuPage implements OnInit, OnDestroy {
     const onAssistance$ = this.assistanceSrvc.onAssistance;
 
     zip(onAllShops$, onMyCars$, onAssistance$)
-      .pipe(takeUntil(this._unsubscribeAll),
-        map(([onAllShops$, onMyCars$, onAssistance$]) => ({ onAllShops$, onMyCars$, onAssistance$ })),
-      ).subscribe(observers => {
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        map(([onAllShops$, onMyCars$, onAssistance$]) => ({
+          onAllShops$,
+          onMyCars$,
+          onAssistance$,
+        }))
+      )
+      .subscribe((observers) => {
         const { onAllShops$, onMyCars$, onAssistance$ } = observers;
+        console.log('onAllShops$', onAllShops$)
+        console.log('onMyCars$', onMyCars$)
+        console.log('onAssistance$', onAssistance$)
         this.shops = onAllShops$;
         this.countCars = onMyCars$.length;
-        this.assistanceList = onAssistance$.filter(data => data.status === 'PENDING');
+        this.assistanceList = onAssistance$.filter(
+          (data) => data.status === 'PENDING'
+        );
         this.countTransaction = onAssistance$.length;
       });
+  }
+
+  async checkerIsNewUser() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Hi there, ' + this.userData.name,
+      message: 'we highly encourage you to add your contact number and delivery address.',
+      buttons: [{
+        text: 'Okay',
+        handler: () => {
+          console.log('Confirm Okay');
+          this.router.navigate(['/my-account']);
+        }
+      }]
+    });
+
+    await alert.present();
   }
 
   ngOnInit() {
