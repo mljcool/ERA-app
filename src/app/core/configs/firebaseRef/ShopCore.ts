@@ -40,6 +40,12 @@ export class ShopCoreService {
     });
   };
 
+
+  getAllShopsRaw = () => {
+    const shop = firebase.firestore().collection('newShopList').where('status', '==', 'ACCEPTED');
+    return shop;
+  };
+
   getOneShops = (uid) => {
     return firebase.firestore().collection('newShopList').where('uid', '==', uid);
   };

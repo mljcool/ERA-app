@@ -1,5 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PopoverController, ModalController, AlertController } from '@ionic/angular';
+import {
+  PopoverController,
+  ModalController,
+  AlertController,
+} from '@ionic/angular';
 import { PopoverComponent } from 'src/app/common-ui/PopoverMenu/pop-over-menu.component';
 import { Router, NavigationExtras } from '@angular/router';
 import { AssistanceModalPage } from '../../modals/assistance-modal/assistance-modal.page';
@@ -50,13 +54,15 @@ export class MainMenuPage implements OnInit, OnDestroy {
   getUserData() {
     this.googleStorageUser.getObjectGoogleUsers().then((data) => {
       getAccountDetails(data.id).onSnapshot((snapshot) => {
-        const userData = snapshot.docs.map((car) => ({
-          key: car.id,
-          ...car.data(),
-        })).find((resp: any) => resp.id === data.id);
+        const userData = snapshot.docs
+          .map((car) => ({
+            key: car.id,
+            ...car.data(),
+          }))
+          .find((resp: any) => resp.id === data.id);
         this.userData = {
           ...this.userData,
-          ...userData
+          ...userData,
         };
         if (this.userData.isNew) {
           const contact = setTimeout(() => {
@@ -71,44 +77,48 @@ export class MainMenuPage implements OnInit, OnDestroy {
 
   getAllObservalbles() {
     const onMyCars$ = this.myCarSrvc.onMyCars;
-    const onAllShops$ = this.shopSrvc.onAllShops;
     const onAssistance$ = this.assistanceSrvc.onAssistance;
 
-    zip(onAllShops$, onMyCars$, onAssistance$)
+    zip(onMyCars$, onAssistance$)
       .pipe(
         takeUntil(this._unsubscribeAll),
-        map(([onAllShops$, onMyCars$, onAssistance$]) => ({
-          onAllShops$,
+        map(([onMyCars$, onAssistance$]) => ({
           onMyCars$,
           onAssistance$,
         }))
       )
       .subscribe((observers) => {
-        const { onAllShops$, onMyCars$, onAssistance$ } = observers;
-        console.log('onAllShops$', onAllShops$)
-        console.log('onMyCars$', onMyCars$)
-        console.log('onAssistance$', onAssistance$)
-        this.shops = onAllShops$;
+        const { onMyCars$, onAssistance$ } = observers;
         this.countCars = onMyCars$.length;
         this.assistanceList = onAssistance$.filter(
           (data) => data.status === 'PENDING'
         );
         this.countTransaction = onAssistance$.length;
       });
+    this.shopSrvc.getAllShopsRaw().onSnapshot((snapshot) => {
+      const allShop = snapshot.docs.map((shop) => ({
+        key: shop.id,
+        ...shop.data(),
+      }));
+      this.shops = allShop;
+    });
   }
 
   async checkerIsNewUser() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Hi there, ' + this.userData.name,
-      message: 'we highly encourage you to add your contact number and delivery address.',
-      buttons: [{
-        text: 'Okay',
-        handler: () => {
-          console.log('Confirm Okay');
-          this.router.navigate(['/my-account']);
-        }
-      }]
+      message:
+        'we highly encourage you to add your contact number and delivery address.',
+      buttons: [
+        {
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.router.navigate(['/my-account']);
+          },
+        },
+      ],
     });
 
     await alert.present();

@@ -151,6 +151,10 @@ export class MyAccountPage implements OnInit {
 
   }
 
+  addCars(): void {
+    this.router.navigateByUrl('/my-cars');
+  }
+
   onBack(): void {
     this.isUpdate = false;
     this.myMobile = null;
