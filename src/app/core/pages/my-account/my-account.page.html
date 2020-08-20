@@ -61,8 +61,8 @@
       <ion-card-content class="assistance-card-details map-views">
         <div class="assistance-maps">
           <agm-map
-            [latitude]="initMap.latitude"
-            [longitude]="initMap.longitude"
+            [latitude]="userData.address.latitude"
+            [longitude]="userData.address.longitude"
             [zoom]="zoom"
             [disableDefaultUI]="true"
             [zoomControl]="false"
@@ -70,12 +70,12 @@
             [gestureHandling]="'none'"
           >
             <agm-marker
-              [latitude]="userLocation.latitude"
-              [longitude]="userLocation.longitude"
+              [latitude]="userData.address.latitude"
+              [longitude]="userData.address.longitude"
               [iconUrl]="userLocation.iconUrl"
             >
               <agm-info-window>
-                <strong>{{ userLocation.writtenAddress }}</strong>
+                <strong>{{ userData.address.formattedAddres }}</strong>
               </agm-info-window>
             </agm-marker>
           </agm-map>

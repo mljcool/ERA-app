@@ -22,6 +22,11 @@ import { takeUntil } from 'rxjs/operators';
 export class MyAccountPage implements OnInit {
   userData: any = {
     mobileNumber: 'N/A',
+    address: {
+      formattedAddres: '',
+      latitude: 7.045669,
+      longitude: 125.5474302
+    }
   };
 
   lat = 7.05198;
@@ -95,7 +100,13 @@ export class MyAccountPage implements OnInit {
     });
     modal.present();
     modal.onDidDismiss().then(({ data }) => {
-      console.log('Delivery Address', data);
+      const { address } = data;
+      if (data && address) {
+        writeUserData(this.userData.key, address).then(() => {
+          this.presentToast('Address updated!');
+        });
+
+      }
     });
   }
 
