@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  HAMMER_GESTURE_CONFIG,
+} from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -15,12 +18,12 @@ import { AngularFireModule } from '@angular/fire';
 
 import {
   AngularFirestoreModule,
-  FirestoreSettingsToken
+  FirestoreSettingsToken,
 } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import {
   AngularFireDatabaseModule,
-  AngularFireDatabase
+  AngularFireDatabase,
 } from '@angular/fire/database';
 import { CartModalPageModule } from './pages/shopping-cart/cart-modal/cart-modal.module';
 import { BookingTypePageModule } from './modals/booking-type/booking-type.module';
@@ -45,6 +48,7 @@ import { AddCarsPageModule } from './core/modals/add-cars/add-cars.module';
 import { GpsCautionPageModule } from './core/modals/gps-caution/gps-caution.module';
 import { DiscoverMenusPageModule } from './core/modals/discover-menus/discover-menus.module';
 import { OrdersCartModalPageModule } from './core/pages/make-orders/cart-modal/cart-modal.module';
+import { StartRatingPageModule } from './core/modals/star-rating/star-rating.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -78,10 +82,11 @@ import { OrdersCartModalPageModule } from './core/pages/make-orders/cart-modal/c
     GpsCautionPageModule,
     DiscoverMenusPageModule,
     OrdersCartModalPageModule,
+    StartRatingPageModule,
     //END NEW MODALS
 
     //SharedServices
-    ServicesSharedModule.forRoot()
+    ServicesSharedModule.forRoot(),
   ],
   providers: [
     StatusBar,
@@ -89,8 +94,8 @@ import { OrdersCartModalPageModule } from './core/pages/make-orders/cart-modal/c
     AngularFireDatabase,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: FirestoreSettingsToken, useValue: {} },
-    { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig }
+    { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

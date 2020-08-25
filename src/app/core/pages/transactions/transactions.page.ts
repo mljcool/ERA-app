@@ -1,7 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { AddCarsPage } from '../../modals/add-cars/add-cars.page';
-import { ModalController, PopoverController, ActionSheetController } from '@ionic/angular';
+import {
+  ModalController,
+  PopoverController,
+  ActionSheetController,
+} from '@ionic/angular';
 import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCore';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -40,7 +44,7 @@ export class TransactionsPage implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     public popoverController: PopoverController,
     public actionSheetController: ActionSheetController,
-    private assistanceSrvc: AppAssistanceCoreService,
+    private assistanceSrvc: AppAssistanceCoreService
   ) {
     this.populateTransactions();
     this._unsubscribeAll = new Subject();
@@ -48,16 +52,19 @@ export class TransactionsPage implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((assistanceList) => {
         console.log('assistanceList', assistanceList);
-        this.assistanceListPending = assistanceList.filter(data => data.status === 'PENDING').map(datas => {
-          datas.assistanceName = this.findServiceType(datas.assistanceTypeId);
-          return datas;
-        });
+        const statuses = ['PENDING', 'IN-PROGRESS'];
+        this.assistanceListPending = assistanceList
+          .filter((data) => statuses.includes(data.status))
+          .map((datas) => {
+            datas.assistanceName = this.findServiceType(datas.assistanceTypeId);
+            return datas;
+          });
       });
   }
 
   findServiceType(ids): string {
-    const srvcType = this.services.find(srvc => srvc.id === ids).label;
-    return srvcType
+    const srvcType = this.services.find((srvc) => srvc.id === ids).label;
+    return srvcType;
   }
 
   ngOnInit(): void {
@@ -127,7 +134,10 @@ export class TransactionsPage implements OnInit, OnDestroy {
       this.onOrders(transDetails);
       return;
     }
-    this.router.navigate([`/transaction-details-${navigate}`], navigationExtras);
+    this.router.navigate(
+      [`/transaction-details-${navigate}`],
+      navigationExtras
+    );
   }
 
   onViewAssistanceDetails(transDetails): void {
@@ -147,7 +157,10 @@ export class TransactionsPage implements OnInit, OnDestroy {
         isViewOnly: 1,
       },
     };
-    this.router.navigate(['/appoinment-details/app-schedule'], navigationExtras);
+    this.router.navigate(
+      ['/appoinment-details/app-schedule'],
+      navigationExtras
+    );
   }
   onOrders(transDetails: any) {
     const navigationExtras: NavigationExtras = {
@@ -158,7 +171,6 @@ export class TransactionsPage implements OnInit, OnDestroy {
     };
     this.router.navigate(['/order-summary'], navigationExtras);
   }
-
 
   async addCar() {
     const modal = await this.modalCtrl.create({
@@ -171,27 +183,30 @@ export class TransactionsPage implements OnInit, OnDestroy {
     const actionSheet = await this.actionSheetController.create({
       header: 'Show only',
       cssClass: 'my-custom-class',
-      buttons: [{
-        text: 'Orders',
-        icon: 'cart',
-        handler: () => {
-          console.log('Delete clicked');
-        }
-      }, {
-        text: 'Appointments',
-        icon: 'calendar',
-        handler: () => {
-          console.log('Share clicked');
-        }
-      }, {
-        text: 'Assistance',
-        icon: 'car',
-        handler: () => {
-          console.log('Play clicked');
-        }
-      }]
+      buttons: [
+        {
+          text: 'Orders',
+          icon: 'cart',
+          handler: () => {
+            console.log('Delete clicked');
+          },
+        },
+        {
+          text: 'Appointments',
+          icon: 'calendar',
+          handler: () => {
+            console.log('Share clicked');
+          },
+        },
+        {
+          text: 'Assistance',
+          icon: 'car',
+          handler: () => {
+            console.log('Play clicked');
+          },
+        },
+      ],
     });
     await actionSheet.present();
   }
-
 }

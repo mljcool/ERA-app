@@ -10,6 +10,7 @@ import { TransactionDetailsAssistancePage } from './transaction-details-assistan
 import { AgmOverlays } from 'agm-overlays';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
+import { IonicRatingModule } from 'ionic-rating';
 
 @NgModule({
   imports: [
@@ -20,10 +21,11 @@ import { AgmDirectionModule } from 'agm-direction';
     AgmOverlays,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCM9feJhmKCUUsDv9zg6dQcYeAHEAHwM08',
-      libraries: ['geometry', 'places']
+      libraries: ['geometry', 'places'],
     }),
-    AgmDirectionModule
+    AgmDirectionModule,
+    IonicRatingModule,
   ],
-  declarations: [TransactionDetailsAssistancePage]
+  declarations: [TransactionDetailsAssistancePage],
 })
-export class TransactionDetailsAssistancePageModule { }
+export class TransactionDetailsAssistancePageModule {}

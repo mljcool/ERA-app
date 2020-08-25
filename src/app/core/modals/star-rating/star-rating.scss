@@ -1,0 +1,19 @@
+:host {
+  .ratings-content {
+    display: block;
+    width: 100%;
+    text-align: center;
+    .button-inner {
+      font-size: 25px !important;
+    }
+    text-area {
+      border: grey solid 1px !important;
+      border-radius: 4px;
+    }
+    .button {
+      ion-button {
+        width: 80% !important;
+      }
+    }
+  }
+}

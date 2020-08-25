@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () =>
-      import('./pages/auth/auth.module').then(m => m.AuthPageModule),
+      import('./pages/auth/auth.module').then((m) => m.AuthPageModule),
   },
   // {
   //   path: 'side-bar',
@@ -17,147 +17,244 @@ const routes: Routes = [
   // },
   {
     path: 'booking-type',
-    loadChildren: () => import('./modals/booking-type/booking-type.module').then(m => m.BookingTypePageModule)
+    loadChildren: () =>
+      import('./modals/booking-type/booking-type.module').then(
+        (m) => m.BookingTypePageModule
+      ),
   },
   {
     path: 'booking-form',
-    loadChildren: () => import('./pages/bookings/modal/booking-form/booking-form.module').then(m => m.BookingFormPageModule)
+    loadChildren: () =>
+      import('./pages/bookings/modal/booking-form/booking-form.module').then(
+        (m) => m.BookingFormPageModule
+      ),
   },
   {
     path: 'loction-picker',
-    loadChildren: () => import('./modals/loction-picker/loction-picker.module').then(m => m.LoctionPickerPageModule)
+    loadChildren: () =>
+      import('./modals/loction-picker/loction-picker.module').then(
+        (m) => m.LoctionPickerPageModule
+      ),
   },
   {
     path: 'set-contact-info',
-    loadChildren: () => import('./modals/set-contact-info/set-contact-info.module').then(m => m.SetContactInfoPageModule)
+    loadChildren: () =>
+      import('./modals/set-contact-info/set-contact-info.module').then(
+        (m) => m.SetContactInfoPageModule
+      ),
   },
   {
     path: 'contact-info',
-    loadChildren: () => import('./modals/contact-info/contact-info.module').then(m => m.ContactInfoPageModule)
+    loadChildren: () =>
+      import('./modals/contact-info/contact-info.module').then(
+        (m) => m.ContactInfoPageModule
+      ),
   },
   {
     path: 'add-vehicles',
-    loadChildren: () => import('./modals/add-vehicles/add-vehicles.module').then(m => m.AddVehiclesPageModule)
+    loadChildren: () =>
+      import('./modals/add-vehicles/add-vehicles.module').then(
+        (m) => m.AddVehiclesPageModule
+      ),
   },
   {
     path: 'view-vehicles',
-    loadChildren: () => import('./modals/view-vehicles/view-vehicles.module').then(m => m.ViewVehiclesPageModule)
+    loadChildren: () =>
+      import('./modals/view-vehicles/view-vehicles.module').then(
+        (m) => m.ViewVehiclesPageModule
+      ),
   },
   {
     path: 'pick-vehicle',
-    loadChildren: () => import('./modals/pick-vehicle/pick-vehicle.module').then(m => m.PickVehiclePageModule)
+    loadChildren: () =>
+      import('./modals/pick-vehicle/pick-vehicle.module').then(
+        (m) => m.PickVehiclePageModule
+      ),
   },
   {
     path: 'main-menu',
-    loadChildren: () => import('./core/pages/main-menu/main-menu.module').then(m => m.MainMenuPageModule),
-    canLoad: [AuthGuard]
+    loadChildren: () =>
+      import('./core/pages/main-menu/main-menu.module').then(
+        (m) => m.MainMenuPageModule
+      ),
+    canLoad: [AuthGuard],
   },
   {
     path: 'assistance',
-    loadChildren: () => import('./core/pages/assistance/assistance.module').then(m => m.AssistancePageModule)
+    loadChildren: () =>
+      import('./core/pages/assistance/assistance.module').then(
+        (m) => m.AssistancePageModule
+      ),
   },
   {
     path: 'assistance-modal',
-    loadChildren: () => import('./core/modals/assistance-modal/assistance-modal.module').then(m => m.AssistanceModalPageModule)
+    loadChildren: () =>
+      import('./core/modals/assistance-modal/assistance-modal.module').then(
+        (m) => m.AssistanceModalPageModule
+      ),
   },
   {
     path: 'gmap-options',
-    loadChildren: () => import('./core/modals/gmap-options/gmap-options.module').then(m => m.GmapOptionsPageModule)
+    loadChildren: () =>
+      import('./core/modals/gmap-options/gmap-options.module').then(
+        (m) => m.GmapOptionsPageModule
+      ),
   },
   {
     path: 'assistance-map-menus',
-    loadChildren: () => import('./core/modals/assistance-map-menus/assistance-map-menus.module').then(m => m.AssistanceMapMenusPageModule)
+    loadChildren: () =>
+      import(
+        './core/modals/assistance-map-menus/assistance-map-menus.module'
+      ).then((m) => m.AssistanceMapMenusPageModule),
   },
   {
     path: 'assistance-summaries',
-    loadChildren: () => import('./core/modals/assistance-summaries/assistance-summaries.module').then(m => m.AssistanceSummariesPageModule)
+    loadChildren: () =>
+      import(
+        './core/modals/assistance-summaries/assistance-summaries.module'
+      ).then((m) => m.AssistanceSummariesPageModule),
   },
   {
     path: 'assistance-waiting',
-    loadChildren: () => import('./core/modals/assistance-waiting/assistance-waiting.module').then(m => m.AssistanceWaitingPageModule)
+    loadChildren: () =>
+      import('./core/modals/assistance-waiting/assistance-waiting.module').then(
+        (m) => m.AssistanceWaitingPageModule
+      ),
   },
   {
     path: 'working-progress',
-    loadChildren: () => import('./core/modals/working-progress/working-progress.module').then(m => m.WorkingProgressPageModule)
+    loadChildren: () =>
+      import('./core/modals/working-progress/working-progress.module').then(
+        (m) => m.WorkingProgressPageModule
+      ),
   },
   {
+    path: 'start-rating',
+    loadChildren: () =>
+      import('./core/modals/star-rating/star-rating.module').then(
+        (m) => m.StartRatingPageModule
+      ),
+  },
+
+  {
     path: 'my-cars',
-    loadChildren: () => import('./core/pages/my-cars/my-cars.module').then(m => m.MyCarsPageModule)
+    loadChildren: () =>
+      import('./core/pages/my-cars/my-cars.module').then(
+        (m) => m.MyCarsPageModule
+      ),
   },
   {
     path: 'add-cars',
-    loadChildren: () => import('./core/modals/add-cars/add-cars.module').then(m => m.AddCarsPageModule)
+    loadChildren: () =>
+      import('./core/modals/add-cars/add-cars.module').then(
+        (m) => m.AddCarsPageModule
+      ),
   },
   {
     path: 'discover-shops',
-    loadChildren: () => import('./core/pages/discover-shops/discover-shops.module').then(m => m.DiscoverShopsPageModule)
+    loadChildren: () =>
+      import('./core/pages/discover-shops/discover-shops.module').then(
+        (m) => m.DiscoverShopsPageModule
+      ),
   },
   {
     path: 'transactions',
-    loadChildren: () => import('./core/pages/transactions/transactions.module').then(m => m.TransactionsPageModule)
+    loadChildren: () =>
+      import('./core/pages/transactions/transactions.module').then(
+        (m) => m.TransactionsPageModule
+      ),
   },
   {
     path: 'gps-caution',
-    loadChildren: () => import('./core/modals/gps-caution/gps-caution.module').then(m => m.GpsCautionPageModule)
+    loadChildren: () =>
+      import('./core/modals/gps-caution/gps-caution.module').then(
+        (m) => m.GpsCautionPageModule
+      ),
   },
   {
     path: 'transaction-details-assistance',
-    loadChildren: () => import('./core/pages/transaction-details-assistance/transaction-details-assistance.module').then(m => m.TransactionDetailsAssistancePageModule)
+    loadChildren: () =>
+      import(
+        './core/pages/transaction-details-assistance/transaction-details-assistance.module'
+      ).then((m) => m.TransactionDetailsAssistancePageModule),
   },
   {
     path: 'transaction-details-orders',
-    loadChildren: () => import('./core/pages/transaction-details-orders/transaction-details-order.module').then(m => m.TransactionDetailsOrderPageModule)
+    loadChildren: () =>
+      import(
+        './core/pages/transaction-details-orders/transaction-details-order.module'
+      ).then((m) => m.TransactionDetailsOrderPageModule),
   },
   {
     path: 'transaction-details-booking',
-    loadChildren: () => import('./core/pages/transaction-details-booking/transaction-details-booking.module').then(m => m.TransactionDetailsBookingPageModule)
+    loadChildren: () =>
+      import(
+        './core/pages/transaction-details-booking/transaction-details-booking.module'
+      ).then((m) => m.TransactionDetailsBookingPageModule),
   },
   {
     path: 'discover-menus',
-    loadChildren: () => import('./core/modals/discover-menus/discover-menus.module').then(m => m.DiscoverMenusPageModule)
+    loadChildren: () =>
+      import('./core/modals/discover-menus/discover-menus.module').then(
+        (m) => m.DiscoverMenusPageModule
+      ),
   },
   {
     path: 'make-orders',
-    loadChildren: () => import('./core/pages/make-orders/make-orders.module').then(m => m.MakeOrdersPageModule)
+    loadChildren: () =>
+      import('./core/pages/make-orders/make-orders.module').then(
+        (m) => m.MakeOrdersPageModule
+      ),
   },
   {
     path: 'make-appointment',
-    loadChildren: () => import('./core/pages/make-appointment/make-appointment.module').then(m => m.MakeAppointmentPageModule)
+    loadChildren: () =>
+      import('./core/pages/make-appointment/make-appointment.module').then(
+        (m) => m.MakeAppointmentPageModule
+      ),
   },
   {
     path: 'cart-modal',
-    loadChildren: () => import('./core/pages/make-orders/cart-modal/cart-modal.module').then(m => m.OrdersCartModalPageModule)
+    loadChildren: () =>
+      import('./core/pages/make-orders/cart-modal/cart-modal.module').then(
+        (m) => m.OrdersCartModalPageModule
+      ),
   },
   {
     path: 'order-summary',
-    loadChildren: () => import('./core/pages/make-orders/order-summary/order-summary.module').then(m => m.OrderSummaryPageModule)
+    loadChildren: () =>
+      import(
+        './core/pages/make-orders/order-summary/order-summary.module'
+      ).then((m) => m.OrderSummaryPageModule),
   },
 
   {
     path: 'appoinment-details',
-    loadChildren: () => import('./core/pages/make-appointment/appointment-details/appointment-details.module').then(m => m.AppointmentDetailsPageModule)
+    loadChildren: () =>
+      import(
+        './core/pages/make-appointment/appointment-details/appointment-details.module'
+      ).then((m) => m.AppointmentDetailsPageModule),
   },
   {
     path: 'my-account',
-    loadChildren: () => import('./core/pages/my-account/my-account.module').then(m => m.MyAccountPageModule)
+    loadChildren: () =>
+      import('./core/pages/my-account/my-account.module').then(
+        (m) => m.MyAccountPageModule
+      ),
   },
   {
     path: 'shop-details',
-    loadChildren: () => import('./core/pages/shop-details/shop-details.module').then(m => m.ShopDetailsPageModule)
-  }
-
-
-
-
-
-
-
+    loadChildren: () =>
+      import('./core/pages/shop-details/shop-details.module').then(
+        (m) => m.ShopDetailsPageModule
+      ),
+  },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

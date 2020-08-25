@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>How was our service?</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ratings-content">
+    <ion-rating [rate]="rate" size="large" (rateChange)="onRateChange($event)">
+    </ion-rating>
+    <ion-item lines="none">
+      <ion-label position="stacked">Comments</ion-label>
+      <ion-textarea
+        [(ngModel)]="comments"
+        placeholder="Enter your comments here...  "
+      ></ion-textarea>
+    </ion-item>
+  </div>
+  <div class="button">
+    <ion-button expand="full" (click)="submitRatings()">Submit</ion-button>
+  </div>
+</ion-content>

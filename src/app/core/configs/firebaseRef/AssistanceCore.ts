@@ -21,7 +21,7 @@ export class AppAssistanceCoreService {
   constructor(
     private db: AngularFirestore,
     public toastController: ToastController,
-    private googleStorageUser: StoragUserDataService,
+    private googleStorageUser: StoragUserDataService
   ) {
     this.assintanceRef = this.db.collection(this.dbPath);
     this.onAssistance = new BehaviorSubject([]);
@@ -46,7 +46,7 @@ export class AppAssistanceCoreService {
         this.assintanceRef.add(data).then(() => {
           resolve({
             isSuccess: true,
-            Data: data
+            Data: data,
           });
         });
       } else {
@@ -70,7 +70,23 @@ export class AppAssistanceCoreService {
   };
 
   getOneAssistance = (assistanceUId) => {
-    return firebase.firestore().collection('newAssistance').where('assistanceUId', '==', assistanceUId);
+    return firebase
+      .firestore()
+      .collection('newAssistance')
+      .where('assistanceUId', '==', assistanceUId);
   };
 
+  getMechanicDetails(id: string) {
+    return firebase
+      .firestore()
+      .collection('newShopMechanics')
+      .where('id', '==', id);
+  }
+
+  getMyCar(userId: string) {
+    return firebase
+      .firestore()
+      .collection('newMyCars')
+      .where('userId', '==', userId);
+  }
 }
