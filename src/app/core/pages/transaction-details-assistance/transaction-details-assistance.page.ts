@@ -10,8 +10,9 @@ import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCo
 import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 import { MyCarsCoreService } from '../../configs/firebaseRef/MyCarsCore';
 import { minsToHrs } from './util';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { StarRatingModalPage } from '../../modals/star-rating/star-rating';
+import { getTotalRatingByShop } from '../../configs/firebaseRef/RatingsCore';
 
 @Component({
   selector: 'app-transaction-details',
@@ -70,6 +71,7 @@ export class TransactionDetailsAssistancePage implements OnInit {
   services: AssistanceTypes[] = assistTanceList;
   isLoaded = false;
   time: any = '00:00';
+  rate: any = 0;
 
   private unsubscribeAll: Subject<any>;
 
@@ -80,7 +82,8 @@ export class TransactionDetailsAssistancePage implements OnInit {
     private assistanceSrvc: AppAssistanceCoreService,
     private shopSrvc: ShopCoreService,
     private myCarSrvc: MyCarsCoreService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    public alertController: AlertController
   ) {
     this.unsubscribeAll = new Subject();
     const queryParams$ = this.route.queryParams;
@@ -124,11 +127,18 @@ export class TransactionDetailsAssistancePage implements OnInit {
           timeValue,
         } = assistanceDetails[0];
         console.log('assistanceDetails', assistanceDetails);
-
         clearInterval(this.intervalHandle);
+        this.getShopRating(shopId);
         this.runningTime({ timeType, timeValue });
         this.getMechanicDetails();
       }
+    });
+  }
+
+  getShopRating(shopId) {
+    getTotalRatingByShop(shopId).then((rate) => {
+      console.log('totalRate', rate);
+      this.rate = rate;
     });
   }
 
@@ -263,18 +273,56 @@ export class TransactionDetailsAssistancePage implements OnInit {
   }
 
   doneService() {
-    this.onOpenStarRatingModal();
+    this.presentAlert();
   }
 
-  async onOpenStarRatingModal(isFromMenu = false) {
+  async onOpenStarRatingModal() {
+    const { shopId, assistanceUId } = this.assistanceDetails;
     const modal = await this.modalCtrl.create({
       component: StarRatingModalPage,
       cssClass: 'rating-modal',
       componentProps: {
-        isFromMenu,
+        details: {
+          shopId,
+          transactionId: assistanceUId,
+          type: 'ASSITANCE',
+        },
       },
     });
-    modal.onWillDismiss().then(({ data }) => {});
+    modal.onWillDismiss().then(({ data }) => {
+      if (data) {
+        const { key } = this.assistanceDetails;
+        this.assistanceSrvc.addRatings(key, data.data).then(() => {});
+        this.router.navigate(['/main-menu']);
+      } else {
+        this.router.navigate(['/main-menu']);
+      }
+    });
     await modal.present();
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Hey ' + this.userData.name,
+      message: 'How things are going?',
+      buttons: [
+        {
+          text: 'All Good and done',
+          handler: () => {
+            const timer = setTimeout(() => {
+              const { key } = this.assistanceDetails;
+              this.assistanceSrvc.updateDoneService(key).then(() => {
+                this.onOpenStarRatingModal();
+              });
+
+              clearTimeout(timer);
+            }, 500);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

@@ -5,7 +5,10 @@
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="end" *ngIf=" assistanceDetails.timeValue === '0' ">
+    <ion-buttons
+      slot="end"
+      *ngIf=" assistanceDetails.timeValue === '0' && assistanceDetails.status !== 'DONE' "
+    >
       <ion-button (click)="doneService()">
         <ion-icon slot="start" name="checkmark"></ion-icon>
       </ion-button>
@@ -160,11 +163,8 @@
                   <span class="shope-name">{{ shopsDetails.name}}</span>
                 </ion-label>
                 <span class="ratings-icons">
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
+                  <ion-rating [rate]="rate" size="small" readonnly="true">
+                  </ion-rating>
                 </span>
               </div>
               <div class="shop-content">

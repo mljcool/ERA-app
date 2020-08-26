@@ -89,4 +89,20 @@ export class AppAssistanceCoreService {
       .collection('newMyCars')
       .where('userId', '==', userId);
   }
+
+  updateDoneService(docId: string) {
+    return firebase
+      .firestore()
+      .collection('newAssistance')
+      .doc(docId)
+      .update({ status: 'DONE' });
+  }
+
+  addRatings(docId: string, data) {
+    return firebase
+      .firestore()
+      .collection('newAssistance')
+      .doc(docId)
+      .update({ ...data });
+  }
 }
