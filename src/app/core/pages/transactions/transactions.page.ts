@@ -35,7 +35,7 @@ export class TransactionsPage implements OnInit, OnDestroy {
   clearTimeOut: any = null;
   iconType: string[] = ['', 'cart', 'calendar', 'map'];
   nameType: string[] = ['', 'Orders', 'Booking', 'Assistance'];
-
+  pastTransactions: any[] = [];
   services: AssistanceTypes[] = assistTanceList;
 
   private _unsubscribeAll: Subject<any>;
@@ -51,8 +51,16 @@ export class TransactionsPage implements OnInit, OnDestroy {
     this.assistanceSrvc.onAssistance
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((assistanceList) => {
-        console.log('assistanceList', assistanceList);
         const statuses = ['PENDING', 'IN-PROGRESS'];
+        const statusesDone = ['DONE'];
+        this.pastTransactions = assistanceList
+          .filter((data) => statusesDone.includes(data.status))
+          .map((datas) => {
+            datas.assistanceName = this.findServiceType(datas.assistanceTypeId);
+            return datas;
+          });
+        console.log('pastTransactions', this.pastTransactions);
+
         this.assistanceListPending = assistanceList
           .filter((data) => statuses.includes(data.status))
           .map((datas) => {
@@ -76,6 +84,14 @@ export class TransactionsPage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearTimeout(this.clearTimeOut);
+  }
+
+  getIcon(type) {
+    let icon = 'car';
+    if (type === 'ASSITANCE') {
+      icon = 'map';
+    }
+    return icon;
   }
 
   randomIntFromInterval = (min, max) => {

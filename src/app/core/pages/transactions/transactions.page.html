@@ -63,24 +63,26 @@
       <ion-label>Past Transaction</ion-label>
     </ion-list-header>
 
-    <ion-item *ngFor="let trans of myTransactions; let index = i">
+    <ion-item *ngFor="let trans of pastTransactions; let index = i">
       <ion-card
         (click)="onViewDetails(trans)"
         class="ion-activatable ripple-parent"
       >
         <ion-item>
           <ion-icon [name]="'checkbox'"></ion-icon>
-          <ion-label class="label-custom">{{ trans.tName }}</ion-label>
+          <ion-label class="label-custom">{{ trans.type }}</ion-label>
           <ion-button slot="end" color="success" fill="outline">
-            <ion-icon slot="start" [name]="iconType[trans.tType]"></ion-icon>
-            <ion-label>{{ nameType[trans.tType]}}</ion-label>
+            <ion-icon slot="start" [name]="getIcon(trans.type)"></ion-icon>
+            <ion-label>{{ trans.status}}</ion-label>
           </ion-button>
         </ion-item>
         <ion-card-content>
-          {{ trans.description }}
+          {{ trans.assistanceName }}
         </ion-card-content>
         <ion-item>
-          <span class="shop-status">{{ trans.dateTransaction}}</span>
+          <span class="shop-status"
+            >{{ trans.dateCreated.toDate() | date: 'dd MMM hh:mm'}}</span
+          >
         </ion-item>
         <ion-ripple-effect></ion-ripple-effect>
       </ion-card>
