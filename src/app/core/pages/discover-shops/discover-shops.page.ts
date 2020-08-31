@@ -5,6 +5,7 @@ import { DiscoverMenusPage } from '../../modals/discover-menus/discover-menus.pa
 import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { getTotalRatingByShop } from '../../configs/firebaseRef/RatingsCore';
 
 export interface ICars {
   id: number;
@@ -40,20 +41,43 @@ export class DiscoverShopsPage implements OnInit, OnDestroy {
     this.shopSrvc.onAllShops
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((shops) => {
-        this.allShops = shops;
-        this.copyShops = shops;
+        this.addStarRatings(shops);
         this.clearTimeOut = setTimeout(() => {
           this.isLoading = false;
         }, 1500);
       });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
     clearTimeout(this.clearTimeOut);
+  }
+
+  addStarRatings(shops) {
+    this.allShops = shops.map((shop: any) => {
+      shop.ratings = 'ratings...';
+      return shop;
+    });
+    const timeOut = setTimeout(() => {
+      this.allShops = shops.map((shop: any) => {
+        getTotalRatingByShop(shop.uid).then((rate: any) => {
+          shop.ratings = isNaN(rate) ? '0' : parseInt(rate);
+          console.log('allShopRate', shop.ratings);
+        });
+        return shop;
+      });
+      this.copyShops = shops.map((shop: any) => {
+        getTotalRatingByShop(shop.uid).then((rate: any) => {
+          shop.ratings = isNaN(rate) ? '0' : parseInt(rate);
+          console.log('allShopRate', shop.ratings);
+        });
+        return shop;
+      });
+      clearTimeout(timeOut);
+    }, 500);
   }
 
   setFilteredItems(search: string = ''): void {
