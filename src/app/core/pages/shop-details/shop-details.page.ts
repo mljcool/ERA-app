@@ -6,6 +6,7 @@ import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { shopDefault } from './shop-details.model';
+import { getTotalRatingByShop } from '../../configs/firebaseRef/RatingsCore';
 
 @Component({
   selector: 'app-shop-details',
@@ -52,7 +53,7 @@ export class ShopDetailsPage implements OnInit {
       });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next();
@@ -63,7 +64,16 @@ export class ShopDetailsPage implements OnInit {
     this.shopSrvc.onAllShops
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((shops) => {
-        this.shopsDetails = shops.find((shop) => shop.uid === shopId);
+        const shopsData = shops.find((shop) => shop.uid === shopId);
+        this.shopsDetails = { ...this.shopsDetails, ...shopsData };
+        this.shopsDetails.ratings = 'Loading';
+        const timeOut = setTimeout(() => {
+          getTotalRatingByShop(this.shopsDetails.uid).then((rate: any) => {
+            this.shopsDetails.ratings = isNaN(rate) ? '0' : parseInt(rate);
+            console.log('this.shopsDetails.ratings', this.shopsDetails.ratings);
+          });
+          clearTimeout(timeOut);
+        }, 500);
         console.log(this.shopsDetails);
       });
   }

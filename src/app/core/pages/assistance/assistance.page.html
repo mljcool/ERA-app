@@ -42,10 +42,7 @@
             </small>
             <span class="ratings-icons">
               <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
+              <span class="rate-label">({{ item.ratings}}/5)</span>
             </span>
           </div>
 
@@ -69,7 +66,11 @@
           </div>
           <div class="shop-rating">
             <div class="navigation">
-              <ion-button size="small" expand="block">
+              <ion-button
+                (click)="onNavigate(item)"
+                size="small"
+                expand="block"
+              >
                 Directions
                 <ion-icon slot="end" name="navigate"></ion-icon>
               </ion-button>

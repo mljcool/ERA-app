@@ -17,6 +17,8 @@ import { takeUntil, map } from 'rxjs/operators';
 import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCore';
 import { getAccountDetails } from '../../configs/firebaseRef/UserCore';
+import { getTotalRatingByShop } from '../../configs/firebaseRef/RatingsCore';
+import { parse } from 'querystring';
 
 @Component({
   selector: 'app-main-menu',
@@ -100,7 +102,20 @@ export class MainMenuPage implements OnInit, OnDestroy {
         key: shop.id,
         ...shop.data(),
       }));
-      this.shops = allShop;
+      this.shops = allShop.map((shop: any) => {
+        shop.ratings = 'ratings...';
+        return shop;
+      });
+      const timeOut = setTimeout(() => {
+        this.shops = allShop.map((shop: any) => {
+          getTotalRatingByShop(shop.uid).then((rate: any) => {
+            shop.ratings = isNaN(rate) ? '0' : parseInt(rate);
+            console.log('allShopRate', shop.ratings);
+          });
+          return shop;
+        });
+        clearTimeout(timeOut);
+      }, 500);
     });
   }
 

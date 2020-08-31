@@ -12,9 +12,10 @@ export const shopDefault = {
   shopLocation: {},
   status: '',
   uid: '',
+  ratings: '0',
   dateCreated: {
     toDate: () => {
-      return new Date()
-    }
+      return new Date();
+    },
   },
-}
+};

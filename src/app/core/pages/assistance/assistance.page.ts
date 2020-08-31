@@ -23,6 +23,7 @@ import { MapsAPILoader } from '@agm/core';
 import { AssistanceSummariesPage } from '../../modals/assistance-summaries/assistance-summaries.page';
 import { GpsCautionPage } from '../../modals/gps-caution/gps-caution.page';
 import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
+import { getTotalRatingByShop } from '../../configs/firebaseRef/RatingsCore';
 const { Geolocation } = Plugins;
 @Component({
   selector: 'app-assistance',
@@ -101,6 +102,20 @@ export class AssistancePage implements OnInit {
           return shop;
         });
         this.itemsShopAll = this.itemsShop;
+        this.itemsShop = shops.map((shop: any) => {
+          shop.ratings = 'ratings...';
+          return shop;
+        });
+        const timeOut = setTimeout(() => {
+          this.itemsShop = shops.map((shop: any) => {
+            getTotalRatingByShop(shop.uid).then((rate: any) => {
+              shop.ratings = isNaN(rate) ? '0' : parseInt(rate);
+              console.log('allShopRate', shop.ratings);
+            });
+            return shop;
+          });
+          clearTimeout(timeOut);
+        }, 500);
       });
   }
 
@@ -115,7 +130,7 @@ export class AssistancePage implements OnInit {
     this.unsubscribeAll.complete();
   }
 
-  getCurrentPosition(): void { }
+  getCurrentPosition(): void {}
 
   async onViewMapThemes() {
     const modal = await this.modalCtrl.create({
@@ -213,8 +228,10 @@ export class AssistancePage implements OnInit {
         this.getNearest = nearestRoute;
         this.origin = { lat: latitude, lng: longitude };
         this.destination = {
-          lat: (nearestRoute || { shopLocation: { latitude: null } }).shopLocation.latitude,
-          lng: (nearestRoute || { shopLocation: { longitude: null } }).shopLocation.longitude,
+          lat: (nearestRoute || { shopLocation: { latitude: null } })
+            .shopLocation.latitude,
+          lng: (nearestRoute || { shopLocation: { longitude: null } })
+            .shopLocation.longitude,
         };
 
         calculateDistanceNearest(this.origin, this.destination).then(
@@ -266,10 +283,22 @@ export class AssistancePage implements OnInit {
       component: GpsCautionPage,
       cssClass: 'gps-modal',
       componentProps: {
-        isFromMenu
-      }
+        isFromMenu,
+      },
     });
-    modal.onWillDismiss().then(({ data }) => { });
+    modal.onWillDismiss().then(({ data }) => {});
     await modal.present();
+  }
+
+  onNavigate(shopDetails) {
+    console.log('onNavigate', shopDetails);
+    console.log('this.destination', this.destination);
+    const { latitude, longitude } = shopDetails.shopLocation;
+    console.log('this.latitude', latitude);
+    console.log('this.longitude', longitude);
+    this.destination = {
+      lat: latitude,
+      lng: longitude,
+    };
   }
 }

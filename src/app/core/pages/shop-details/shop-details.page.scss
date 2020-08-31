@@ -1,6 +1,9 @@
 :host {
   .ratings-icons {
     color: #f4a34f;
+    .rate-label {
+      color: #777777 !important;
+    }
   }
   agm-map {
     height: 40vh;

@@ -9,6 +9,8 @@ import { MainMenuPageRoutingModule } from './main-menu-routing.module';
 import { MainMenuPage } from './main-menu.page';
 import { PopoverComponent } from 'src/app/common-ui/PopoverMenu/pop-over-menu.component';
 import { ServicesSharedModule } from '../../global/SharedSerivces';
+import { StarRatingComponent } from '../../components/star-ratinng/star-rating';
+import { IonicRatingModule } from 'ionic-rating';
 
 @NgModule({
   imports: [
@@ -16,11 +18,10 @@ import { ServicesSharedModule } from '../../global/SharedSerivces';
     FormsModule,
     IonicModule,
     MainMenuPageRoutingModule,
-    ServicesSharedModule.forRoot()
+    ServicesSharedModule.forRoot(),
+    IonicRatingModule,
   ],
-  declarations: [MainMenuPage, PopoverComponent],
-  entryComponents: [
-    PopoverComponent
-  ]
+  declarations: [MainMenuPage, PopoverComponent, StarRatingComponent],
+  entryComponents: [PopoverComponent],
 })
-export class MainMenuPageModule { }
+export class MainMenuPageModule {}
