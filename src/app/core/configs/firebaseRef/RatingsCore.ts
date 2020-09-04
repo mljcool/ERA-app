@@ -67,3 +67,10 @@ export const getTotalRatingByShop = (shopId: string) => {
     });
   });
 };
+
+export const getReviews = (shopId: string) => {
+  return firebase
+    .firestore()
+    .collection('newRatings')
+    .where('shopId', '==', shopId);
+};

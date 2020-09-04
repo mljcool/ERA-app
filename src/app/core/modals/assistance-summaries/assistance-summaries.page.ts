@@ -6,6 +6,7 @@ import { AssistanceWaitingPage } from '../assistance-waiting/assistance-waiting.
 import { AssistanceCoreServices } from '../../global/Services/AssistanceCore.service';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { AppAssistanceCoreService } from '../../configs/firebaseRef/AssistanceCore';
+import { getTotalRatingByShop } from '../../configs/firebaseRef/RatingsCore';
 
 @Component({
   selector: 'app-assistance-summaries',
@@ -27,17 +28,23 @@ export class AssistanceSummariesPage implements OnInit {
     public modaCtrl: ModalController,
     private router: Router,
     private googleStorageUser: StoragUserDataService,
-    private assistanceSrvc: AppAssistanceCoreService,
+    private assistanceSrvc: AppAssistanceCoreService
   ) {
-
-    const { shopDetail, serviceTypeParam, canUpdate, getApproximate, userLocation } = this.navParams.get(
-      'assistanceDetails'
-    );
+    const {
+      shopDetail,
+      serviceTypeParam,
+      canUpdate,
+      getApproximate,
+      userLocation,
+    } = this.navParams.get('assistanceDetails');
 
     this.serviceDetails = assistTanceList.find(
       (detail) => detail.id === parseInt(serviceTypeParam, 10)
     );
     this.shopDetail = shopDetail;
+    getTotalRatingByShop(shopDetail.uid).then((rate: any) => {
+      this.shopDetail.ratings = isNaN(rate) ? '0' : parseInt(rate);
+    });
     this.userLocation = userLocation;
     this.getApproximate = getApproximate;
     this.canUpdate = canUpdate;
@@ -51,7 +58,7 @@ export class AssistanceSummariesPage implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onConfirm() {
     this.isConfirming = true;
@@ -61,20 +68,21 @@ export class AssistanceSummariesPage implements OnInit {
       notes: this.assistanceNotes || '',
       userLocation: {
         latitude: this.userLocation.latitude,
-        longitude: this.userLocation.longitude
+        longitude: this.userLocation.longitude,
       },
       ...this.getApproximate,
-    }
-    this.assistanceSrvc.saveAssistance(constructData).then(({ Data, isSuccess }) => {
-      if (isSuccess) {
-        const confirming = setTimeout(() => {
-          this.isConfirming = false;
-          clearTimeout(confirming);
-          this.presentAlert(Data);
-        }, 1000);
-      }
-    })
-
+    };
+    this.assistanceSrvc
+      .saveAssistance(constructData)
+      .then(({ Data, isSuccess }) => {
+        if (isSuccess) {
+          const confirming = setTimeout(() => {
+            this.isConfirming = false;
+            clearTimeout(confirming);
+            this.presentAlert(Data);
+          }, 1000);
+        }
+      });
   }
 
   okayClose() {
@@ -87,13 +95,15 @@ export class AssistanceSummariesPage implements OnInit {
       header: 'Info',
       subHeader: 'Assistance',
       message: 'Your request successfully sent.',
-      buttons: [{
-        text: 'Okay',
-        handler: () => {
-          this.okayClose();
-          this.onViewAssistanceDetails(data);
-        }
-      }],
+      buttons: [
+        {
+          text: 'Okay',
+          handler: () => {
+            this.okayClose();
+            this.onViewAssistanceDetails(data);
+          },
+        },
+      ],
     });
 
     await alert.present();

@@ -6,7 +6,10 @@ import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { shopDefault } from './shop-details.model';
-import { getTotalRatingByShop } from '../../configs/firebaseRef/RatingsCore';
+import {
+  getTotalRatingByShop,
+  getReviews,
+} from '../../configs/firebaseRef/RatingsCore';
 
 @Component({
   selector: 'app-shop-details',
@@ -35,7 +38,7 @@ export class ShopDetailsPage implements OnInit {
     longitude: this.lng,
     iconUrl: myMarker,
   };
-
+  reviews: any[] = [];
   private _unsubscribeAll: Subject<any>;
 
   constructor(
@@ -50,6 +53,13 @@ export class ShopDetailsPage implements OnInit {
       .subscribe((params) => {
         const { shopId } = params;
         this.geShopDetails(shopId);
+        getReviews(shopId).onSnapshot((snapshot) => {
+          this.reviews = snapshot.docs.map((users) => ({
+            key: users.id,
+            ...users.data(),
+          }));
+          console.log(this.reviews);
+        });
       });
   }
 

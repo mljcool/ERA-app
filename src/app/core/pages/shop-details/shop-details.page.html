@@ -112,4 +112,33 @@
       </ion-button>
     </ion-card-content>
   </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Reviews</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-label *ngIf="!reviews.length">
+        <h2>None</h2>
+      </ion-label>
+      <ng-container *ngIf="reviews.length">
+        <ion-list *ngFor="let rate of reviews">
+          <ion-item>
+            <ion-avatar slot="start">
+              <img [src]="rate.userData.imageUrl" />
+            </ion-avatar>
+            <ion-label>
+              <h2>
+                {{ rate.userData.givenName }} {{ rate.userData.familyName }}
+              </h2>
+              <h3></h3>
+              <p>{{ rate.comments}}</p>
+            </ion-label>
+            <ion-rating [rate]="rate.ratings" size="small" readonnly="true">
+            </ion-rating>
+          </ion-item>
+        </ion-list>
+      </ng-container>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
