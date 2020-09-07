@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { darkTheme } from 'src/app/core/map-theme/dark';
 import { myMarker } from 'src/app/core/util/map-styles';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-app-address',
@@ -9,7 +11,7 @@ import { myMarker } from 'src/app/core/util/map-styles';
   styleUrls: ['./app-address.page.scss'],
 })
 export class AppAddressPage implements OnInit {
-
+  shopId = '';
   public origin: any;
   public destination: any;
   public renderOptions = {
@@ -52,12 +54,31 @@ export class AppAddressPage implements OnInit {
     },
   };
 
-  constructor(private router: Router) { }
+  private unsubscribeAll: Subject<any>;
 
-  ngOnInit() {
+  constructor(private router: Router, private route: ActivatedRoute) {
+    this.unsubscribeAll = new Subject();
+    this.route.queryParams
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((params) => {
+        const { shopId } = params;
+        this.shopId = shopId;
+      });
+  }
+
+  ngOnInit() {}
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   onBack(): void {
-    this.router.navigateByUrl('/make-appointment');
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        shopId: this.shopId,
+      },
+    };
+    this.router.navigate(['/make-appointment'], navigationExtras);
   }
 }

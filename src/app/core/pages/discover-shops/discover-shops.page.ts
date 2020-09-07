@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { DiscoverMenusPage } from '../../modals/discover-menus/discover-menus.page';
 import { ShopCoreService } from '../../configs/firebaseRef/ShopCore';
@@ -97,6 +97,13 @@ export class DiscoverShopsPage implements OnInit, OnDestroy {
   }
 
   async onShopMenus(ev: any) {
+    console.log('onShopMenus', ev);
+    const { uid } = ev;
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        shopId: uid,
+      },
+    };
     const popover = await this.popoverController.create({
       component: DiscoverMenusPage,
       event: ev,
@@ -106,7 +113,7 @@ export class DiscoverShopsPage implements OnInit, OnDestroy {
       console.log(data);
       if (data) {
         const { typeMenus } = data;
-        this.router.navigate([`/make-${typeMenus}`]);
+        this.router.navigate([`/make-${typeMenus}`], navigationExtras);
       }
     });
     await popover.present();

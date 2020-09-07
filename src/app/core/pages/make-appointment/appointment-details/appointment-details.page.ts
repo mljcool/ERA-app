@@ -12,34 +12,42 @@ export class AppointmentDetailsPage implements OnInit {
   private unsubscribeAll: Subject<any>;
   isViewOnly = false;
   bookingId = 0;
+  shopId = '';
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.unsubscribeAll = new Subject();
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((params) => {
-        const { isViewOnly, bookingId } = params;
+        const { isViewOnly, bookingId, shopId } = params;
         console.log(isViewOnly);
         this.bookingId = bookingId;
+        this.shopId = shopId;
         this.isViewOnly = !!parseInt(isViewOnly, 10);
       });
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   onNavigate(urls) {
-    if (!this.isViewOnly) {
-      this.router.navigate(['/appoinment-details/' + urls]);
-      return;
-    }
     const navigationExtras: NavigationExtras = {
       queryParams: {
         bookingId: this.bookingId,
         isViewOnly: 1,
+        shopId: this.shopId,
       },
     };
+
+    if (!this.isViewOnly) {
+      this.router.navigate(['/appoinment-details/' + urls], navigationExtras);
+      return;
+    }
+
     this.router.navigate(['/appoinment-details/' + urls], navigationExtras);
   }
-
 }

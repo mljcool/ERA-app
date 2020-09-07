@@ -1,7 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { DiscoverMenusPage } from '../../modals/discover-menus/discover-menus.page';
+import { getShopServices } from '../../configs/firebaseRef/ShopServicesCore';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 export interface ICars {
   id: number;
@@ -23,60 +26,51 @@ export class MakeAppointmentPage implements OnInit, OnDestroy {
   searchTerm = '';
   myCars: ICars[] = [];
   copyMyCars: ICars[] = [];
+  shopService: any[] = [];
+  copyShopService: any[] = [];
   isLoading: boolean = false;
-  clearTimeOut: any = null;
+  private _unsubscribeAll: Subject<any>;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     public popoverController: PopoverController
   ) {
-    this.populateCars();
+    this._unsubscribeAll = new Subject();
   }
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.clearTimeOut = setTimeout(() => {
-      this.isLoading = false;
-    }, 1500);
+    this.route.queryParams
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((params) => {
+        const { shopId } = params;
+        getShopServices(shopId).onSnapshot((snapshot) => {
+          this.shopService = snapshot.docs.map((users) => ({
+            key: users.id,
+            ...users.data(),
+          }));
+          console.log(this.shopService);
+          this.copyShopService = this.shopService;
+        });
+        this.isLoading = false;
+      });
   }
 
   ngOnDestroy(): void {
-    clearTimeout(this.clearTimeOut);
-  }
-
-  populateCars(): void {
-    const cars = [
-      'Abarth 124',
-      'Toyota C-HR',
-      'Toyota HiLux',
-      'Toyota Landcruiser',
-    ];
-
-    for (let index = 0; index < cars.length; index++) {
-      this.myCars.push({
-        id: index,
-        modelName: cars[index],
-        description: `Which is why, back in 2016, when Fiat released a new 124, many an eyebrow was arched`,
-        plateNumber: (index + Math.random() * 10).toFixed(3).toString(),
-        dateAdded: new Date(),
-        isActiveUsed: true,
-        color: 'red',
-        fuelType: 1,
-      });
-    }
-    this.copyMyCars = this.myCars;
-    console.log(this.myCars);
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   setFilteredItems(search: string = ''): void {
     const searchTerm = (search || '').toLowerCase();
     if (searchTerm !== '') {
-      const copyShops = this.myCars.filter((cars: ICars) => {
-        return cars.modelName.toLowerCase().includes(searchTerm);
+      const copyShops = this.shopService.filter((cars: any) => {
+        return cars.name.toLowerCase().includes(searchTerm);
       });
-      this.myCars = [...copyShops];
+      this.shopService = [...copyShops];
     } else {
-      this.myCars = this.copyMyCars;
+      this.shopService = this.copyShopService;
     }
   }
 
@@ -85,6 +79,14 @@ export class MakeAppointmentPage implements OnInit, OnDestroy {
   }
 
   onShopViewService(ev: any) {
-    this.router.navigate(['/appoinment-details/app-schedule']);
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        shopId: ev.shopuid,
+      },
+    };
+    this.router.navigate(
+      ['/appoinment-details/app-schedule'],
+      navigationExtras
+    );
   }
 }

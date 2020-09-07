@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -15,14 +15,15 @@ export class AppSchedulePage implements OnInit, OnDestroy {
   bookingData: any = {};
   servicesData: any;
   isViewOnly = false;
+  shopId = '';
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.unsubscribeAll = new Subject();
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((params) => {
-        const { isViewOnly } = params;
-        this.isViewOnly = !!parseInt(isViewOnly, 10);
+        const { shopId } = params;
+        this.shopId = shopId;
       });
   }
 
@@ -31,13 +32,19 @@ export class AppSchedulePage implements OnInit, OnDestroy {
     this.unsubscribeAll.complete();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
-  submitBooking(data: any): void { }
+  submitBooking(data: any): void {}
 
   onBack(): void {
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        shopId: this.shopId,
+      },
+    };
+
     if (!this.isViewOnly) {
-      this.router.navigateByUrl('/make-appointment');
+      this.router.navigate(['/make-appointment'], navigationExtras);
       return;
     }
     this.router.navigateByUrl('/transactions');
