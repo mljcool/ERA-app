@@ -4,6 +4,8 @@ import { darkTheme } from 'src/app/core/map-theme/dark';
 import { myMarker } from 'src/app/core/util/map-styles';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { getTotalRatingByShop } from 'src/app/core/configs/firebaseRef/RatingsCore';
+import { ShopCoreService } from 'src/app/core/configs/firebaseRef/ShopCore';
 
 @Component({
   selector: 'app-app-address',
@@ -12,6 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class AppAddressPage implements OnInit {
   shopId = '';
+  serviceId = '';
   public origin: any;
   public destination: any;
   public renderOptions = {
@@ -53,16 +56,27 @@ export class AppAddressPage implements OnInit {
       },
     },
   };
-
+  rate: any = 0;
+  shopsDetails: any = {};
   private unsubscribeAll: Subject<any>;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private shopSrvc: ShopCoreService
+  ) {
     this.unsubscribeAll = new Subject();
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((params) => {
-        const { shopId } = params;
+        const { shopId, serviceId } = params;
         this.shopId = shopId;
+        this.serviceId = serviceId;
+        this.getShopDetails(shopId);
+        getTotalRatingByShop(shopId).then((rate) => {
+          console.log('totalRate', rate);
+          this.rate = rate;
+        });
       });
   }
 
@@ -73,10 +87,35 @@ export class AppAddressPage implements OnInit {
     this.unsubscribeAll.complete();
   }
 
+  getShopDetails(shopId) {
+    if (shopId) {
+      this.shopSrvc.getOneShops(shopId).onSnapshot((snapshot) => {
+        const shopsDetails = snapshot.docs.map((shop) => ({
+          key: shop.id,
+          ...shop.data(),
+        }));
+
+        if (shopsDetails.length) {
+          this.shopsDetails = shopsDetails[0];
+          console.log('app-address', this.shopsDetails);
+          const { latitude, longitude } = this.shopsDetails.shopLocation;
+
+          this.initMap = {
+            ...this.initMap,
+            ...latitude,
+            ...longitude,
+          };
+          // this.setLocations();
+        }
+      });
+    }
+  }
+
   onBack(): void {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         shopId: this.shopId,
+        serviceId: this.serviceId,
       },
     };
     this.router.navigate(['/make-appointment'], navigationExtras);

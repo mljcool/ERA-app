@@ -13,16 +13,17 @@ export class AppointmentDetailsPage implements OnInit {
   isViewOnly = false;
   bookingId = 0;
   shopId = '';
+  serviceId = '';
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.unsubscribeAll = new Subject();
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((params) => {
-        const { isViewOnly, bookingId, shopId } = params;
-        console.log(isViewOnly);
+        const { isViewOnly, bookingId, shopId, serviceId } = params;
         this.bookingId = bookingId;
         this.shopId = shopId;
+        this.serviceId = serviceId;
         this.isViewOnly = !!parseInt(isViewOnly, 10);
       });
   }
@@ -40,6 +41,7 @@ export class AppointmentDetailsPage implements OnInit {
         bookingId: this.bookingId,
         isViewOnly: 1,
         shopId: this.shopId,
+        serviceId: this.serviceId,
       },
     };
 

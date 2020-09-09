@@ -16,14 +16,16 @@ export class AppSchedulePage implements OnInit, OnDestroy {
   servicesData: any;
   isViewOnly = false;
   shopId = '';
+  serviceId = '';
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.unsubscribeAll = new Subject();
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((params) => {
-        const { shopId } = params;
+        const { shopId, serviceId } = params;
         this.shopId = shopId;
+        this.serviceId = serviceId;
       });
   }
 
@@ -40,6 +42,7 @@ export class AppSchedulePage implements OnInit, OnDestroy {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         shopId: this.shopId,
+        serviceId: this.serviceId,
       },
     };
 

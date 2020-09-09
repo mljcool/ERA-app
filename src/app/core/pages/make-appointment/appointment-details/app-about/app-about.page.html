@@ -30,26 +30,18 @@
           <div>Price</div>
         </ion-col>
       </ion-row>
-      <ion-row class="row-list-items">
+      <ion-row
+        class="row-list-items"
+        *ngFor="let item of serviceDetail.products"
+      >
         <ion-col>
-          <div>sample Data 121321</div>
+          <div>{{ item.name}}</div>
         </ion-col>
         <ion-col>
-          <div class="item-qty">1</div>
+          <div class="item-qty">{{ item.quantity}}</div>
         </ion-col>
         <ion-col>
-          <div>$1000</div>
-        </ion-col>
-      </ion-row>
-      <ion-row class="row-list-items">
-        <ion-col>
-          <div class="item-name">New Item Chair Black</div>
-        </ion-col>
-        <ion-col>
-          <div class="item-qty">1</div>
-        </ion-col>
-        <ion-col>
-          <div class="item-price">$1000</div>
+          <div>{{ item.price | currency:"PHP":"₱"}}</div>
         </ion-col>
       </ion-row>
       <ion-row class="row-list-items">
@@ -57,10 +49,12 @@
           <div class="item-name total total-label">Total</div>
         </ion-col>
         <ion-col>
-          <div class="item-qty total total-qty">1</div>
+          <div class="item-qty total total-qty"></div>
         </ion-col>
         <ion-col>
-          <div class="item-price total total-price">$1000</div>
+          <div class="item-price total total-price">
+            {{ total | currency:"PHP":"₱"}}
+          </div>
         </ion-col>
       </ion-row>
     </ion-card-content>
@@ -72,16 +66,24 @@
     <ion-card-content>
       <ion-list>
         <ion-item>
-          <ion-label class="cost-price">₱ 5,200.00</ion-label>
+          <ion-label class="cost-price"
+            >Service Price = {{ serviceDetail.servicePrice |
+            currency:"PHP":"₱"}}</ion-label
+          >
+        </ion-item>
+        <ion-item>
+          <ion-label class="cost-price"
+            >Grand Total = {{ serviceDetail.grandTotal |
+            currency:"PHP":"₱"}}</ion-label
+          >
         </ion-item>
       </ion-list>
 
       <ion-card-header>
-        <ion-card-subtitle>Cost notes</ion-card-subtitle>
+        <ion-card-subtitle>Description</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content class="assistance-card-details">
-        Your car is not passing smog check. Others are giving you really high
-        repair quotes
+        {{ serviceDetail.description}}
       </ion-card-content>
     </ion-card-content>
   </ion-card>

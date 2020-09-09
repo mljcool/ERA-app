@@ -82,6 +82,7 @@ export class MakeAppointmentPage implements OnInit, OnDestroy {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         shopId: ev.shopuid,
+        serviceId: ev.id,
       },
     };
     this.router.navigate(

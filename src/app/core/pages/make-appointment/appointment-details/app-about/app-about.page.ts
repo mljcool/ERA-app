@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { getService } from 'src/app/core/configs/firebaseRef/ShopServicesCore';
 
 @Component({
   selector: 'app-app-about',
@@ -10,6 +11,9 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class AppAboutPage implements OnInit {
   shopId = '';
+  serviceId = '';
+  total = 0;
+  serviceDetail: any = {};
   private unsubscribeAll: Subject<any>;
 
   constructor(private router: Router, private route: ActivatedRoute) {
@@ -17,9 +21,31 @@ export class AppAboutPage implements OnInit {
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((params) => {
-        const { shopId } = params;
+        const { shopId, serviceId } = params;
         this.shopId = shopId;
+        this.serviceId = serviceId;
+        this.getServiceDetails(serviceId);
       });
+  }
+
+  getServiceDetails(serviceId): void {
+    getService(serviceId).onSnapshot((snapshot) => {
+      const serviceDetail = snapshot.docs.map((shop) => ({
+        key: shop.id,
+        ...shop.data(),
+      }));
+
+      if (serviceDetail.length) {
+        this.serviceDetail = serviceDetail[0];
+        this.total = this.serviceDetail.products.reduce(
+          (i, j) => i + j.price * j.quantity,
+          0
+        );
+
+        console.log('app-about', this.serviceDetail);
+        console.log('app-total', this.total);
+      }
+    });
   }
 
   ngOnInit() {}

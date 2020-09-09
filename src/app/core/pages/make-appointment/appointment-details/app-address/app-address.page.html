@@ -23,22 +23,16 @@
             <div class="shop-details">
               <div class="shop-header">
                 <ion-label class="time-status">
-                  <span class="shope-name">Shop Lorem Sample</span>
+                  <span class="shope-name">{{ shopsDetails.name}}</span>
                 </ion-label>
                 <span class="ratings-icons">
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
+                  <ion-rating [rate]="rate" size="small" readonnly="true">
+                  </ion-rating>
                 </span>
               </div>
               <div class="shop-content">
                 <ion-label class="time-status">
-                  <span
-                    >Address → (8766 Limonite Ct, Riverside, CA 92509,
-                    Agdao)</span
-                  >
+                  <span>Address → ({{ shopsDetails.address}})</span>
                 </ion-label>
               </div>
             </div>
@@ -56,14 +50,11 @@
               [styles]="mapThemeStyle"
               [gestureHandling]="'none'"
             >
-              <agm-direction
-                [origin]="origin"
-                [destination]="destination"
-                [markerOptions]="markerOptions"
-                [travelMode]="'DRIVING'"
-                [renderOptions]="renderOptions"
-              >
-              </agm-direction>
+              <agm-marker
+                [latitude]="initMap.latitude"
+                [longitude]="initMap.longitude"
+                [iconUrl]="initMap.iconUrl"
+              ></agm-marker>
             </agm-map>
           </div>
         </ion-card-content>

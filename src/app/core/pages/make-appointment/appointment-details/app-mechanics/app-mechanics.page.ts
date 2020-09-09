@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { getService } from 'src/app/core/configs/firebaseRef/ShopServicesCore';
 
 @Component({
   selector: 'app-app-mechanics',
@@ -10,6 +11,14 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class AppMechanicsPage implements OnInit {
   shopId: string = '';
+  serviceId: string = '';
+
+  personnels: any = [
+    {
+      name: '',
+      lastName: '',
+    },
+  ];
   private unsubscribeAll: Subject<any>;
 
   constructor(private router: Router, private route: ActivatedRoute) {
@@ -17,9 +26,23 @@ export class AppMechanicsPage implements OnInit {
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((params) => {
-        const { shopId } = params;
+        const { shopId, serviceId } = params;
         this.shopId = shopId;
+        this.serviceId = serviceId;
+        this.getServiceDetails(serviceId);
       });
+  }
+
+  getServiceDetails(serviceId): void {
+    getService(serviceId).onSnapshot((snapshot) => {
+      const serviceDetail: any = snapshot.docs.map((shop) => ({
+        key: shop.id,
+        ...shop.data(),
+      }))[0];
+      const { personnels } = serviceDetail;
+      this.personnels = [...personnels, ...this.personnels];
+      console.log('app-mechanics', this.personnels);
+    });
   }
 
   ngOnInit() {}
@@ -33,6 +56,7 @@ export class AppMechanicsPage implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         shopId: this.shopId,
+        serviceId: this.serviceId,
       },
     };
     this.router.navigate(['/make-appointment'], navigationExtras);

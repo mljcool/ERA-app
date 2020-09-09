@@ -6,3 +6,10 @@ export const getShopServices = (shopId: string) => {
     .collection('newShopServices')
     .where('shopuid', '==', shopId);
 };
+
+export const getService = (id: string) => {
+  return firebase
+    .firestore()
+    .collection('newShopServices')
+    .where('id', '==', id);
+};
