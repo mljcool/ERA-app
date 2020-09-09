@@ -11,7 +11,8 @@ import { CartService } from './order-services/make-oders.service';
 import { takeUntil } from 'rxjs/operators';
 import { OrdersCartModalPage } from './cart-modal/cart-modal.page';
 import { ModalController, AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { getShopProducts } from '../../configs/firebaseRef/ShopProductsCore';
 
 @Component({
   selector: 'app-make-orders',
@@ -22,9 +23,9 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
   private unsubscribeAll: Subject<any>;
   public searchTerm = '';
   cart = [];
-  products: IProduct[] = [];
-  copyProduct: IProduct[] = [];
-  addedProducts: IProduct[] = [];
+  products: any[] = [];
+  copyProduct: any[] = [];
+  addedProducts: any[] = [];
   cartItemCount = 0;
   isLoading = true;
 
@@ -34,19 +35,25 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
     private cartService: CartService,
     private modalCtrl: ModalController,
     public alertController: AlertController,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
-    this.onPopulateDummyData();
     this.cart = this.products;
     this.cartService
       .getCartItemCount()
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((count) => {
         this.cartItemCount = count;
+      });
+    this.route.queryParams
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((params) => {
+        const { shopId } = params;
+        this.onPopulateCartItems(shopId);
       });
   }
 
@@ -89,18 +96,14 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
     this.router.navigate(['./discover-shops']);
   }
 
-  onPopulateDummyData() {
-    for (let index = 0; index < 10; index++) {
-      this.products.push({
-        id: (index + 1).toString(),
-        amount: 1000,
-        name: 'Sample',
-        price: 2000,
-        quantity: 1,
-        uid: '12312312',
-        categoryByname: 'Sample Product',
-      });
-    }
+  onPopulateCartItems(shopId) {
+    getShopProducts(shopId).onSnapshot((snapshot) => {
+      this.products = snapshot.docs.map((users) => ({
+        key: users.id,
+        ...users.data(),
+      }));
+      console.log('make-order', this.products);
+    });
   }
 
   setFilteredItems(search: string): void {
