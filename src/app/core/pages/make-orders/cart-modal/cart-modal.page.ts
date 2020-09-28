@@ -1,6 +1,11 @@
-
 import { Component, OnInit } from '@angular/core';
-import { ModalController, AlertController, LoadingController, ToastController } from '@ionic/angular';
+import {
+  ModalController,
+  AlertController,
+  LoadingController,
+  ToastController,
+  NavParams,
+} from '@ionic/angular';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { LoctionPickerPage } from 'src/app/modals/loction-picker/loction-picker.page';
 import { SetContactInfoPage } from 'src/app/modals/set-contact-info/set-contact-info.page';
@@ -10,10 +15,11 @@ import { IProduct } from '../Product.model';
 @Component({
   selector: 'app-cart-modal',
   templateUrl: './cart-modal.page.html',
-  styleUrls: ['./cart-modal.page.scss']
+  styleUrls: ['./cart-modal.page.scss'],
 })
 export class OrdersCartModalPage implements OnInit {
   cart: IProduct[] = [];
+  products: IProduct[] = [];
   isSubmitting = false;
   customerExtraInfo = '';
   customerAddress = false;
@@ -23,11 +29,16 @@ export class OrdersCartModalPage implements OnInit {
     private alertCtrl: AlertController,
     private googleStorageUser: StoragUserDataService,
     public loadingController: LoadingController,
-    public toastController: ToastController
-  ) { }
+    public toastController: ToastController,
+    private navParams: NavParams
+  ) {
+    this.products = this.navParams.get('allProducts');
+    console.log('coooool- products', this.products);
+  }
 
   ngOnInit() {
     this.cart = this.cartService.getCart();
+    console.log('this.cart', this.cart);
   }
 
   decreaseCartItem(product) {
@@ -35,6 +46,11 @@ export class OrdersCartModalPage implements OnInit {
   }
 
   increaseCartItem(product) {
+    const { quantity, amount } = product;
+    if (amount >= quantity) {
+      this.presentToast('not enough quantity please select another items');
+      return;
+    }
     this.cartService.addProduct(product);
   }
 
@@ -53,7 +69,7 @@ export class OrdersCartModalPage implements OnInit {
   async presentToast(text: string) {
     const toast = await this.toastController.create({
       message: text,
-      duration: 3000
+      duration: 3000,
     });
     toast.present();
   }
@@ -64,9 +80,8 @@ export class OrdersCartModalPage implements OnInit {
       return;
     }
     this.modalCtrl.dismiss({
-      isCheckOut: true
-    })
-
+      isCheckOut: true,
+    });
   }
 
   async presentLoading() {
@@ -76,5 +91,4 @@ export class OrdersCartModalPage implements OnInit {
     });
     await loading.present();
   }
-
 }

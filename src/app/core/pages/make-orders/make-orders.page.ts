@@ -10,8 +10,12 @@ import { IProduct } from './Product.model';
 import { CartService } from './order-services/make-oders.service';
 import { takeUntil } from 'rxjs/operators';
 import { OrdersCartModalPage } from './cart-modal/cart-modal.page';
-import { ModalController, AlertController } from '@ionic/angular';
-import { Router, ActivatedRoute } from '@angular/router';
+import {
+  ModalController,
+  AlertController,
+  ToastController,
+} from '@ionic/angular';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { getShopProducts } from '../../configs/firebaseRef/ShopProductsCore';
 
 @Component({
@@ -28,6 +32,8 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
   addedProducts: any[] = [];
   cartItemCount = 0;
   isLoading = true;
+  shopId: string = '';
+  tempCart: any[] = [];
 
   @ViewChild('cart', { static: false, read: ElementRef }) fab: ElementRef;
 
@@ -36,7 +42,8 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     public alertController: AlertController,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public toastController: ToastController
   ) {
     this.unsubscribeAll = new Subject();
   }
@@ -53,6 +60,7 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((params) => {
         const { shopId } = params;
+        this.shopId = shopId;
         this.onPopulateCartItems(shopId);
       });
   }
@@ -69,6 +77,9 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
           cssClass: 'secondary',
           handler: (blah) => {
             this.router.navigate(['./discover-shops']);
+            this.cartService.cart = [];
+            this.tempCart = [];
+            this.cartItemCount = 0;
           },
         },
         {
@@ -120,23 +131,56 @@ export class MakeOrdersPage implements OnInit, OnDestroy {
   }
 
   addToCart(product: IProduct) {
+    console.log('product', product);
+    const { quantity, id } = product;
+    const getProductLength = this.tempCart.filter((prod) => prod.id === id)
+      .length;
+    if (getProductLength >= quantity) {
+      this.presentToast(`not enough quantity please select another items`);
+      return;
+    }
+    this.tempCart.push(product);
     this.cartService.addProduct(product);
     this.animateCSS('tada');
   }
 
+  async presentToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 3000,
+    });
+    toast.present();
+  }
+
   async openCart() {
+    if (this.cartItemCount === 0) {
+      this.presentToast(`Please select an item`);
+      return;
+    }
+
     this.animateCSS('bounceOutLeft', true);
 
     const modal = await this.modalCtrl.create({
       component: OrdersCartModalPage,
       cssClass: 'cart-modal',
+      componentProps: {
+        allProducts: this.products,
+      },
     });
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        shopId: this.shopId,
+      },
+    };
+
     modal.onWillDismiss().then(({ data }) => {
       this.fab.nativeElement.classList.remove('animated', 'bounceOutLeft');
       this.animateCSS('bounceInLeft');
+      console.log('onWillDismiss', data);
+
       if (data) {
         const gotoOrderSummary = setTimeout(() => {
-          this.router.navigate(['/order-summary']);
+          this.router.navigate(['/order-summary'], navigationExtras);
           clearTimeout(gotoOrderSummary);
         }, 800);
       }

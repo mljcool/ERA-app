@@ -5,11 +5,6 @@
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="end" *ngIf="!isViewOnly">
-      <ion-button (click)="proceedOrder()">
-        <ion-icon slot="start" name="cart"></ion-icon>
-      </ion-button>
-    </ion-buttons>
 
     <ion-title>Order Summary</ion-title>
   </ion-toolbar>
@@ -17,6 +12,28 @@
 
 <ion-content class="order-summary-details">
   <ion-grid>
+    <ion-row>
+      <ion-card>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label>{{ shopType ? 'DELIVERY' : 'PICK UP'}}</ion-label>
+            <ion-toggle
+              slot="start"
+              name="blueberry"
+              [(ngModel)]="shopType"
+            ></ion-toggle>
+            <ion-button
+              *ngIf="hideProceedButtons"
+              slot="end"
+              (click)="proceedOrder()"
+            >
+              <ion-icon slot="start" name="cart"></ion-icon>
+              Proceed Order
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+    </ion-row>
     <ion-row>
       <ion-card>
         <ion-card-header>
@@ -28,43 +45,38 @@
               <div>Name</div>
             </ion-col>
             <ion-col>
-              <div>Quntity</div>
+              <div>Quantity</div>
             </ion-col>
             <ion-col>
               <div>Price</div>
             </ion-col>
           </ion-row>
-          <ion-row class="row-list-items">
-            <ion-col>
-              <div>sample Data 121321</div>
-            </ion-col>
-            <ion-col>
-              <div class="item-qty">1</div>
-            </ion-col>
-            <ion-col>
-              <div>$1000</div>
-            </ion-col>
-          </ion-row>
-          <ion-row class="row-list-items">
-            <ion-col>
-              <div class="item-name">New Item Chair Black</div>
-            </ion-col>
-            <ion-col>
-              <div class="item-qty">1</div>
-            </ion-col>
-            <ion-col>
-              <div class="item-price">$1000</div>
-            </ion-col>
-          </ion-row>
+          <ng-container *ngFor="let item of cart">
+            <ion-row class="row-list-items">
+              <ion-col>
+                <div>{{ item.name}}</div>
+              </ion-col>
+              <ion-col>
+                <div class="item-qty">{{ item.amount}}</div>
+              </ion-col>
+              <ion-col>
+                <div>{{item.amount * item.price | currency:"PHP":"₱" }}</div>
+              </ion-col>
+            </ion-row>
+          </ng-container>
           <ion-row class="row-list-items">
             <ion-col>
               <div class="item-name total total-label">Total</div>
             </ion-col>
             <ion-col>
-              <div class="item-qty total total-qty">1</div>
+              <ng-container *ngIf="cart.length">
+                <div class="item-qty total total-qty">{{ sumQty() }}</div>
+              </ng-container>
             </ion-col>
             <ion-col>
-              <div class="item-price total total-price">$1000</div>
+              <div class="item-price total total-price">
+                {{ getTotal() | currency:"PHP":"₱" }}
+              </div>
             </ion-col>
           </ion-row>
         </ion-card-content>
@@ -74,29 +86,27 @@
             <div class="shop-details">
               <div class="shop-header">
                 <ion-label class="time-status">
-                  <span class="shope-name">Shop Lorem Sample</span>
+                  <span class="shope-name">{{ shopsDetails.name}}</span>
                 </ion-label>
                 <span class="ratings-icons">
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
+                  <ion-rating
+                    [rate]="shopsDetails.ratings"
+                    size="small"
+                    readonnly="true"
+                  >
+                  </ion-rating>
                 </span>
               </div>
               <div class="shop-content">
                 <ion-label class="time-status">
-                  <span
-                    >Address → (8766 Limonite Ct, Riverside, CA 92509,
-                    Agdao)</span
-                  >
+                  <span>Address → ({{ shopsDetails.address}})</span>
                 </ion-label>
               </div>
             </div>
           </ion-card-content>
         </ion-card-header>
 
-        <ion-card-header>
+        <!-- <ion-card-header>
           <ion-card-subtitle>Notes</ion-card-subtitle>
           <ion-card-content class="assistance-card-details">
             <div class="assistance-notes">
@@ -107,19 +117,19 @@
               </p>
             </div>
           </ion-card-content>
-        </ion-card-header>
+        </ion-card-header> -->
 
         <ion-card-content class="assistance-card-details map-views">
           <ion-card-header>
             <ion-card-subtitle>Delivery Address</ion-card-subtitle>
-            <ion-button color="primary" expand="full"
+            <!-- <ion-button color="primary" expand="full"
               >Change Delivery address</ion-button
-            >
+            > -->
           </ion-card-header>
           <div class="assistance-maps">
             <agm-map
-              [latitude]="initMap.latitude"
-              [longitude]="initMap.longitude"
+              [latitude]="shopsDetails.shopLocation.latitude"
+              [longitude]="shopsDetails.shopLocation.longitude"
               [zoom]="zoom"
               [disableDefaultUI]="true"
               [zoomControl]="false"
@@ -139,7 +149,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card>
+      <ion-card *ngIf="shopType">
         <ion-card-header>
           <ion-card-subtitle>Payment Transaction</ion-card-subtitle>
         </ion-card-header>
@@ -165,11 +175,11 @@
           <ion-list>
             <ion-item>
               <ion-icon slot="start" name="person"></ion-icon>
-              <ion-label class="assistance-label">Peter Doe</ion-label>
+              <ion-label class="assistance-label">{{ userData.name}}</ion-label>
             </ion-item>
             <ion-item>
               <ion-icon slot="start" name="call"></ion-icon>
-              <ion-label>+63 915 453 8812 </ion-label>
+              <ion-label>{{ userData.mobileNumber}}</ion-label>
             </ion-item>
           </ion-list>
         </ion-card-content>

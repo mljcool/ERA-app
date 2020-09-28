@@ -1,20 +1,19 @@
-
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import {
+  AngularFirestoreCollection,
+  AngularFirestore,
+} from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
   private cartItemCount = new BehaviorSubject(0);
-  private cart = [];
+  public cart = [];
 
-  constructor() {
-
-  }
+  constructor() {}
 
   clearCart(): void {
     this.cart = [];
