@@ -1,5 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   NavController,
@@ -9,12 +8,17 @@ import {
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { getMyBookings } from '../../configs/firebaseRef/BookingCore';
 import { getAccountDetails } from '../../configs/firebaseRef/UserCore';
-import { mobiscroll, MbscEventcalendarOptions } from '@mobiscroll/angular';
+import {
+  mobiscroll,
+  MbscEventcalendarOptions,
+  MbscEventcalendar,
+} from '@mobiscroll/angular';
 
 mobiscroll.settings = {
   theme: 'ios',
   themeVariant: 'light',
 };
+
 @Component({
   selector: 'app-transaction-details-booking',
   templateUrl: './transaction-details-booking.page.html',
@@ -27,9 +31,12 @@ export class TransactionDetailsBookingPage {
     mobileNumber: 'N/A',
   };
 
+  @ViewChild('mbscList', { static: false })
+  list: MbscEventcalendar;
+
   events: any[] = [];
 
-  eventSettings: MbscEventcalendarOptions = {
+  listSettings: MbscEventcalendarOptions = {
     theme: 'ios',
     themeVariant: 'light',
     display: 'inline',
@@ -37,23 +44,20 @@ export class TransactionDetailsBookingPage {
       calendar: { type: 'month', labels: true },
       eventList: { type: 'month', scrollable: true },
     },
+    onEventSelect: (event, inst) => {
+      console.log('event', event);
+      console.log('inst', inst);
+    },
   };
 
   constructor(
     private router: Router,
     public navCtrl: NavController,
     private googleStorageUser: StoragUserDataService,
-    public actionSheetController: ActionSheetController,
-    private http: HttpClient
+    public actionSheetController: ActionSheetController
   ) {}
 
   ionViewWillEnter() {
-    // this.http
-    //   .jsonp('https://trial.mobiscroll.com/events/', 'callback')
-    //   .subscribe((resp: any) => {
-    //     this.events = resp;
-    //     console.log(this.events);
-    //   });
     this.getUserData();
   }
 
@@ -77,6 +81,7 @@ export class TransactionDetailsBookingPage {
           end: endDate,
           text: serviceName,
           color: '#56ca70',
+          details: element,
         });
         console.log('eventSource', this.bookings);
       });
