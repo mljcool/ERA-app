@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -8,53 +9,57 @@ import {
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { getMyBookings } from '../../configs/firebaseRef/BookingCore';
 import { getAccountDetails } from '../../configs/firebaseRef/UserCore';
+import { mobiscroll, MbscEventcalendarOptions } from '@mobiscroll/angular';
 
+mobiscroll.settings = {
+  theme: 'ios',
+  themeVariant: 'light',
+};
 @Component({
   selector: 'app-transaction-details-booking',
   templateUrl: './transaction-details-booking.page.html',
   styleUrls: ['./transaction-details-booking.page.scss'],
 })
 export class TransactionDetailsBookingPage {
-  selectedDay = new Date();
-  selectedObject;
-  allDayLabel: any = '';
-  eventSource = [];
   bookings: any[] = [];
   copybookings: any[] = [];
-  viewTitle;
-  isToday: boolean;
-  calendarModes = [
-    { key: 'month', value: 'Month' },
-    { key: 'week', value: 'Week' },
-    { key: 'day', value: 'Day' },
-  ];
-  calendar = {
-    mode: this.calendarModes[0].key,
-    currentDate: new Date(),
-    queryMode: 'remote',
-  }; // these are the variable used by the calendar.
-
   userData: any = {
     mobileNumber: 'N/A',
+  };
+
+  events: any[] = [];
+
+  eventSettings: MbscEventcalendarOptions = {
+    theme: 'ios',
+    themeVariant: 'light',
+    display: 'inline',
+    view: {
+      calendar: { type: 'month', labels: true },
+      eventList: { type: 'month', scrollable: true },
+    },
   };
 
   constructor(
     private router: Router,
     public navCtrl: NavController,
-    private actionSheetCtrl: ActionSheetController,
-    private modalCtrl: ModalController,
     private googleStorageUser: StoragUserDataService,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    private http: HttpClient
   ) {}
 
   ionViewWillEnter() {
+    // this.http
+    //   .jsonp('https://trial.mobiscroll.com/events/', 'callback')
+    //   .subscribe((resp: any) => {
+    //     this.events = resp;
+    //     console.log(this.events);
+    //   });
     this.getUserData();
   }
 
+  changeView(): void {}
+
   loadEvents(userUID) {
-    let eventData: any = {
-      allData: [],
-    };
     getMyBookings(userUID).onSnapshot((snapshot) => {
       const bookings: any = snapshot.docs.map((car) => ({
         key: car.id,
@@ -66,21 +71,16 @@ export class TransactionDetailsBookingPage {
         console.log('endDate', element.endDate.toDate());
         const startDate = element.startDate.toDate();
         const endDate = element.endDate.toDate();
-
-        eventData.startTime = new Date(startDate);
-        eventData.endTime = new Date(endDate);
-        eventData.title = element.serviceDetail.name;
-        eventData.title = element.serviceDetail.name;
-
-        let events = this.eventSource;
-        events.push(eventData);
-        this.eventSource = [];
-        setTimeout(() => {
-          this.eventSource = events;
+        const serviceName = element.serviceDetail.name;
+        this.events.push({
+          start: startDate,
+          end: endDate,
+          text: serviceName,
+          color: '#56ca70',
         });
-        console.log('getMyBookings getMyBookings', this.eventSource);
+        console.log('eventSource', this.bookings);
       });
-      console.log('getMyBookings getMyBookings', bookings);
+      // console.log('getMyBookings getMyBookings', bookings);
     });
   }
 
@@ -102,116 +102,10 @@ export class TransactionDetailsBookingPage {
       });
     });
   }
-  onViewTitleChanged(title) {
-    this.viewTitle = title;
-  }
-  eventSelected(event) {
-    console.log('Event selected:', event);
-  }
 
-  onEventSelected(event) {
-    console.log(
-      'Event selected:' +
-        event.startTime +
-        '-' +
-        event.endTime +
-        ',' +
-        event.title
-    );
+  onBack(): void {
+    this.router.navigate(['/main-menu']);
   }
-
-  changeMode(mode) {
-    this.calendar.mode = mode;
-  }
-  today() {
-    this.calendar.currentDate = new Date();
-  }
-  onTimeSelected(ev) {
-    console.log('onTimeSelected', ev);
-    this.selectedObject = ev;
-    // this.openActionSheet(ev);
-  }
-  onCurrentDateChanged(event: Date) {
-    var today = new Date();
-    today.setHours(0, 0, 0, 0);
-    event.setHours(0, 0, 0, 0);
-    this.isToday = today.getTime() === event.getTime();
-
-    this.selectedDay = event;
-  }
-
-  onRangeChanged(ev) {
-    console.log(
-      'range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime
-    );
-  }
-  markDisabled = (date: Date) => {
-    var current = new Date();
-    current.setHours(0, 0, 0);
-    return date < current;
-  };
-
-  async openActionSheet(event) {
-    console.log('opening');
-    const actionsheet = await this.actionSheetCtrl.create({
-      header: 'Show only',
-      cssClass: 'my-custom-class',
-      buttons: [
-        {
-          text: 'Block Date',
-          handler: () => {
-            console.log('Block Date Clicked: ', event);
-            let d = event.selectedTime;
-            //d.setHours(0, 0, 0);
-            setTimeout(() => {
-              this.blockDayEvent(d);
-            }, 2);
-          },
-        },
-        {
-          text: 'Meet Up With',
-          handler: function() {
-            console.log('Meet Up With Clicked');
-          },
-        },
-      ],
-    });
-
-    await actionsheet.present();
-  }
-
-  blockDayEvent(date) {
-    let startTime = new Date(
-      Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
-    );
-
-    let endTime = new Date(
-      Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
-    );
-
-    let events = this.eventSource;
-    events.push({
-      title: 'All Day ',
-      startTime: startTime,
-      endTime: endTime,
-      allDay: true,
-    });
-    this.eventSource = [];
-    setTimeout(() => {
-      this.eventSource = events;
-    });
-  }
-
-  addEvent(): void {
-    // this.router
-  }
-
-  onOptionSelected($event: any) {
-    console.log($event);
-    //this.calendar.mode = $event
-  }
-
-  onBack(): void {}
 
   async onViewFilteredBy() {
     const actionSheet = await this.actionSheetController.create({

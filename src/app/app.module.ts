@@ -1,3 +1,5 @@
+import { FormsModule } from '@angular/forms';
+import { MbscModule } from '@mobiscroll/angular';
 import { NgModule } from '@angular/core';
 import {
   BrowserModule,
@@ -53,7 +55,9 @@ import { StartRatingPageModule } from './core/modals/star-rating/star-rating.mod
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [
+  imports: [ 
+    FormsModule,  
+    MbscModule, 
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,

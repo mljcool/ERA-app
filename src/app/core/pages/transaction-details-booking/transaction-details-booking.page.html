@@ -14,64 +14,8 @@
 </ion-header>
 
 <ion-content>
-  <ng-template
-    #template
-    let-showEventDetail="showEventDetail"
-    let-selectedDate="selectedDate"
-    let-noEventsLabel="noEventsLabel"
-  >
-    <ion-list
-      class="event-detail-container"
-      has-bouncing="false"
-      *ngIf="showEventDetail"
-      overflow-scroll="false"
-    >
-      <ion-item
-        *ngFor="let event of selectedDate?.events"
-        (click)="eventSelected(event)"
-        class="ion-text-wrap"
-      >
-        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">
-          {{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}
-        </span>
-        <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn"
-          >{{allDayLabel}}
-        </span>
-        <span class="event-detail">
-          : {{event | json}}
-        </span>
-      </ion-item>
-      <ion-item *ngIf="selectedDate?.events.length==0">
-        <div class="no-events-label">{{noEventsLabel}}</div>
-      </ion-item>
-    </ion-list>
-  </ng-template>
-
-  <ion-row>
-    <ion-col class="col-9">
-      <ion-select [(ngModel)]="calendar.mode" style="max-width: 100%">
-        <ion-select-option
-          (ionSelect)="onOptionSelected($event)"
-          *ngFor="let mode of calendarModes"
-          [value]="mode.key"
-          >{{mode.value}}
-        </ion-select-option>
-      </ion-select>
-    </ion-col>
-  </ion-row>
-
-  <calendar
-    (onRangeChanged)="onRangeChanged($event)"
-    [monthviewEventDetailTemplate]="template"
-    [eventSource]="eventSource"
-    [markDisabled]="markDisabled"
-    [calendarMode]="calendar.mode"
-    [currentDate]="calendar.currentDate"
-    (onCurrentDateChanged)="onCurrentDateChanged($event)"
-    (onEventSelected)="onEventSelected($event)"
-    (onTitleChanged)="onViewTitleChanged($event)"
-    (onTimeSelected)="onTimeSelected($event)"
-    step="30"
-  >
-  </calendar>
+  <mbsc-eventcalendar
+    [data]="events"
+    [options]="eventSettings"
+  ></mbsc-eventcalendar>
 </ion-content>
