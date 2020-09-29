@@ -186,7 +186,7 @@ export class TransactionsPage implements OnInit, OnDestroy {
           text: 'Appointments',
           icon: 'calendar',
           handler: () => {
-            console.log('Share clicked');
+            this.router.navigate(['/transaction-details-booking']);
           },
         },
         {

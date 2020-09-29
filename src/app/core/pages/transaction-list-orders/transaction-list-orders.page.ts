@@ -97,7 +97,7 @@ export class TransactionListOrdersPage implements OnInit {
           text: 'Appointments',
           icon: 'calendar',
           handler: () => {
-            console.log('Share clicked');
+            this.router.navigate(['/transaction-details-booking']);
           },
         },
         {
