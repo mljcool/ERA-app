@@ -35,9 +35,9 @@
         ></ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Add contact info</ion-label>
+        <ion-label position="floating">Add additional contact info</ion-label>
         <ion-input
-          [(ngModel)]="bookingData.contact"
+          [(ngModel)]="bookingData.AdditionalContact"
           type="tel"
           placeholder="contact"
         ></ion-input>
@@ -53,7 +53,7 @@
     <ion-button
       expand="full"
       (click)="submitBooking(bookingData)"
-      *ngIf="!isSubmitting"
+      *ngIf="!isSubmitting || hideProceedButtons"
     >
       Submit
     </ion-button>
