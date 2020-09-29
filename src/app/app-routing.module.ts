@@ -248,7 +248,11 @@ const routes: Routes = [
       import('./core/pages/shop-details/shop-details.module').then(
         (m) => m.ShopDetailsPageModule
       ),
+  },  {
+    path: 'transaction-list-orders',
+    loadChildren: () => import('./core/pages/transaction-list-orders/transaction-list-orders.module').then( m => m.TransactionListOrdersPageModule)
   },
+
 ];
 
 @NgModule({

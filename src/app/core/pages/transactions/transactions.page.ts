@@ -46,7 +46,6 @@ export class TransactionsPage implements OnInit, OnDestroy {
     public actionSheetController: ActionSheetController,
     private assistanceSrvc: AppAssistanceCoreService
   ) {
-    this.populateTransactions();
     this._unsubscribeAll = new Subject();
     this.assistanceSrvc.onAssistance
       .pipe(takeUntil(this._unsubscribeAll))
@@ -94,30 +93,6 @@ export class TransactionsPage implements OnInit, OnDestroy {
     return icon;
   }
 
-  randomIntFromInterval = (min, max) => {
-    // min and max included
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  };
-
-  populateTransactions(): void {
-    const cars = ['', 'Shop Abarth 124', 'Shop C-HR', 'Shop M HiLux'];
-
-    for (let index = 0; index < cars.length + 1; index++) {
-      this.myTransactions.push({
-        id: index,
-        tName: cars[this.randomIntFromInterval(1, 3)],
-        description: `
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum similique blanditiis at necessitatibus ut adipisci a modi deserunt illum aperiam vero, consequuntur nemo mollitia labore voluptatum, id pariatur perspiciatis? Facere.`,
-        tShopName: 'Sample',
-        dateTransaction: 'July 20, 2020',
-        tType: this.randomIntFromInterval(1, 3),
-        isArchived: false,
-      });
-    }
-    this.copymyTransactions = this.myTransactions;
-    console.log(this.myTransactions);
-  }
-
   setFilteredItems(search: string = ''): void {
     const searchTerm = (search || '').toLowerCase();
     if (searchTerm !== '') {
@@ -147,7 +122,7 @@ export class TransactionsPage implements OnInit, OnDestroy {
       return;
     }
     if (navigate === 'orders') {
-      this.onOrders(transDetails);
+      this.router.navigate(['/transaction-list-orders']);
       return;
     }
     this.router.navigate(
@@ -204,7 +179,7 @@ export class TransactionsPage implements OnInit, OnDestroy {
           text: 'Orders',
           icon: 'cart',
           handler: () => {
-            console.log('Delete clicked');
+            this.router.navigate(['/transaction-list-orders']);
           },
         },
         {
@@ -218,7 +193,7 @@ export class TransactionsPage implements OnInit, OnDestroy {
           text: 'Assistance',
           icon: 'car',
           handler: () => {
-            console.log('Play clicked');
+            this.router.navigate(['/transactions']);
           },
         },
       ],

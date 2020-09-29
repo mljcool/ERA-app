@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack();">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons (click)="onViewFilteredBy();" slot="end">
+      <ion-menu-button auto-hide="false"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>Transactions Orders</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="transactions">
+  <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+
+  <ion-list>
+    <ion-item>
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionChange)="setFilteredItems(searchTerm)"
+      ></ion-searchbar>
+    </ion-item>
+    <ion-list-header>
+      <ion-label>Active Transaction</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let pendingOrders of listPendingOrder; let index = i">
+      <ion-card
+        (click)="onViewOrderDetailsPending(pendingOrders)"
+        class="ion-activatable ripple-parent"
+      >
+        <ion-item>
+          <ion-label class="label-custom"
+            >{{ pendingOrders.shopData.name }}</ion-label
+          >
+          <ion-button slot="end" fill="outline">
+            <ion-icon slot="start" name="cart"></ion-icon>
+            <ion-label>{{ pendingOrders.type}}</ion-label>
+          </ion-button>
+        </ion-item>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>Order Total</ion-label>
+            <ion-note slot="end" color="primary" class="total-amount">
+              {{pendingOrders.totalAmount | currency:"PHP":"₱" }}</ion-note
+            >
+          </ion-item>
+        </ion-card-content>
+        <ion-item>
+          <span class="shop-status"
+            >{{ pendingOrders.dateCreated.toDate() | date: 'dd MMM hh:mm'
+            }}</span
+          >
+          <span class="shop-status">{{ pendingOrders.status }}</span>
+        </ion-item>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-card>
+    </ion-item>
+
+    <!-- =========================== -->
+
+    <ion-list-header>
+      <ion-label>Past Transaction</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let orders of pastOrders; let index = i">
+      <ion-card
+        (click)="onViewDetails(orders)"
+        class="ion-activatable ripple-parent"
+      >
+        <ion-item>
+          <ion-icon [name]="'checkbox'"></ion-icon>
+          <ion-label class="label-custom">{{ orders.type }}</ion-label>
+          <ion-button slot="end" color="success" fill="outline">
+            <ion-icon slot="start" name="cart"></ion-icon>
+            <ion-label>{{ orders.status}}</ion-label>
+          </ion-button>
+        </ion-item>
+        <ion-card-content>
+          {{ orders.assistanceName }}
+        </ion-card-content>
+        <ion-item>
+          <span class="shop-status"
+            >{{ orders.dateCreated.toDate() | date: 'dd MMM hh:mm'}}</span
+          >
+        </ion-item>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+</ion-content>

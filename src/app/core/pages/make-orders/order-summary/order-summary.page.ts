@@ -83,7 +83,7 @@ export class OrderSummaryPage implements OnInit {
     },
   };
 
-  hideProceedButtons = false;
+  hideProceedButtons = true;
 
   private unsubscribeAll: Subject<any>;
 
@@ -199,11 +199,13 @@ export class OrderSummaryPage implements OnInit {
       shopData: this.shopsDetails,
       userUID: this.userData.userUID,
       shopUID: this.shopsDetails.uid,
+      totalAmount: this.getTotal(),
+      totalQty: this.sumQty(),
       orderType: orderTypes,
     };
     saveOrders(shoppingData).then(() => {
       this.presentAlert();
-      this.hideProceedButtons = true;
+      this.hideProceedButtons = false;
     });
   }
 

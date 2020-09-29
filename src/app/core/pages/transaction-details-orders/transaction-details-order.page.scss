@@ -1,0 +1,91 @@
+:host {
+  .order-summary-details {
+    ion-card {
+      width: 100%;
+      ion-card-header {
+        padding-top: 5px;
+        padding-bottom: 2px;
+      }
+      .cost-price {
+        font-size: 20px;
+        color: #8c8c8c;
+      }
+    }
+    .cod-avatar {
+      width: 150px;
+      height: 190px;
+    }
+    .cod-content {
+      padding: 0;
+    }
+    agm-map {
+      height: 40vh;
+      position: relative;
+    }
+    .assistance-card-details {
+      &.item-cart-details {
+        .item-qty {
+          padding-left: 20px;
+        }
+        .header {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .total-label {
+          text-align: end;
+        }
+        .total {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .row-list-items {
+          border-bottom: #c4c4c4 solid 1px;
+        }
+      }
+      &.shop-details {
+        background: #fefe;
+        border-radius: 2px;
+        .shope-name {
+          font-weight: bold;
+        }
+      }
+      &.map-views {
+        padding: 4px 0px;
+      }
+      .shop-header {
+        justify-content: space-between;
+        display: flex;
+      }
+      .ratings-icons {
+        color: #f4a34f;
+      }
+    }
+    .my-trans-details {
+      display: grid;
+      grid-auto-flow: column;
+      .my-details {
+        margin: 0 auto;
+        padding: 0;
+        > li {
+          list-style: none;
+        }
+      }
+      .timer-avatar {
+        align-self: center;
+      }
+      .my-data {
+        align-self: center;
+        .isTimer {
+          font-weight: bolder;
+          font-size: 17px;
+        }
+      }
+      .timer-label {
+        text-align: center;
+        align-self: center;
+        font-weight: bold;
+        font-size: 25px;
+      }
+    }
+  }
+}

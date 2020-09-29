@@ -12,3 +12,17 @@ export const saveOrders = (data: any = {}) => {
     .collection('newShopTransaction')
     .add(data);
 };
+
+export const getMyOrders = (shopId: string) => {
+  return firebase
+    .firestore()
+    .collection('newShopTransaction')
+    .where('userUID', '==', shopId);
+};
+
+export const getMyOrdersDetails = (transactionUID: string) => {
+  return firebase
+    .firestore()
+    .collection('newShopTransaction')
+    .where('transactionUID', '==', transactionUID);
+};

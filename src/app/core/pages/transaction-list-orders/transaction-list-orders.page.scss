@@ -1,0 +1,25 @@
+:host {
+  .transactions {
+    ion-card {
+      width: 100%;
+    }
+  }
+  .total-amount {
+    font-size: 20px;
+  }
+  .label-custom {
+    margin-left: 4px;
+    font-size: 14px;
+    font-weight: bolder;
+    color: #757575;
+  }
+  .shop-status {
+    font-size: 12px;
+    font-weight: bold;
+    background: #747099;
+    color: white;
+    padding: 4px 6px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+}

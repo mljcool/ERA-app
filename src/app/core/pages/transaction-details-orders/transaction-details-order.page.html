@@ -1,9 +1,174 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>transaction-details-order</ion-title>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack();">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Order Summary</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="order-summary-details">
+  <ion-grid>
+    <ion-row>
+      <ion-card>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label>{{ shopType ? 'DELIVERY' : 'PICK UP'}}</ion-label>
+            <ion-toggle
+              slot="start"
+              name="blueberry"
+              [(ngModel)]="shopType"
+              disabled
+            ></ion-toggle>
+            <ion-button
+              *ngIf="hideProceedButtons"
+              slot="end"
+              (click)="cancelOrder()"
+            >
+              <ion-icon slot="start" name="cart"></ion-icon>
+              Cancel Order
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+    </ion-row>
+    <ion-row>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Cart Details</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content class="assistance-card-details item-cart-details">
+          <ion-row class="header row-list-items">
+            <ion-col>
+              <div>Name</div>
+            </ion-col>
+            <ion-col>
+              <div>Quantity</div>
+            </ion-col>
+            <ion-col>
+              <div>Price</div>
+            </ion-col>
+          </ion-row>
+          <ng-container *ngFor="let item of cart">
+            <ion-row class="row-list-items">
+              <ion-col>
+                <div>{{ item.name}}</div>
+              </ion-col>
+              <ion-col>
+                <div class="item-qty">{{ item.amount}}</div>
+              </ion-col>
+              <ion-col>
+                <div>{{item.amount * item.price | currency:"PHP":"₱" }}</div>
+              </ion-col>
+            </ion-row>
+          </ng-container>
+          <ion-row class="row-list-items">
+            <ion-col>
+              <div class="item-name total total-label">Total</div>
+            </ion-col>
+            <ion-col>
+              <ng-container *ngIf="cart.length">
+                <div class="item-qty total total-qty">{{ sumQty() }}</div>
+              </ng-container>
+            </ion-col>
+            <ion-col>
+              <div class="item-price total total-price">
+                {{ getTotal() | currency:"PHP":"₱" }}
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+        <ion-card-header>
+          <ion-card-subtitle>Shop Details</ion-card-subtitle>
+          <ion-card-content class="assistance-card-details shop-details">
+            <div class="shop-details">
+              <div class="shop-header">
+                <ion-label class="time-status">
+                  <span class="shope-name">{{ shopsDetails.name}}</span>
+                </ion-label>
+                <span class="ratings-icons">
+                  <ion-rating
+                    [rate]="shopsDetails.ratings"
+                    size="small"
+                    readonnly="true"
+                  >
+                  </ion-rating>
+                </span>
+              </div>
+              <div class="shop-content">
+                <ion-label class="time-status">
+                  <span>Address → ({{ shopsDetails.address}})</span>
+                </ion-label>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card-header>
 
+        <ion-card-content class="assistance-card-details map-views">
+          <ion-card-header>
+            <ion-card-subtitle>Delivery Address</ion-card-subtitle>
+          </ion-card-header>
+          <div class="assistance-maps">
+            <agm-map
+              [latitude]="shopsDetails.shopLocation.latitude"
+              [longitude]="shopsDetails.shopLocation.longitude"
+              [zoom]="zoom"
+              [disableDefaultUI]="true"
+              [zoomControl]="false"
+              [styles]="mapThemeStyle"
+              [gestureHandling]="'none'"
+            >
+              <agm-direction
+                [origin]="origin"
+                [destination]="destination"
+                [markerOptions]="markerOptions"
+                [travelMode]="'DRIVING'"
+                [renderOptions]="renderOptions"
+              >
+              </agm-direction>
+            </agm-map>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="shopType">
+        <ion-card-header>
+          <ion-card-subtitle>Payment Transaction</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content class="cod-content">
+          <ion-list lines="none">
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <img src="/assets/images/cod-img.png" />
+              </ion-thumbnail>
+              <ion-label>
+                <h3>Cash on delivery</h3>
+                <p>Application only accept cash on delivery</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Your Details</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content class="assistance-card-details">
+          <ion-list>
+            <ion-item>
+              <ion-icon slot="start" name="person"></ion-icon>
+              <ion-label class="assistance-label">{{ userData.name}}</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon slot="start" name="call"></ion-icon>
+              <ion-label>{{ userData.mobileNumber}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-row>
+  </ion-grid>
 </ion-content>
