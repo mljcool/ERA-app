@@ -214,6 +214,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'transaction-view-appointment-details',
+    loadChildren: () =>
+      import(
+        './core/pages/transaction-view-appointment-details/appointment-details.module'
+      ).then((m) => m.AppointmentDetailsPageModule),
+  },
+  {
     path: 'cart-modal',
     loadChildren: () =>
       import('./core/pages/make-orders/cart-modal/cart-modal.module').then(
@@ -248,11 +255,14 @@ const routes: Routes = [
       import('./core/pages/shop-details/shop-details.module').then(
         (m) => m.ShopDetailsPageModule
       ),
-  },  {
-    path: 'transaction-list-orders',
-    loadChildren: () => import('./core/pages/transaction-list-orders/transaction-list-orders.module').then( m => m.TransactionListOrdersPageModule)
   },
-
+  {
+    path: 'transaction-list-orders',
+    loadChildren: () =>
+      import(
+        './core/pages/transaction-list-orders/transaction-list-orders.module'
+      ).then((m) => m.TransactionListOrdersPageModule),
+  },
 ];
 
 @NgModule({

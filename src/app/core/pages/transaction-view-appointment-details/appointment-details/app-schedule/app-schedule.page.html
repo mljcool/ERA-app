@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack();">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-buttons slot="end">
+      <ion-menu-button auto-hide="false"></ion-menu-button>
+    </ion-buttons> -->
+
+    <ion-title>Booking Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container>
+    <ion-list>
+      <ion-item>
+        <ion-label>Date</ion-label>
+        <ion-note slot="end" color="primary"
+          >{{ bookingDetails.startDate.toDate() | date: 'MMM d, y' }}</ion-note
+        >
+      </ion-item>
+      <ion-item>
+        <ion-label>Start Time</ion-label>
+        <ion-note slot="end" color="primary"
+          >{{ bookingDetails.time.toDate() | date: 'h:mm a'}}</ion-note
+        >
+      </ion-item>
+      <ion-item>
+        <ion-label>Additional Contact</ion-label>
+        <ion-note slot="end" color="primary"
+          >{{ bookingDetails.AdditionalContact}}</ion-note
+        >
+      </ion-item>
+      <ion-item>
+        <ion-label>Notes</ion-label>
+        <ion-note slot="end" color="primary"
+          >{{ bookingDetails.notes}}</ion-note
+        >
+      </ion-item>
+      <ion-item>
+        <ion-label>Date Submitted</ion-label>
+        <ion-note slot="end" color="primary"
+          >{{ bookingDetails.dateCreated.toDate() | date: 'MMM d, y'
+          }}</ion-note
+        >
+      </ion-item>
+    </ion-list>
+    <ion-button
+      expand="full"
+      color="warning"
+      (click)="submitBooking(bookingData)"
+      *ngIf="!isSubmitting || hideProceedButtons"
+    >
+      Cancel Appointment
+    </ion-button>
+  </ng-container>
+</ion-content>

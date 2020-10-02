@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack();">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-buttons slot="end">
+      <ion-menu-button auto-hide="false"></ion-menu-button>
+    </ion-buttons> -->
+
+    <ion-title>Shop Address</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="map-appointment-details">
+  <ion-grid>
+    <ion-row>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Shop Details</ion-card-subtitle>
+          <ion-card-content class="assistance-card-details shop-details">
+            <div class="shop-details">
+              <div class="shop-header">
+                <ion-label class="time-status">
+                  <span class="shope-name">{{ shopsDetails.name}}</span>
+                </ion-label>
+                <span class="ratings-icons">
+                  <ion-rating [rate]="rate" size="small" readonnly="true">
+                  </ion-rating>
+                </span>
+              </div>
+              <div class="shop-content">
+                <ion-label class="time-status">
+                  <span>Address → ({{ shopsDetails.address}})</span>
+                </ion-label>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card-header>
+
+        <ion-card-content class="assistance-card-details map-views">
+          <div class="assistance-maps">
+            <agm-map
+              [latitude]="initMap.latitude"
+              [longitude]="initMap.longitude"
+              [zoom]="zoom"
+              [disableDefaultUI]="true"
+              [zoomControl]="false"
+              [styles]="mapThemeStyle"
+              [gestureHandling]="'none'"
+            >
+              <agm-marker
+                [latitude]="initMap.latitude"
+                [longitude]="initMap.longitude"
+                [iconUrl]="initMap.iconUrl"
+              ></agm-marker>
+            </agm-map>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-row>
+  </ion-grid>
+</ion-content>

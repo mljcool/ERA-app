@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack();">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-buttons slot="end">
+      <ion-menu-button auto-hide="false"></ion-menu-button>
+    </ion-buttons> -->
+
+    <ion-title>Service Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="app-details">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Items Required</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content class="assistance-card-details item-cart-details">
+      <ion-row class="header row-list-items">
+        <ion-col>
+          <div>Name</div>
+        </ion-col>
+        <ion-col>
+          <div>Quntity</div>
+        </ion-col>
+        <ion-col>
+          <div>Price</div>
+        </ion-col>
+      </ion-row>
+      <ion-row
+        class="row-list-items"
+        *ngFor="let item of serviceDetail.products"
+      >
+        <ion-col>
+          <div>{{ item.name}}</div>
+        </ion-col>
+        <ion-col>
+          <div class="item-qty">{{ item.quantity}}</div>
+        </ion-col>
+        <ion-col>
+          <div>{{ item.price | currency:"PHP":"₱"}}</div>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row-list-items">
+        <ion-col>
+          <div class="item-name total total-label">Total</div>
+        </ion-col>
+        <ion-col>
+          <div class="item-qty total total-qty"></div>
+        </ion-col>
+        <ion-col>
+          <div class="item-price total total-price">
+            {{ total | currency:"PHP":"₱"}}
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Estimated cost Details</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label class="cost-price"
+            >Service Price = {{ serviceDetail.servicePrice |
+            currency:"PHP":"₱"}}</ion-label
+          >
+        </ion-item>
+        <ion-item>
+          <ion-label class="cost-price"
+            >Grand Total = {{ serviceDetail.grandTotal |
+            currency:"PHP":"₱"}}</ion-label
+          >
+        </ion-item>
+      </ion-list>
+
+      <ion-card-header>
+        <ion-card-subtitle>Description</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content class="assistance-card-details">
+        {{ serviceDetail.description}}
+      </ion-card-content>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

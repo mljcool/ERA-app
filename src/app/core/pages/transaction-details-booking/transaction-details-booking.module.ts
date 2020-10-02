@@ -8,7 +8,6 @@ import { IonicModule } from '@ionic/angular';
 import { TransactionDetailsBookingPageRoutingModule } from './transaction-details-booking-routing.module';
 
 import { TransactionDetailsBookingPage } from './transaction-details-booking.page';
-import { NgCalendarModule } from 'ionic2-calendar';
 import { MbscModule } from '@mobiscroll/angular';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { MbscModule } from '@mobiscroll/angular';
     FormsModule,
     IonicModule,
     TransactionDetailsBookingPageRoutingModule,
-    NgCalendarModule,
     MbscModule,
     HttpClientModule,
     HttpClientJsonpModule,

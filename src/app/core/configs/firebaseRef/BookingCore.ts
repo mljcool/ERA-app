@@ -20,9 +20,9 @@ export const getMyBookings = (userUID: string) => {
     .where('userUID', '==', userUID);
 };
 
-// export const getMyOrdersDetails = (transactionUID: string) => {
-//   return firebase
-//     .firestore()
-//     .collection('newShopTransaction')
-//     .where('transactionUID', '==', transactionUID);
-// };
+export const getMyBookingDetails = (bookingUID: string) => {
+  return firebase
+    .firestore()
+    .collection('newBookingTransaction')
+    .where('bookingUID', '==', bookingUID);
+};

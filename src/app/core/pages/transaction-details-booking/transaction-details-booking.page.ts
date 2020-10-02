@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import {
   NavController,
   ActionSheetController,
@@ -45,8 +45,8 @@ export class TransactionDetailsBookingPage {
       eventList: { type: 'month', scrollable: true },
     },
     onEventSelect: (event, inst) => {
-      console.log('event', event);
-      console.log('inst', inst);
+      // console.log('event', event);
+      this.viewDetails(event);
     },
   };
 
@@ -61,7 +61,19 @@ export class TransactionDetailsBookingPage {
     this.getUserData();
   }
 
-  changeView(): void {}
+  viewDetails(data: any = {}): void {
+    const { details } = data.event;
+    console.log(`I'm here......`, data);
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        bookingUID: details.bookingUID,
+      },
+    };
+    this.router.navigate(
+      ['/transaction-view-appointment-details/app-schedule'],
+      navigationExtras
+    );
+  }
 
   loadEvents(userUID) {
     getMyBookings(userUID).onSnapshot((snapshot) => {
