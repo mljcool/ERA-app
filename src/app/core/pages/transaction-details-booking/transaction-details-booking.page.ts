@@ -4,6 +4,7 @@ import {
   NavController,
   ActionSheetController,
   ModalController,
+  AlertController,
 } from '@ionic/angular';
 import { StoragUserDataService } from 'src/app/services/storages/storage-user-services';
 import { getMyBookings } from '../../configs/firebaseRef/BookingCore';
@@ -54,16 +55,52 @@ export class TransactionDetailsBookingPage {
     private router: Router,
     public navCtrl: NavController,
     private googleStorageUser: StoragUserDataService,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    private alertController: AlertController
   ) {}
 
   ionViewWillEnter() {
     this.getUserData();
   }
 
+  async presentAlertConfirm(details: any = {}) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Status!',
+      message: 'This Appointment already cancelled would you like to view it?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          },
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.proceedViewDetails(details);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
   viewDetails(data: any = {}): void {
     const { details } = data.event;
     console.log(`I'm here......`, data);
+
+    if (details.status === 'CANCELLED') {
+      this.presentAlertConfirm(details);
+      return;
+    }
+    this.proceedViewDetails(details);
+  }
+
+  proceedViewDetails(details: any = {}): void {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         bookingUID: details.bookingUID,
@@ -73,6 +110,24 @@ export class TransactionDetailsBookingPage {
       ['/transaction-view-appointment-details/app-schedule'],
       navigationExtras
     );
+  }
+
+  getHexColorStatus(status) {
+    let hexColor = '#ffa263';
+    switch (status) {
+      case 'PENDING':
+        hexColor = '#ffa263';
+        break;
+      case 'CANCELLED':
+        hexColor = '#f22222';
+        break;
+      case 'ACCEPTED':
+        hexColor = '#56ca70';
+        break;
+      default:
+        hexColor = '#ffa263';
+    }
+    return hexColor;
   }
 
   loadEvents(userUID) {
@@ -88,11 +143,12 @@ export class TransactionDetailsBookingPage {
         const startDate = element.startDate.toDate();
         const endDate = element.endDate.toDate();
         const serviceName = element.serviceDetail.name;
+        const status = element.status;
         this.events.push({
           start: startDate,
           end: endDate,
-          text: serviceName,
-          color: '#56ca70',
+          text: serviceName + ' - ' + `(${status})`,
+          color: this.getHexColorStatus(status),
           details: element,
         });
         console.log('eventSource', this.bookings);

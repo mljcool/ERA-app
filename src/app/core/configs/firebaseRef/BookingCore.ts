@@ -26,3 +26,11 @@ export const getMyBookingDetails = (bookingUID: string) => {
     .collection('newBookingTransaction')
     .where('bookingUID', '==', bookingUID);
 };
+
+export const cancelledBooking = (docId: string) => {
+  return firebase
+    .firestore()
+    .collection('newBookingTransaction')
+    .doc(docId)
+    .update({ status: 'CANCELLED' });
+};

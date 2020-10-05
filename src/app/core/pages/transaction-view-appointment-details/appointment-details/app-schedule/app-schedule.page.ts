@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
+  cancelledBooking,
   getMyBookingDetails,
   saveBooking,
 } from 'src/app/core/configs/firebaseRef/BookingCore';
@@ -43,6 +44,7 @@ export class AppSchedulePage implements OnInit, OnDestroy {
         return new Date();
       },
     },
+    status: 'CANCELLED',
   };
 
   userData: any = {
@@ -78,18 +80,28 @@ export class AppSchedulePage implements OnInit, OnDestroy {
 
   // PUBLIC FUNTIONS HERE ----------------
 
-  async presentAlert() {
+  async presentAlert(title, msg) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Saved',
-      message: 'Your booking successfully added',
+      header: title,
+      message: msg,
       buttons: ['OK'],
     });
 
     await alert.present();
   }
 
-  submitBooking(data: any): void {}
+  onCancelledBooking(data: any): void {
+    console.log('onCancelledBooking', data);
+    const { key } = data;
+    cancelledBooking(key).then(() => {
+      this.presentAlert('Cancelled', `Booking successfully cancelled.`);
+      const headBack = setTimeout(() => {
+        this.router.navigate(['/transaction-details-booking']);
+        clearTimeout(headBack);
+      }, 500);
+    });
+  }
 
   getMyBookingDetails(bookingUID): void {
     getMyBookingDetails(bookingUID).onSnapshot((snapshot) => {
