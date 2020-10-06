@@ -26,3 +26,11 @@ export const getMyOrdersDetails = (transactionUID: string) => {
     .collection('newShopTransaction')
     .where('transactionUID', '==', transactionUID);
 };
+
+export const cancelledOrders = (docId: string) => {
+  return firebase
+    .firestore()
+    .collection('newShopTransaction')
+    .doc(docId)
+    .update({ status: 'CANCELLED' });
+};

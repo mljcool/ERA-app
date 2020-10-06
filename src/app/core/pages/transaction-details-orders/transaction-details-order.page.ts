@@ -5,7 +5,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { darkTheme } from 'src/app/core/map-theme/dark';
 import { myMarker } from 'src/app/core/util/map-styles';
-import { getMyOrdersDetails } from 'src/app/core/configs/firebaseRef/CartCore';
+import {
+  cancelledOrders,
+  getMyOrdersDetails,
+} from 'src/app/core/configs/firebaseRef/CartCore';
 import { AlertController } from '@ionic/angular';
 import { IProduct } from '../make-orders/Product.model';
 import { CartService } from '../make-orders/order-services/make-oders.service';
@@ -147,18 +150,28 @@ export class TransactionDetailsOrderPage implements OnInit {
     this.unsubscribeAll.complete();
   }
 
-  async presentAlert() {
+  async presentAlert(title, msg) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Saved',
-      message: 'Your order successfully added',
+      header: title,
+      message: msg,
       buttons: ['OK'],
     });
 
     await alert.present();
   }
 
-  cancelOrder(): void {}
+  cancelOrder(): void {
+    const { key } = this.orderDetails;
+    cancelledOrders(key).then(() => {
+      this.presentAlert('Cancelled', 'Your order cancelled successfully.');
+      const navigate = setTimeout(() => {
+        this.onBack();
+        clearTimeout(navigate);
+      }, 1500);
+    });
+    console.log('jhere cancelled orders', this.orderDetails);
+  }
 
   onBack(): void {
     this.router.navigate(['/transaction-list-orders']);
